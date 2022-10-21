@@ -1,0 +1,3 @@
+[submodule "ext/Epidemics-On-Networks"]
+	path = ext/Epidemics-On-Networks
+	url = git@github.com:samuelcure/Epidemics-On-Networks.git

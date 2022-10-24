@@ -1,4 +1,5 @@
 #include <optional>
+#include <memory>
 
 #include <cpp11.hpp>
 #include <cpp11/function.hpp>

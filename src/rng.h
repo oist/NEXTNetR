@@ -9,9 +9,9 @@
 #include "epidemics/types.h"
 
 #if (RNG != RNG_CUSTOM)
-  #define RNG_SCOPE
+  #define RNG_SCOPE_IF_NECESSARY
 #else
-  #define RNG_SCOPE R_rng_scope rngscope
+  #define RNG_SCOPE_IF_NECESSARY R_rng_scope rngscope
 #endif
 
 namespace episimR {
@@ -92,14 +92,8 @@ private:
  */
 rng_t& rng_engine();
 
-} /* namespace episimR */
-
 /**
  * @brief Adapter to use R's RNG with C++11's random distributions.
- * 
- * This class lives outside of the episimR namespace so that it can
- * be used as the RNG_TYPE which epidemics/types.h (knowing nothing
- * about episimR and just receiving the type name) forward-declares.
  * 
  * Implement an UniformRandomBitGenerator which can be passed as
  * a generator to the distribution's operator()
@@ -115,7 +109,7 @@ rng_t& rng_engine();
  * the values produced by R's RNG; one way to circumvent to problems
  * outlined above is to only use R's RNG to seed a native C++ RNG.
  */
-struct episimR_R_rng {
+struct R_rng_adapter {
   typedef std::uint32_t result_type;
   
   static constexpr result_type min() { return 0; }
@@ -135,3 +129,5 @@ struct episimR_R_rng {
     return std::seed_seq(s.begin(), s.end());
   }
 };
+
+} /* namespace episimR */

@@ -58,7 +58,16 @@ void R_rng_state_tracker::ensure_scope_was_entered() {
 R_rng_state_tracker r_rng_state;
 
 /******************************
- * rng_engine
+ * R_rng_adapter
+ ******************************/
+
+R_rng_adapter::result_type R_rng_adapter::operator()() {
+  r_rng_state.ensure_scope_was_entered();
+  return R_unif_index((double)max() + 1.0);
+}
+
+/******************************
+ * factory rng_engine()
  ******************************/
 
 #if (RNG != RNG_CUSTOM)
@@ -71,7 +80,7 @@ rng_t& rng_engine() {
 #if (RNG != RNG_CUSTOM)
   /* Use the R RNG to initialize the C++ RNG once */
   if (!engine) {
-    R_rng_scope
+    R_rng_scope rngscope;
     std::seed_seq seed = R_rng_adapter().generate_seed<16>();
     engine = rng_t(seed);
   }
@@ -84,14 +93,15 @@ rng_t& rng_engine() {
 
 } /* namespace episimR */
 
-/******************************
- * episimR_R_rng
- ******************************/
+/******************************************
+ * rng_t::operator() [ epidemics/types.h ]
+ ******************************************/
 
 using namespace episimR;
 
+#if RNG == RNG_CUSTOM
 /* Implemenets operator() for the rng_t type defined by epidemic's types.h */
 rng_t::result_type rng_t::operator()() {
-  r_rng_state.ensure_scope_was_entered();
-  return R_unif_index((double)max() + 1.0);
+  return R_rng_adapter()();
 }
+#endif

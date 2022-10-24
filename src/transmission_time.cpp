@@ -17,7 +17,7 @@ namespace writable = cpp11::writable;
 
 [[cpp11::register]]
 doubles episimR_time_sample(int n, const transmission_time_R& ttr, interval_t t, int m) {
-    RNG_SCOPE;
+    RNG_SCOPE_IF_NECESSARY;
     transmission_time& tt = *(ttr.get());
     writable::doubles r;
     r.reserve(n);

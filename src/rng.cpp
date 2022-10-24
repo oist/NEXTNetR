@@ -1,8 +1,11 @@
-#include "rng.h"
+#include <cpp11.hpp>
 
-namespace episimR {
+#include "episimR_types.h"
 
-rng_t& rng() {
-}
+using namespace cpp11;
 
+rng_t engine;
+
+rng_t& episimR_rng() {
+    return engine;
 }

@@ -3,12 +3,13 @@
 PKG_CXXFLAGS = --std=c++17
 
 SOURCES = \
+	cpp11.cpp \
 	transmission_time.cpp \
-	epidemics/analysis.cpp \
+	rng.cpp \
 	epidemics/graph.cpp \
 	epidemics/NextReaction.cpp \
 	epidemics/nMGA.cpp \
 	epidemics/random.cpp \
-	epidemics/utility.cpp
+	epidemics/utility.cpp \
 	
 OBJECTS = $(SOURCES:.cpp=.o)

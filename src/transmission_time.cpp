@@ -4,56 +4,78 @@
 #include <cpp11/function.hpp>
 #include <cpp11/external_pointer.hpp>
 
+#include "episimR_types.h"
 #include "epidemics/random.h"
-
-#include "rng.h"
 
 using namespace cpp11;
 namespace writable = cpp11::writable;
 
-namespace episimR {
-
-typedef external_pointer<transmission_time> transmission_time_R;
-
 [[cpp11::register]]
-doubles time_sample(const transmission_time_R& ttr, interval_t t, int m = 1, int n = 1) {
+doubles episimR_time_sample(int n, const transmission_time_R& ttr, interval_t t, int m) {
     transmission_time& tt = *(ttr.get());
     writable::doubles r;
     r.reserve(n);
-    for(std::size_t i=0; i < n; ++i)
-        r.push_back(tt.sample(rng(), t, m));
+    for(int i=0; i < n; ++i)
+        r.push_back(tt.sample(episimR_rng(), t, m));
     return r;
 }
 
-#define TIME_MEMBER_D_D(mfname) \
-    [[cpp11::register]] \
-    doubles time_ ## mfname (const transmission_time_R& ttr, doubles a1) { \
-        transmission_time& tt = *(ttr.get()); \
-        const std::size_t n = a1.size(); \
-        writable::doubles r; \
-        r.reserve(n); \
-        for(std::size_t i=0; i < n; ++i) \
-            r.push_back(tt. mfname (a1[i])); \
-        return r; \
-    }
-
-TIME_MEMBER_D_D(density)
-TIME_MEMBER_D_D(hazardrate)
-TIME_MEMBER_D_D(survivalprobability)
-TIME_MEMBER_D_D(survivalquantile)
+[[cpp11::register]]
+doubles episimR_time_density(const transmission_time_R& ttr, doubles a1) {
+    transmission_time& tt = *(ttr.get());
+    const std::size_t n = a1.size();
+    writable::doubles r;
+    r.reserve(n);
+    for(std::size_t i=0; i < n; ++i)
+        r.push_back(tt.density(a1[i]));
+    return r;
+}
 
 [[cpp11::register]]
-transmission_time_R exponential_time(double lambda) {
+doubles episimR_time_hazardrate(const transmission_time_R& ttr, doubles a1) {
+  transmission_time& tt = *(ttr.get());
+  const std::size_t n = a1.size();
+  writable::doubles r;
+  r.reserve(n);
+  for(std::size_t i=0; i < n; ++i)
+    r.push_back(tt.hazardrate(a1[i]));
+  return r;
+}
+
+[[cpp11::register]]
+doubles episimR_time_survivalprobability(const transmission_time_R& ttr, doubles a1) {
+  transmission_time& tt = *(ttr.get());
+  const std::size_t n = a1.size();
+  writable::doubles r;
+  r.reserve(n);
+  for(std::size_t i=0; i < n; ++i)
+    r.push_back(tt.survivalprobability(a1[i]));
+  return r;
+}
+
+[[cpp11::register]]
+doubles episimR_time_survivalquantile(const transmission_time_R& ttr, doubles a1) {
+  transmission_time& tt = *(ttr.get());
+  const std::size_t n = a1.size();
+  writable::doubles r;
+  r.reserve(n);
+  for(std::size_t i=0; i < n; ++i)
+    r.push_back(tt.survivalquantile(a1[i]));
+  return r;
+}
+
+[[cpp11::register]]
+transmission_time_R episimR_exponential_time(double lambda) {
     return new transmission_time_exponential(lambda);
 }
 
 [[cpp11::register]]
-transmission_time_R lognormal_time(double mean, double var, double pinf = 0.0) {
+transmission_time_R episimR_lognormal_time(double mean, double var, double pinf = 0.0) {
     return new transmission_time_lognormal(mean, var, pinf);
 }
 
 [[cpp11::register]]
-transmission_time_R gamma_time(double mean, double var, double pinf = 0.0) {
+transmission_time_R episimR_gamma_time(double mean, double var, double pinf = 0.0) {
     return new transmission_time_gamma(mean, var, pinf);
 }
 
@@ -112,10 +134,11 @@ struct rfunction_transmission_time : public transmission_time {
 };
 
 [[cpp11::register]]
-transmission_time_R generic_time(SEXP density,
-                                 SEXP survivalprobability, bool probability_is_trinary,
-                                 SEXP survivalquantile, bool quantile_is_trinary,
-                                 SEXP sample, double pinfinity = 0.0)
+transmission_time_R episimR_generic_time(
+    SEXP density,
+    SEXP survivalprobability, bool probability_is_trinary,
+    SEXP survivalquantile, bool quantile_is_trinary,
+    SEXP sample, double pinfinity = 0.0)
 {
     std::unique_ptr<rfunction_transmission_time> r(new rfunction_transmission_time(pinfinity));
     
@@ -130,6 +153,3 @@ transmission_time_R generic_time(SEXP density,
         
     return r.release();
 }
-
-
-} /* namespace episimR */

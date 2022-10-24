@@ -5,6 +5,69 @@
 #include "cpp11/declarations.hpp"
 #include <R_ext/Visibility.h>
 
+// graph.cpp
+integers episimR_graph_outdegree(const graph_R& nw, integers nodes);
+extern "C" SEXP _episimR_episimR_graph_outdegree(SEXP nw, SEXP nodes) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_graph_outdegree(cpp11::as_cpp<cpp11::decay_t<const graph_R&>>(nw), cpp11::as_cpp<cpp11::decay_t<integers>>(nodes)));
+  END_CPP11
+}
+// graph.cpp
+integers episimR_graph_neighbour(const graph_R& nw, integers nodes, integers indices);
+extern "C" SEXP _episimR_episimR_graph_neighbour(SEXP nw, SEXP nodes, SEXP indices) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_graph_neighbour(cpp11::as_cpp<cpp11::decay_t<const graph_R&>>(nw), cpp11::as_cpp<cpp11::decay_t<integers>>(nodes), cpp11::as_cpp<cpp11::decay_t<integers>>(indices)));
+  END_CPP11
+}
+// graph.cpp
+list episimR_graph_adjacencylist(const graph_R& nw);
+extern "C" SEXP _episimR_episimR_graph_adjacencylist(SEXP nw) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_graph_adjacencylist(cpp11::as_cpp<cpp11::decay_t<const graph_R&>>(nw)));
+  END_CPP11
+}
+// graph.cpp
+graph_R episimR_erdos_reyni_graph(int size, double avg_degree);
+extern "C" SEXP _episimR_episimR_erdos_reyni_graph(SEXP size, SEXP avg_degree) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_erdos_reyni_graph(cpp11::as_cpp<cpp11::decay_t<int>>(size), cpp11::as_cpp<cpp11::decay_t<double>>(avg_degree)));
+  END_CPP11
+}
+// graph.cpp
+graph_R episimR_fully_connected_graph(int size);
+extern "C" SEXP _episimR_episimR_fully_connected_graph(SEXP size) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_fully_connected_graph(cpp11::as_cpp<cpp11::decay_t<int>>(size)));
+  END_CPP11
+}
+// graph.cpp
+graph_R episimR_acyclic_graph(int size, double avg_degree, bool reduced_root_degree);
+extern "C" SEXP _episimR_episimR_acyclic_graph(SEXP size, SEXP avg_degree, SEXP reduced_root_degree) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_acyclic_graph(cpp11::as_cpp<cpp11::decay_t<int>>(size), cpp11::as_cpp<cpp11::decay_t<double>>(avg_degree), cpp11::as_cpp<cpp11::decay_t<bool>>(reduced_root_degree)));
+  END_CPP11
+}
+// graph.cpp
+graph_R episimR_configmodel_graph(integers degrees);
+extern "C" SEXP _episimR_episimR_configmodel_graph(SEXP degrees) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_configmodel_graph(cpp11::as_cpp<cpp11::decay_t<integers>>(degrees)));
+  END_CPP11
+}
+// graph.cpp
+graph_R episimR_scalefree_graph(int size, bool assortative);
+extern "C" SEXP _episimR_episimR_scalefree_graph(SEXP size, SEXP assortative) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_scalefree_graph(cpp11::as_cpp<cpp11::decay_t<int>>(size), cpp11::as_cpp<cpp11::decay_t<bool>>(assortative)));
+  END_CPP11
+}
+// graph.cpp
+graph_R episimR_stored_graph(r_string filename, bool assortative);
+extern "C" SEXP _episimR_episimR_stored_graph(SEXP filename, SEXP assortative) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_stored_graph(cpp11::as_cpp<cpp11::decay_t<r_string>>(filename), cpp11::as_cpp<cpp11::decay_t<bool>>(assortative)));
+  END_CPP11
+}
 // transmission_time.cpp
 doubles episimR_time_sample(int n, const transmission_time_R& ttr, interval_t t, int m);
 extern "C" SEXP _episimR_episimR_time_sample(SEXP n, SEXP ttr, SEXP t, SEXP m) {
@@ -13,31 +76,31 @@ extern "C" SEXP _episimR_episimR_time_sample(SEXP n, SEXP ttr, SEXP t, SEXP m) {
   END_CPP11
 }
 // transmission_time.cpp
-doubles episimR_time_density(const transmission_time_R& ttr, doubles a1);
-extern "C" SEXP _episimR_episimR_time_density(SEXP ttr, SEXP a1) {
+doubles episimR_time_density(const transmission_time_R& ttr, doubles taus);
+extern "C" SEXP _episimR_episimR_time_density(SEXP ttr, SEXP taus) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_time_density(cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<doubles>>(a1)));
+    return cpp11::as_sexp(episimR_time_density(cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<doubles>>(taus)));
   END_CPP11
 }
 // transmission_time.cpp
-doubles episimR_time_hazardrate(const transmission_time_R& ttr, doubles a1);
-extern "C" SEXP _episimR_episimR_time_hazardrate(SEXP ttr, SEXP a1) {
+doubles episimR_time_hazardrate(const transmission_time_R& ttr, doubles taus);
+extern "C" SEXP _episimR_episimR_time_hazardrate(SEXP ttr, SEXP taus) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_time_hazardrate(cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<doubles>>(a1)));
+    return cpp11::as_sexp(episimR_time_hazardrate(cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<doubles>>(taus)));
   END_CPP11
 }
 // transmission_time.cpp
-doubles episimR_time_survivalprobability(const transmission_time_R& ttr, doubles a1);
-extern "C" SEXP _episimR_episimR_time_survivalprobability(SEXP ttr, SEXP a1) {
+doubles episimR_time_survivalprobability(const transmission_time_R& ttr, doubles taus);
+extern "C" SEXP _episimR_episimR_time_survivalprobability(SEXP ttr, SEXP taus) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_time_survivalprobability(cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<doubles>>(a1)));
+    return cpp11::as_sexp(episimR_time_survivalprobability(cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<doubles>>(taus)));
   END_CPP11
 }
 // transmission_time.cpp
-doubles episimR_time_survivalquantile(const transmission_time_R& ttr, doubles a1);
-extern "C" SEXP _episimR_episimR_time_survivalquantile(SEXP ttr, SEXP a1) {
+doubles episimR_time_survivalquantile(const transmission_time_R& ttr, doubles ps);
+extern "C" SEXP _episimR_episimR_time_survivalquantile(SEXP ttr, SEXP ps) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_time_survivalquantile(cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<doubles>>(a1)));
+    return cpp11::as_sexp(episimR_time_survivalquantile(cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<doubles>>(ps)));
   END_CPP11
 }
 // transmission_time.cpp
@@ -71,10 +134,19 @@ extern "C" SEXP _episimR_episimR_generic_time(SEXP density, SEXP survivalprobabi
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
+    {"_episimR_episimR_acyclic_graph",            (DL_FUNC) &_episimR_episimR_acyclic_graph,            3},
+    {"_episimR_episimR_configmodel_graph",        (DL_FUNC) &_episimR_episimR_configmodel_graph,        1},
+    {"_episimR_episimR_erdos_reyni_graph",        (DL_FUNC) &_episimR_episimR_erdos_reyni_graph,        2},
     {"_episimR_episimR_exponential_time",         (DL_FUNC) &_episimR_episimR_exponential_time,         1},
+    {"_episimR_episimR_fully_connected_graph",    (DL_FUNC) &_episimR_episimR_fully_connected_graph,    1},
     {"_episimR_episimR_gamma_time",               (DL_FUNC) &_episimR_episimR_gamma_time,               3},
     {"_episimR_episimR_generic_time",             (DL_FUNC) &_episimR_episimR_generic_time,             7},
+    {"_episimR_episimR_graph_adjacencylist",      (DL_FUNC) &_episimR_episimR_graph_adjacencylist,      1},
+    {"_episimR_episimR_graph_neighbour",          (DL_FUNC) &_episimR_episimR_graph_neighbour,          3},
+    {"_episimR_episimR_graph_outdegree",          (DL_FUNC) &_episimR_episimR_graph_outdegree,          2},
     {"_episimR_episimR_lognormal_time",           (DL_FUNC) &_episimR_episimR_lognormal_time,           3},
+    {"_episimR_episimR_scalefree_graph",          (DL_FUNC) &_episimR_episimR_scalefree_graph,          2},
+    {"_episimR_episimR_stored_graph",             (DL_FUNC) &_episimR_episimR_stored_graph,             2},
     {"_episimR_episimR_time_density",             (DL_FUNC) &_episimR_episimR_time_density,             2},
     {"_episimR_episimR_time_hazardrate",          (DL_FUNC) &_episimR_episimR_time_hazardrate,          2},
     {"_episimR_episimR_time_sample",              (DL_FUNC) &_episimR_episimR_time_sample,              4},

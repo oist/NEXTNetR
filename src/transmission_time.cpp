@@ -17,6 +17,8 @@ namespace writable = cpp11::writable;
 
 [[cpp11::register]]
 doubles episimR_time_sample(int n, const transmission_time_R& ttr, interval_t t, int m) {
+    if (!ttr) throw std::runtime_error("time distribution cannot be NULL"); 
+
     RNG_SCOPE_IF_NECESSARY;
     transmission_time& tt = *(ttr.get());
     writable::doubles r;
@@ -27,47 +29,55 @@ doubles episimR_time_sample(int n, const transmission_time_R& ttr, interval_t t,
 }
 
 [[cpp11::register]]
-doubles episimR_time_density(const transmission_time_R& ttr, doubles a1) {
+doubles episimR_time_density(const transmission_time_R& ttr, doubles taus) {
+    if (!ttr) throw std::runtime_error("time distribution cannot be NULL"); 
+
     transmission_time& tt = *(ttr.get());
-    const std::size_t n = a1.size();
+    const std::size_t n = taus.size();
     writable::doubles r;
     r.reserve(n);
     for(std::size_t i=0; i < n; ++i)
-        r.push_back(tt.density(a1[i]));
+        r.push_back(tt.density(taus[i]));
     return r;
 }
 
 [[cpp11::register]]
-doubles episimR_time_hazardrate(const transmission_time_R& ttr, doubles a1) {
-  transmission_time& tt = *(ttr.get());
-  const std::size_t n = a1.size();
-  writable::doubles r;
-  r.reserve(n);
-  for(std::size_t i=0; i < n; ++i)
-    r.push_back(tt.hazardrate(a1[i]));
-  return r;
+doubles episimR_time_hazardrate(const transmission_time_R& ttr, doubles taus) {
+    if (!ttr) throw std::runtime_error("time distribution cannot be NULL"); 
+
+    transmission_time& tt = *(ttr.get());
+    const std::size_t n = taus.size();
+    writable::doubles r;
+    r.reserve(n);
+    for(std::size_t i=0; i < n; ++i)
+        r.push_back(tt.hazardrate(taus[i]));
+    return r;
 }
 
 [[cpp11::register]]
-doubles episimR_time_survivalprobability(const transmission_time_R& ttr, doubles a1) {
-  transmission_time& tt = *(ttr.get());
-  const std::size_t n = a1.size();
-  writable::doubles r;
-  r.reserve(n);
-  for(std::size_t i=0; i < n; ++i)
-    r.push_back(tt.survivalprobability(a1[i]));
-  return r;
+doubles episimR_time_survivalprobability(const transmission_time_R& ttr, doubles taus) {
+    if (!ttr) throw std::runtime_error("time distribution cannot be NULL"); 
+
+    transmission_time& tt = *(ttr.get());
+    const std::size_t n = taus.size();
+    writable::doubles r;
+    r.reserve(n);
+    for(std::size_t i=0; i < n; ++i)
+        r.push_back(tt.survivalprobability(taus[i]));
+    return r;
 }
 
 [[cpp11::register]]
-doubles episimR_time_survivalquantile(const transmission_time_R& ttr, doubles a1) {
-  transmission_time& tt = *(ttr.get());
-  const std::size_t n = a1.size();
-  writable::doubles r;
-  r.reserve(n);
-  for(std::size_t i=0; i < n; ++i)
-    r.push_back(tt.survivalquantile(a1[i]));
-  return r;
+doubles episimR_time_survivalquantile(const transmission_time_R& ttr, doubles ps) {
+    if (!ttr) throw std::runtime_error("time distribution cannot be NULL"); 
+
+    transmission_time& tt = *(ttr.get());
+    const std::size_t n = ps.size();
+    writable::doubles r;
+    r.reserve(n);
+    for(std::size_t i=0; i < n; ++i)
+        r.push_back(tt.survivalquantile(ps[i]));
+    return r;
 }
 
 [[cpp11::register]]

@@ -17,6 +17,8 @@ namespace writable = cpp11::writable;
 
 [[cpp11::register]]
 integers episimR_graph_outdegree(const graph_R& nw, integers nodes) {
+    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+    
     /* Must enter RNG scope since graphs may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
     
@@ -32,6 +34,8 @@ integers episimR_graph_outdegree(const graph_R& nw, integers nodes) {
 
 [[cpp11::register]]
 integers episimR_graph_neighbour(const graph_R& nw, integers nodes, integers indices) {
+    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+
     /* Must enter RNG scope since graphs may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
     
@@ -60,6 +64,8 @@ integers episimR_graph_neighbour(const graph_R& nw, integers nodes, integers ind
 
 [[cpp11::register]]
 list episimR_graph_adjacencylist(const graph_R& nw) {
+    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+
     /* Must enter RNG scope since graphs may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
 

@@ -6,6 +6,7 @@ SOURCES = \
 	cpp11.cpp \
 	transmission_time.cpp \
 	graph.cpp \
+	simulation.cpp \
 	rng.cpp \
 	epidemics/graph.cpp \
 	epidemics/NextReaction.cpp \

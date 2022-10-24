@@ -5,18 +5,24 @@
 #include <cpp11/external_pointer.hpp>
 
 #include "episimR_types.h"
+#include "rng.h"
+
+#include "epidemics/types.h"
 #include "epidemics/random.h"
+
+using namespace episimR;
 
 using namespace cpp11;
 namespace writable = cpp11::writable;
 
 [[cpp11::register]]
 doubles episimR_time_sample(int n, const transmission_time_R& ttr, interval_t t, int m) {
+    RNG_SCOPE;
     transmission_time& tt = *(ttr.get());
     writable::doubles r;
     r.reserve(n);
     for(int i=0; i < n; ++i)
-        r.push_back(tt.sample(episimR_rng(), t, m));
+        r.push_back(tt.sample(rng_engine(), t, m));
     return r;
 }
 
@@ -85,10 +91,15 @@ struct rfunction_transmission_time : public transmission_time {
     {}
 
     virtual interval_t sample(rng_t& e, interval_t t, int m) {
-        if (sample_rf)
-            return as_cpp<double>((*sample_rf)(t, m));
-        else
+        if (sample_rf) {
+            // Since the sample() R code will likely use the RNG relinquish before calling
+            R_rng_relinquish rngrel;
+            const interval_t r = as_cpp<double>((*sample_rf)(t, m));
+            return r;
+        }
+        else {
             return transmission_time::sample(e, t, m);
+        }
     }
     
     virtual double density(interval_t tau) {

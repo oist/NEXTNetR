@@ -3,6 +3,10 @@
 #include "epidemics/types.h"
 #include "epidemics/random.h"
 
+namespace episimR {
+
 typedef cpp11::external_pointer<transmission_time> transmission_time_R;
 
-rng_t& episimR_rng();
+} /* namespace episimR */
+
+using namespace episimR;

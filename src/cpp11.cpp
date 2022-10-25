@@ -69,10 +69,10 @@ extern "C" SEXP _episimR_episimR_stored_graph(SEXP filename, SEXP assortative) {
   END_CPP11
 }
 // simulation.cpp
-simulation_R episimR_nextreaction_simulation(graph_R nw, transmission_time_R psi, SEXP rho);
-extern "C" SEXP _episimR_episimR_nextreaction_simulation(SEXP nw, SEXP psi, SEXP rho) {
+simulation_R episimR_nextreaction_simulation(graph_R nw, transmission_time_R psi, SEXP rho_);
+extern "C" SEXP _episimR_episimR_nextreaction_simulation(SEXP nw, SEXP psi, SEXP rho_) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_nextreaction_simulation(cpp11::as_cpp<cpp11::decay_t<graph_R>>(nw), cpp11::as_cpp<cpp11::decay_t<transmission_time_R>>(psi), cpp11::as_cpp<cpp11::decay_t<SEXP>>(rho)));
+    return cpp11::as_sexp(episimR_nextreaction_simulation(cpp11::as_cpp<cpp11::decay_t<graph_R>>(nw), cpp11::as_cpp<cpp11::decay_t<transmission_time_R>>(psi), cpp11::as_cpp<cpp11::decay_t<SEXP>>(rho_)));
   END_CPP11
 }
 // simulation.cpp
@@ -83,7 +83,7 @@ extern "C" SEXP _episimR_episimR_simulation_transmissiontime(SEXP sim) {
   END_CPP11
 }
 // simulation.cpp
-transmission_time_R episimR_simulation_resettime(const simulation_R& sim);
+SEXP episimR_simulation_resettime(const simulation_R& sim);
 extern "C" SEXP _episimR_episimR_simulation_resettime(SEXP sim) {
   BEGIN_CPP11
     return cpp11::as_sexp(episimR_simulation_resettime(cpp11::as_cpp<cpp11::decay_t<const simulation_R&>>(sim)));
@@ -112,10 +112,10 @@ extern "C" SEXP _episimR_episimR_simulation_addinfections(SEXP sim, SEXP nodes, 
   END_CPP11
 }
 // simulation.cpp
-data_frame episimR_simulation_step(const simulation_R& sim, int steps);
-extern "C" SEXP _episimR_episimR_simulation_step(SEXP sim, SEXP steps) {
+data_frame episimR_simulation_step(const simulation_R& sim_, int steps);
+extern "C" SEXP _episimR_episimR_simulation_step(SEXP sim_, SEXP steps) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_simulation_step(cpp11::as_cpp<cpp11::decay_t<const simulation_R&>>(sim), cpp11::as_cpp<cpp11::decay_t<int>>(steps)));
+    return cpp11::as_sexp(episimR_simulation_step(cpp11::as_cpp<cpp11::decay_t<const simulation_R&>>(sim_), cpp11::as_cpp<cpp11::decay_t<int>>(steps)));
   END_CPP11
 }
 // transmission_time.cpp

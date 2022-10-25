@@ -36,8 +36,8 @@ episimR_stored_graph <- function(filename, assortative) {
   .Call(`_episimR_episimR_stored_graph`, filename, assortative)
 }
 
-episimR_nextreaction_simulation <- function(nw, psi, rho) {
-  .Call(`_episimR_episimR_nextreaction_simulation`, nw, psi, rho)
+episimR_nextreaction_simulation <- function(nw, psi, rho_) {
+  .Call(`_episimR_episimR_nextreaction_simulation`, nw, psi, rho_)
 }
 
 episimR_simulation_transmissiontime <- function(sim) {
@@ -60,8 +60,8 @@ episimR_simulation_addinfections <- function(sim, nodes, times) {
   invisible(.Call(`_episimR_episimR_simulation_addinfections`, sim, nodes, times))
 }
 
-episimR_simulation_step <- function(sim, steps) {
-  .Call(`_episimR_episimR_simulation_step`, sim, steps)
+episimR_simulation_step <- function(sim_, steps) {
+  .Call(`_episimR_episimR_simulation_step`, sim_, steps)
 }
 
 episimR_time_sample <- function(n, ttr, t, m) {

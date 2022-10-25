@@ -25,7 +25,7 @@ simulation_R episimR_nextreaction_simulation(
     if (!psi) throw std::runtime_error("transmission time distribution cannot be NULL");
 
     transmission_time* rho = nullptr;
-    if (rho_ != R_NilValue);
+    if (rho_ != R_NilValue)
         rho = transmission_time_R(rho).get();
 
     return { new simulate_next_reaction(*nw.get(), *psi.get(), rho),

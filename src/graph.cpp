@@ -124,12 +124,12 @@ graph_R episimR_configmodel_graph(integers degrees) {
 }
 
 [[cpp11::register]]
-graph_R episimR_scalefree_graph(int size, bool assortative) {
+graph_R episimR_scalefree_graph(int size) {
     RNG_SCOPE_IF_NECESSARY;
     return new scale_free(size, rng_engine());
 }
 
 [[cpp11::register]]
-graph_R episimR_stored_graph(r_string filename, bool assortative) {
+graph_R episimR_stored_graph(r_string filename) {
     return new imported_network((std::string)filename);
 }

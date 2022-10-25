@@ -28,12 +28,12 @@ episimR_configmodel_graph <- function(degrees) {
   .Call(`_episimR_episimR_configmodel_graph`, degrees)
 }
 
-episimR_scalefree_graph <- function(size, assortative) {
-  .Call(`_episimR_episimR_scalefree_graph`, size, assortative)
+episimR_scalefree_graph <- function(size) {
+  .Call(`_episimR_episimR_scalefree_graph`, size)
 }
 
-episimR_stored_graph <- function(filename, assortative) {
-  .Call(`_episimR_episimR_stored_graph`, filename, assortative)
+episimR_stored_graph <- function(filename) {
+  .Call(`_episimR_episimR_stored_graph`, filename)
 }
 
 episimR_nextreaction_simulation <- function(nw, psi, rho_) {

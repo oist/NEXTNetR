@@ -55,17 +55,17 @@ extern "C" SEXP _episimR_episimR_configmodel_graph(SEXP degrees) {
   END_CPP11
 }
 // graph.cpp
-graph_R episimR_scalefree_graph(int size, bool assortative);
-extern "C" SEXP _episimR_episimR_scalefree_graph(SEXP size, SEXP assortative) {
+graph_R episimR_scalefree_graph(int size);
+extern "C" SEXP _episimR_episimR_scalefree_graph(SEXP size) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_scalefree_graph(cpp11::as_cpp<cpp11::decay_t<int>>(size), cpp11::as_cpp<cpp11::decay_t<bool>>(assortative)));
+    return cpp11::as_sexp(episimR_scalefree_graph(cpp11::as_cpp<cpp11::decay_t<int>>(size)));
   END_CPP11
 }
 // graph.cpp
-graph_R episimR_stored_graph(r_string filename, bool assortative);
-extern "C" SEXP _episimR_episimR_stored_graph(SEXP filename, SEXP assortative) {
+graph_R episimR_stored_graph(r_string filename);
+extern "C" SEXP _episimR_episimR_stored_graph(SEXP filename) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_stored_graph(cpp11::as_cpp<cpp11::decay_t<r_string>>(filename), cpp11::as_cpp<cpp11::decay_t<bool>>(assortative)));
+    return cpp11::as_sexp(episimR_stored_graph(cpp11::as_cpp<cpp11::decay_t<r_string>>(filename)));
   END_CPP11
 }
 // simulation.cpp
@@ -196,14 +196,14 @@ static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_graph_outdegree",             (DL_FUNC) &_episimR_episimR_graph_outdegree,             2},
     {"_episimR_episimR_lognormal_time",              (DL_FUNC) &_episimR_episimR_lognormal_time,              3},
     {"_episimR_episimR_nextreaction_simulation",     (DL_FUNC) &_episimR_episimR_nextreaction_simulation,     3},
-    {"_episimR_episimR_scalefree_graph",             (DL_FUNC) &_episimR_episimR_scalefree_graph,             2},
+    {"_episimR_episimR_scalefree_graph",             (DL_FUNC) &_episimR_episimR_scalefree_graph,             1},
     {"_episimR_episimR_simulation_addinfections",    (DL_FUNC) &_episimR_episimR_simulation_addinfections,    3},
     {"_episimR_episimR_simulation_graph",            (DL_FUNC) &_episimR_episimR_simulation_graph,            1},
     {"_episimR_episimR_simulation_isinfected",       (DL_FUNC) &_episimR_episimR_simulation_isinfected,       2},
     {"_episimR_episimR_simulation_resettime",        (DL_FUNC) &_episimR_episimR_simulation_resettime,        1},
     {"_episimR_episimR_simulation_step",             (DL_FUNC) &_episimR_episimR_simulation_step,             2},
     {"_episimR_episimR_simulation_transmissiontime", (DL_FUNC) &_episimR_episimR_simulation_transmissiontime, 1},
-    {"_episimR_episimR_stored_graph",                (DL_FUNC) &_episimR_episimR_stored_graph,                2},
+    {"_episimR_episimR_stored_graph",                (DL_FUNC) &_episimR_episimR_stored_graph,                1},
     {"_episimR_episimR_time_density",                (DL_FUNC) &_episimR_episimR_time_density,                2},
     {"_episimR_episimR_time_hazardrate",             (DL_FUNC) &_episimR_episimR_time_hazardrate,             2},
     {"_episimR_episimR_time_sample",                 (DL_FUNC) &_episimR_episimR_time_sample,                 4},

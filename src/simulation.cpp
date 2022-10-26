@@ -19,14 +19,14 @@ namespace writable = cpp11::writable;
 
 [[cpp11::register]]
 simulation_R episimR_nextreaction_simulation(
-    graph_R nw, transmission_time_R psi, SEXP rho_
+    graph_R nw, transmission_time_R psi, sexp rho_
 ) {
     if (!nw) throw std::runtime_error("graph cannot be NULL"); 
     if (!psi) throw std::runtime_error("transmission time distribution cannot be NULL");
 
     transmission_time* rho = nullptr;
     if (rho_ != R_NilValue)
-        rho = transmission_time_R(rho).get();
+        rho = transmission_time_R(rho_).get();
 
     return { new simulate_next_reaction(*nw.get(), *psi.get(), rho),
              writable::list({"nw"_nm = nw, "psi"_nm = psi, "rho"_nm = rho_ }),

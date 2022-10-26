@@ -69,10 +69,10 @@ extern "C" SEXP _episimR_episimR_stored_graph(SEXP filename) {
   END_CPP11
 }
 // simulation.cpp
-simulation_R episimR_nextreaction_simulation(graph_R nw, transmission_time_R psi, SEXP rho_);
+simulation_R episimR_nextreaction_simulation(graph_R nw, transmission_time_R psi, sexp rho_);
 extern "C" SEXP _episimR_episimR_nextreaction_simulation(SEXP nw, SEXP psi, SEXP rho_) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_nextreaction_simulation(cpp11::as_cpp<cpp11::decay_t<graph_R>>(nw), cpp11::as_cpp<cpp11::decay_t<transmission_time_R>>(psi), cpp11::as_cpp<cpp11::decay_t<SEXP>>(rho_)));
+    return cpp11::as_sexp(episimR_nextreaction_simulation(cpp11::as_cpp<cpp11::decay_t<graph_R>>(nw), cpp11::as_cpp<cpp11::decay_t<transmission_time_R>>(psi), cpp11::as_cpp<cpp11::decay_t<sexp>>(rho_)));
   END_CPP11
 }
 // simulation.cpp

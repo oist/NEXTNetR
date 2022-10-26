@@ -2,7 +2,7 @@
 
 The latest version of *episimR* can be installed directly from Github by executing the following in R:
 
-    instal.packages(c("devtools", "git2r"))
+    install.packages(c("devtools", "git2r"))
     devtools::install_git("git@github.com:fgp/episimR.git")
 
 # Synopsis

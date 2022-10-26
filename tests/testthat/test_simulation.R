@@ -21,10 +21,12 @@ test_that("next_reaction", {
 
     # Rudimentary check result
     expect_equal(nrow(r), N);
-    expect_equal(ncol(r), 3);
+    expect_equal(ncol(r), 6);
+    expect_equal(r$infected, r$total_infected - r$total_reset)
 
     # Further runs should exit immediately since all nodes are infected
     r2 <- simulation_step(s, 1);
     expect_equal(nrow(r2), 0);
-    expect_equal(ncol(r2), 3);        
+    expect_equal(ncol(r2), 6);        
+    expect_equal(r$infected, r$total_infected - r$total_reset)
 })

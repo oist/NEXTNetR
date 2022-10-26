@@ -107,7 +107,14 @@ data_frame episimR_simulation_step(const simulation_R& sim_, int steps) {
     kinds.reserve(steps);
     writable::integers nodes;
     nodes.reserve(steps);
-
+    writable::doubles total_infected;
+    total_infected.reserve(steps);
+    writable::doubles total_reset;
+    total_reset.reserve(steps);
+    writable::doubles infected;
+    infected.reserve(steps);
+    
+    double total_infected_ = 0.0, total_reset_ = 0.0, infected_ = 0.0;
     for(int i = 0; i < steps; ++i) {
         const std::optional<event_t> ev_opt = sim.step(rng_engine());
         if (!ev_opt) break;
@@ -115,16 +122,32 @@ data_frame episimR_simulation_step(const simulation_R& sim_, int steps) {
         
         times.push_back(ev.time);
         switch (ev.kind) {
-            case event_kind::infection: kinds.push_back("infection"); break;
-            case event_kind::reset: kinds.push_back("reset"); break;
-            default: kinds.push_back(NA_STRING); break;
+            case event_kind::infection:
+              ++total_infected_;
+              ++infected_;
+              kinds.push_back("infection");
+              break;
+            case event_kind::reset:
+              ++total_reset_;
+              --infected_;
+              kinds.push_back("reset");
+              break;
+            default:
+              kinds.push_back(NA_STRING);
+              break;
         }
         nodes.push_back(ev.node + 1);
+        total_infected.push_back(total_infected_);
+        total_reset.push_back(total_reset_);
+        infected.push_back(infected_);
     }
     
     return writable::data_frame({
         "time"_nm = times,
         "kind"_nm = kinds,
-        "node"_nm = nodes
+        "node"_nm = nodes,
+        "total_infected"_nm = total_infected,
+        "total_reset"_nm = total_reset,
+        "infected"_nm = infected
     });
 }

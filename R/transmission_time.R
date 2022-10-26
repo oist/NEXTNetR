@@ -43,21 +43,21 @@ exponential_time <- function(lambda) {
 }
 
 #' @export
-lognormal_time <- function(mean, var, pinf) {
-  episimR_gamma_time(as.double(mean), as.double(var), as.double(pinf))
+lognormal_time <- function(mean, var, p_infinity = 0.0) {
+  episimR_gamma_time(as.double(mean), as.double(var), as.double(p_infinity))
 }
 
 #' @export
-gamma_time <- function(mean, var, pinf) {
-  episimR_gamma_time(as.double(mean), as.double(var), as.double(pinf))
+gamma_time <- function(mean, var, p_infinity) {
+  episimR_gamma_time(as.double(mean), as.double(var), as.double(p_infinity))
 }
 
 #' @export
 generic_time <- function(density, survivalprobability, probability_is_trinary,
                          survivalquantile, quantile_is_trinary,
-                         sample, pinfinity)
+                         sample, p_infinity)
 {
   episimR_generic_time(density, survivalprobability, as.logical(probability_is_trinary),
                        survivalquantile, as.logical(quantile_is_trinary),
-                       sample, as.double(pinfinity))
+                       sample, as.double(p_infinity))
 }

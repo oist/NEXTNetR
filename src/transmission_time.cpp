@@ -56,29 +56,49 @@ doubles episimR_time_hazardrate(const transmission_time_R& ttr, doubles taus) {
 }
 
 [[cpp11::register]]
-doubles episimR_time_survivalprobability(const transmission_time_R& ttr, doubles taus) {
-    if (!ttr) throw std::runtime_error("time distribution cannot be NULL"); 
+doubles episimR_time_survivalprobability(const transmission_time_R& ttr, doubles taus, doubles ts, integers ms) {
+    if (!ttr)
+      throw std::runtime_error("time distribution cannot be NULL"); 
+    if ((taus.size() != ts.size()) || (taus.size() != ms.size()))
+      throw std::runtime_error("taus, ts and ms vectors must have the same length");
 
     transmission_time& tt = *(ttr.get());
     const std::size_t n = taus.size();
     writable::doubles r;
     r.reserve(n);
-    for(std::size_t i=0; i < n; ++i)
-        r.push_back(tt.survivalprobability(taus[i]));
+    for(std::size_t i=0; i < n; ++i) {
+      const double tau = taus[i];
+      const double t = ts[i];
+      const int m = ms[i];
+      if ((t == 0.0) && (m == 1))
+        r.push_back(tt.survivalprobability(tau));
+      else
+        r.push_back(tt.survivalprobability(tau, t, m));
+    }
     return r;
 }
 
 [[cpp11::register]]
-doubles episimR_time_survivalquantile(const transmission_time_R& ttr, doubles ps) {
-    if (!ttr) throw std::runtime_error("time distribution cannot be NULL"); 
-
-    transmission_time& tt = *(ttr.get());
-    const std::size_t n = ps.size();
-    writable::doubles r;
-    r.reserve(n);
-    for(std::size_t i=0; i < n; ++i)
-        r.push_back(tt.survivalquantile(ps[i]));
-    return r;
+doubles episimR_time_survivalquantile(const transmission_time_R& ttr, doubles ps, doubles ts, integers ms) {
+  if (!ttr)
+    throw std::runtime_error("time distribution cannot be NULL"); 
+  if ((ps.size() != ts.size()) || (ps.size() != ms.size()))
+    throw std::runtime_error("taus, ts and ms vectors must have the same length");
+  
+  transmission_time& tt = *(ttr.get());
+  const std::size_t n = ps.size();
+  writable::doubles r;
+  r.reserve(n);
+  for(std::size_t i=0; i < n; ++i) {
+    const double p = ps[i];
+    const double t = ts[i];
+    const int m = ms[i];
+    if ((t == 0.0) && (m == 1))
+      r.push_back(tt.survivalquantile(p));
+    else
+      r.push_back(tt.survivalquantile(p, t, m));
+  }
+  return r;
 }
 
 [[cpp11::register]]

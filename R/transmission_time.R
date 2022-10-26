@@ -14,13 +14,27 @@ time_hazardrate <- function(ttr, taus) {
 }
 
 #' @export
-time_survivalprobability <- function(ttr, taus) {
-  episimR_time_survivalprobability(ttr, as.double(taus))
+time_survivalprobability <- function(ttr, tau, t = 0, m = 1) {
+  tau <- as.double(tau)
+  t <- as.double(t)
+  m <- as.integer(m)
+  if (length(t) == 1)
+    t <- rep(t, length(tau))
+  if (length(m) == 1)
+    m <- rep(m, length(tau))
+  episimR_time_survivalprobability(ttr, tau, t, m)
 }
 
 #' @export
-time_survivalquantile <- function(ttr, ps) {
-  episimR_time_survivalquantile(ttr, as.double(ps))
+time_survivalquantile <- function(ttr, p, t = 0, m = 1) {
+  p <- as.double(p)
+  t <- as.double(t)
+  m <- as.integer(m)
+  if (length(t) == 1)
+    t <- rep(t, length(p))
+  if (length(m) == 1)
+    m <- rep(m, length(p))
+  episimR_time_survivalquantile(ttr, p, m, t)
 }
 
 #' @export

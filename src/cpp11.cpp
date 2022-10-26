@@ -140,17 +140,17 @@ extern "C" SEXP _episimR_episimR_time_hazardrate(SEXP ttr, SEXP taus) {
   END_CPP11
 }
 // transmission_time.cpp
-doubles episimR_time_survivalprobability(const transmission_time_R& ttr, doubles taus);
-extern "C" SEXP _episimR_episimR_time_survivalprobability(SEXP ttr, SEXP taus) {
+doubles episimR_time_survivalprobability(const transmission_time_R& ttr, doubles taus, doubles ts, integers ms);
+extern "C" SEXP _episimR_episimR_time_survivalprobability(SEXP ttr, SEXP taus, SEXP ts, SEXP ms) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_time_survivalprobability(cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<doubles>>(taus)));
+    return cpp11::as_sexp(episimR_time_survivalprobability(cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<doubles>>(taus), cpp11::as_cpp<cpp11::decay_t<doubles>>(ts), cpp11::as_cpp<cpp11::decay_t<integers>>(ms)));
   END_CPP11
 }
 // transmission_time.cpp
-doubles episimR_time_survivalquantile(const transmission_time_R& ttr, doubles ps);
-extern "C" SEXP _episimR_episimR_time_survivalquantile(SEXP ttr, SEXP ps) {
+doubles episimR_time_survivalquantile(const transmission_time_R& ttr, doubles ps, doubles ts, integers ms);
+extern "C" SEXP _episimR_episimR_time_survivalquantile(SEXP ttr, SEXP ps, SEXP ts, SEXP ms) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_time_survivalquantile(cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<doubles>>(ps)));
+    return cpp11::as_sexp(episimR_time_survivalquantile(cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<doubles>>(ps), cpp11::as_cpp<cpp11::decay_t<doubles>>(ts), cpp11::as_cpp<cpp11::decay_t<integers>>(ms)));
   END_CPP11
 }
 // transmission_time.cpp
@@ -207,8 +207,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_time_density",                (DL_FUNC) &_episimR_episimR_time_density,                2},
     {"_episimR_episimR_time_hazardrate",             (DL_FUNC) &_episimR_episimR_time_hazardrate,             2},
     {"_episimR_episimR_time_sample",                 (DL_FUNC) &_episimR_episimR_time_sample,                 4},
-    {"_episimR_episimR_time_survivalprobability",    (DL_FUNC) &_episimR_episimR_time_survivalprobability,    2},
-    {"_episimR_episimR_time_survivalquantile",       (DL_FUNC) &_episimR_episimR_time_survivalquantile,       2},
+    {"_episimR_episimR_time_survivalprobability",    (DL_FUNC) &_episimR_episimR_time_survivalprobability,    4},
+    {"_episimR_episimR_time_survivalquantile",       (DL_FUNC) &_episimR_episimR_time_survivalquantile,       4},
     {NULL, NULL, 0}
 };
 }

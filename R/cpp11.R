@@ -76,12 +76,12 @@ episimR_time_hazardrate <- function(ttr, taus) {
   .Call(`_episimR_episimR_time_hazardrate`, ttr, taus)
 }
 
-episimR_time_survivalprobability <- function(ttr, taus) {
-  .Call(`_episimR_episimR_time_survivalprobability`, ttr, taus)
+episimR_time_survivalprobability <- function(ttr, taus, ts, ms) {
+  .Call(`_episimR_episimR_time_survivalprobability`, ttr, taus, ts, ms)
 }
 
-episimR_time_survivalquantile <- function(ttr, ps) {
-  .Call(`_episimR_episimR_time_survivalquantile`, ttr, ps)
+episimR_time_survivalquantile <- function(ttr, ps, ts, ms) {
+  .Call(`_episimR_episimR_time_survivalquantile`, ttr, ps, ts, ms)
 }
 
 episimR_exponential_time <- function(lambda) {

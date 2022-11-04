@@ -25,9 +25,9 @@ integers episimR_graph_outdegree(const graph_R& nw, integers nodes) {
     const std::size_t l = nodes.size();
     writable::integers r;
     r.reserve(l);
-    for(int j = 0; j < l; ++j) {
+    for(std::size_t j = 0; j < l; ++j) {
         const int n = nodes[j];
-        r.push_back(((n >= 1) && (n <= l)) ? nw->outdegree(n - 1) : NA_INTEGER);
+        r.push_back(((n >= 1) && (n <= (node_t)l)) ? nw->outdegree(n - 1) : NA_INTEGER);
     }
     return r;
 }
@@ -48,9 +48,9 @@ integers episimR_graph_neighbour(const graph_R& nw, integers nodes, integers ind
     r.reserve(l);
     
     /* Fill */
-    for(int j = 0; j < l; ++j) {
+    for(std::size_t j = 0; j < l; ++j) {
         const node_t n = nodes[j];
-        if ((n < 1) || (n > l)) {
+        if ((n < 1) || (n > (node_t)l)) {
             r.push_back(NA_INTEGER);
             continue;
         }

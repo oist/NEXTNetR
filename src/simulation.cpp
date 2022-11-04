@@ -64,7 +64,7 @@ bool episimR_simulation_isinfected(const simulation_R& sim, integers nodes) {
     r.reserve(l);
     
     /* Fill */
-    for(int j = 0; j < l; ++j)
+    for(std::size_t j = 0; j < l; ++j)
         r.push_back(sim->is_infected(nodes[j] + 1));
     
     return r;
@@ -80,7 +80,7 @@ void episimR_simulation_addinfections(const simulation_R& sim, integers nodes, d
     /* Convert to vector of pairs */
     const std::size_t l = nodes.size();
     std::vector<std::pair<node_t, absolutetime_t>> v;
-    for(int j = 0; j < l; ++j) {
+    for(std::size_t j = 0; j < l; ++j) {
         const node_t n = nodes[j];
         if ((n < 1) || (n == NA_INTEGER))
             throw std::runtime_error("invalid node");

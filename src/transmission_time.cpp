@@ -121,7 +121,7 @@ struct rfunction_transmission_time : public transmission_time {
         :transmission_time(pinf)
     {}
 
-    virtual interval_t sample(rng_t& e, interval_t t, int m) {
+    virtual interval_t sample(rng_t& e, interval_t t, int m) const {
         if (sample_rf) {
             // Since the sample() R code will likely use the RNG relinquish before calling
             R_rng_relinquish rngrel;
@@ -133,25 +133,25 @@ struct rfunction_transmission_time : public transmission_time {
         }
     }
     
-    virtual double density(interval_t tau) {
+    virtual double density(interval_t tau) const {
         return as_cpp<double>(density_rf(tau));
     }
     
-    virtual double survivalprobability(interval_t tau) {
+    virtual double survivalprobability(interval_t tau) const {
         if (survivalprobability_is_trinary)
             return as_cpp<double>(survivalprobability_rf(tau, 0, 1));
         else
             return as_cpp<double>(survivalprobability_rf(tau));
     }
     
-    virtual double survivalprobability(interval_t tau, interval_t t, int m) {
+    virtual double survivalprobability(interval_t tau, interval_t t, int m) const {
         if (survivalprobability_is_trinary)
             return as_cpp<double>(survivalprobability_rf(tau, t, m));
         else
             return transmission_time::survivalprobability(tau, t, m);
     }
     
-    virtual double survivalquantile(double u) {
+    virtual double survivalquantile(double u) const {
         if (survivalquantile_rf && survivalquantile_is_trinary)
             return as_cpp<double>((*survivalquantile_rf)(u, 0, 1));
         else if (survivalquantile_rf && !survivalquantile_is_trinary)
@@ -160,7 +160,7 @@ struct rfunction_transmission_time : public transmission_time {
             return transmission_time::survivalquantile(u);
     }
     
-    virtual double survivalquantile(double u, interval_t t, int m) {
+    virtual double survivalquantile(double u, interval_t t, int m) const {
         if (survivalquantile_rf && survivalquantile_is_trinary)
             return as_cpp<double>((*survivalquantile_rf)(u, t, m));
         else

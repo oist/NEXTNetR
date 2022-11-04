@@ -36,8 +36,8 @@ episimR_stored_graph <- function(filename) {
   .Call(`_episimR_episimR_stored_graph`, filename)
 }
 
-episimR_nextreaction_simulation <- function(nw, psi, rho_) {
-  .Call(`_episimR_episimR_nextreaction_simulation`, nw, psi, rho_)
+episimR_nextreaction_simulation <- function(nw, psi, rho_, opts) {
+  .Call(`_episimR_episimR_nextreaction_simulation`, nw, psi, rho_, opts)
 }
 
 episimR_simulation_transmissiontime <- function(sim) {
@@ -50,6 +50,10 @@ episimR_simulation_resettime <- function(sim) {
 
 episimR_simulation_graph <- function(sim) {
   .Call(`_episimR_episimR_simulation_graph`, sim)
+}
+
+episimR_simulation_options <- function(sim) {
+  .Call(`_episimR_episimR_simulation_options`, sim)
 }
 
 episimR_simulation_isinfected <- function(sim, nodes) {

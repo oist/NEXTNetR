@@ -1,6 +1,6 @@
 #' @export
-nextreaction_simulation <- function(nw, psi, rho = NULL) {
-  episimR_nextreaction_simulation(nw, psi, rho)
+nextreaction_simulation <- function(nw, psi, rho = NULL, options = list()) {
+  episimR_nextreaction_simulation(nw, psi, rho, options)
 }
 
 #' @export
@@ -16,6 +16,11 @@ simulation_resettime <- function(sim) {
 #' @export
 simulation_graph <- function(sim) {
   episimR_simulation_graph(sim)
+}
+
+#' @export
+simulation_options <- function(sim) {
+  episimR_simulation_options(sim)
 }
 
 #' @export

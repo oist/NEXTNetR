@@ -69,10 +69,10 @@ extern "C" SEXP _episimR_episimR_stored_graph(SEXP filename) {
   END_CPP11
 }
 // simulation.cpp
-simulation_R episimR_nextreaction_simulation(graph_R nw, transmission_time_R psi, sexp rho_);
-extern "C" SEXP _episimR_episimR_nextreaction_simulation(SEXP nw, SEXP psi, SEXP rho_) {
+simulation_R episimR_nextreaction_simulation(graph_R nw, transmission_time_R psi, sexp rho_, list opts);
+extern "C" SEXP _episimR_episimR_nextreaction_simulation(SEXP nw, SEXP psi, SEXP rho_, SEXP opts) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_nextreaction_simulation(cpp11::as_cpp<cpp11::decay_t<graph_R>>(nw), cpp11::as_cpp<cpp11::decay_t<transmission_time_R>>(psi), cpp11::as_cpp<cpp11::decay_t<sexp>>(rho_)));
+    return cpp11::as_sexp(episimR_nextreaction_simulation(cpp11::as_cpp<cpp11::decay_t<graph_R>>(nw), cpp11::as_cpp<cpp11::decay_t<transmission_time_R>>(psi), cpp11::as_cpp<cpp11::decay_t<sexp>>(rho_), cpp11::as_cpp<cpp11::decay_t<list>>(opts)));
   END_CPP11
 }
 // simulation.cpp
@@ -94,6 +94,13 @@ graph_R episimR_simulation_graph(const simulation_R& sim);
 extern "C" SEXP _episimR_episimR_simulation_graph(SEXP sim) {
   BEGIN_CPP11
     return cpp11::as_sexp(episimR_simulation_graph(cpp11::as_cpp<cpp11::decay_t<const simulation_R&>>(sim)));
+  END_CPP11
+}
+// simulation.cpp
+list episimR_simulation_options(const simulation_R& sim);
+extern "C" SEXP _episimR_episimR_simulation_options(SEXP sim) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_simulation_options(cpp11::as_cpp<cpp11::decay_t<const simulation_R&>>(sim)));
   END_CPP11
 }
 // simulation.cpp
@@ -195,11 +202,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_graph_neighbour",             (DL_FUNC) &_episimR_episimR_graph_neighbour,             3},
     {"_episimR_episimR_graph_outdegree",             (DL_FUNC) &_episimR_episimR_graph_outdegree,             2},
     {"_episimR_episimR_lognormal_time",              (DL_FUNC) &_episimR_episimR_lognormal_time,              3},
-    {"_episimR_episimR_nextreaction_simulation",     (DL_FUNC) &_episimR_episimR_nextreaction_simulation,     3},
+    {"_episimR_episimR_nextreaction_simulation",     (DL_FUNC) &_episimR_episimR_nextreaction_simulation,     4},
     {"_episimR_episimR_scalefree_graph",             (DL_FUNC) &_episimR_episimR_scalefree_graph,             1},
     {"_episimR_episimR_simulation_addinfections",    (DL_FUNC) &_episimR_episimR_simulation_addinfections,    3},
     {"_episimR_episimR_simulation_graph",            (DL_FUNC) &_episimR_episimR_simulation_graph,            1},
     {"_episimR_episimR_simulation_isinfected",       (DL_FUNC) &_episimR_episimR_simulation_isinfected,       2},
+    {"_episimR_episimR_simulation_options",          (DL_FUNC) &_episimR_episimR_simulation_options,          1},
     {"_episimR_episimR_simulation_resettime",        (DL_FUNC) &_episimR_episimR_simulation_resettime,        1},
     {"_episimR_episimR_simulation_step",             (DL_FUNC) &_episimR_episimR_simulation_step,             2},
     {"_episimR_episimR_simulation_transmissiontime", (DL_FUNC) &_episimR_episimR_simulation_transmissiontime, 1},

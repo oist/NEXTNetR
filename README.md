@@ -90,7 +90,11 @@ The density, hazardrate, cumulative survival function (i.e. 1 - CDF) and surviva
 
 Given a contact network *graph*, transmission time distribution *psi* and reset time distribution *rho*, a simulation using a specific algorithm is created with
 
-    nextreaction_simulation(graph, psi, rho = NULL)
+    nextreaction_simulation(graph, psi, rho = NULL, options = list())
+
+The *options* parameter must be a named list specified the option names and their values. Currently, the only supported option is *shuffle_neighbours*, which can
+be set to either *TRUE* in which case the order of a node's neighbours is shuffled upon infection of the node, or *FALSE* in which case contacts are infected
+in the order in which they are reported by the specified network.
 
 Before running a simulation, an initial set of infected nodes plus the times at which these become infected must be specified.
 
@@ -109,4 +113,5 @@ The constituent parts of a simulation (contact network graph and time distributi
     simulation_transmissiontime(sim)
     simulation_resettime(sim)
     simulation_graph(sim)
+    simulation_options(sim)
     simulation_isinfected(sim, nodes)

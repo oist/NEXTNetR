@@ -7,29 +7,38 @@
 
 #include "episimR_types.h"
 #include "rng.h"
+#include "options.h"
 
 #include "epidemics/types.h"
 #include "epidemics/algorithm.h"
 #include "epidemics/NextReaction.h"
 
+using namespace std::literals;
 using namespace episimR;
-
 using namespace cpp11;
 namespace writable = cpp11::writable;
 
 [[cpp11::register]]
 simulation_R episimR_nextreaction_simulation(
-    graph_R nw, transmission_time_R psi, sexp rho_
+    graph_R nw, transmission_time_R psi, sexp rho_, list opts
 ) {
     if (!nw) throw std::runtime_error("graph cannot be NULL"); 
     if (!psi) throw std::runtime_error("transmission time distribution cannot be NULL");
 
+    // Reset time rho is optional, translate R_NilValue to nullptr
     transmission_time* rho = nullptr;
     if (rho_ != R_NilValue)
         rho = transmission_time_R(rho_).get();
 
-    return { new simulate_next_reaction(*nw.get(), *psi.get(), rho),
-             writable::list({"nw"_nm = nw, "psi"_nm = psi, "rho"_nm = rho_ }),
+    // Decoded options
+    bool shuffle_neighbours = true;
+    const list opts_out = process_options(opts,
+        option("shuffle_neighbours", shuffle_neighbours));
+
+    return { new simulate_next_reaction(*nw.get(), *psi.get(), rho,
+                                        shuffle_neighbours),
+             writable::list({"nw"_nm = nw, "psi"_nm = psi, "rho"_nm = rho_,
+                             "opts"_nm = opts_out }),
              true, true };
 }
 
@@ -52,6 +61,13 @@ graph_R episimR_simulation_graph(const simulation_R& sim) {
     if (!sim) throw std::runtime_error("simulation cannot be NULL");
     
     return ((list)sim.protected_data())["nw"];
+}
+
+[[cpp11::register]]
+list episimR_simulation_options(const simulation_R& sim) {
+    if (!sim) throw std::runtime_error("simulation cannot be NULL");
+    
+    return ((list)sim.protected_data())["opts"];
 }
 
 [[cpp11::register]]

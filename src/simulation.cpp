@@ -102,8 +102,8 @@ logicals episimR_simulation_isinfected(const simulation_R& sim, integers nodes) 
     
     /* Fill */
     for(std::size_t j = 0; j < l; ++j)
-        r.push_back(sim->is_infected(nodes[j] + 1));
-    
+        r.push_back(sim->is_infected(nodes[j] - 1));
+
     return r;
 }
 

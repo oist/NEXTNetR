@@ -104,7 +104,14 @@ extern "C" SEXP _episimR_episimR_simulation_options(SEXP sim) {
   END_CPP11
 }
 // simulation.cpp
-bool episimR_simulation_isinfected(const simulation_R& sim, integers nodes);
+list episimR_simulation_ninfected(const simulation_R& sim);
+extern "C" SEXP _episimR_episimR_simulation_ninfected(SEXP sim) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_simulation_ninfected(cpp11::as_cpp<cpp11::decay_t<const simulation_R&>>(sim)));
+  END_CPP11
+}
+// simulation.cpp
+logicals episimR_simulation_isinfected(const simulation_R& sim, integers nodes);
 extern "C" SEXP _episimR_episimR_simulation_isinfected(SEXP sim, SEXP nodes) {
   BEGIN_CPP11
     return cpp11::as_sexp(episimR_simulation_isinfected(cpp11::as_cpp<cpp11::decay_t<const simulation_R&>>(sim), cpp11::as_cpp<cpp11::decay_t<integers>>(nodes)));
@@ -207,6 +214,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_simulation_addinfections",    (DL_FUNC) &_episimR_episimR_simulation_addinfections,    3},
     {"_episimR_episimR_simulation_graph",            (DL_FUNC) &_episimR_episimR_simulation_graph,            1},
     {"_episimR_episimR_simulation_isinfected",       (DL_FUNC) &_episimR_episimR_simulation_isinfected,       2},
+    {"_episimR_episimR_simulation_ninfected",        (DL_FUNC) &_episimR_episimR_simulation_ninfected,        1},
     {"_episimR_episimR_simulation_options",          (DL_FUNC) &_episimR_episimR_simulation_options,          1},
     {"_episimR_episimR_simulation_resettime",        (DL_FUNC) &_episimR_episimR_simulation_resettime,        1},
     {"_episimR_episimR_simulation_step",             (DL_FUNC) &_episimR_episimR_simulation_step,             2},

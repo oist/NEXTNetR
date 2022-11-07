@@ -29,6 +29,11 @@ simulation_isinfected <- function(sim, nodes) {
 }
 
 #' @export
+simulation_ninfected <- function(sim) {
+  episimR_simulation_ninfected(sim)
+}
+
+#' @export
 simulation_addinfections <- function(sim, nodes, times) {
   episimR_simulation_addinfections(sim, as.integer(nodes), as.double(times))
 }

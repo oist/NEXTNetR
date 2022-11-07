@@ -80,7 +80,19 @@ list episimR_simulation_options(const simulation_R& sim) {
 }
 
 [[cpp11::register]]
-bool episimR_simulation_isinfected(const simulation_R& sim, integers nodes) {
+list episimR_simulation_ninfected(const simulation_R& sim) {
+  if (!sim) throw std::runtime_error("simulation cannot be NULL");
+  
+  const list sim_data = sim.protected_data();
+  return writable::list({
+      "total_infected"_nm = sim_data["tinf"],
+      "total_reset"_nm = sim_data["trst"],
+      "infected"_nm = sim_data["cinf"]
+  });
+}
+
+[[cpp11::register]]
+logicals episimR_simulation_isinfected(const simulation_R& sim, integers nodes) {
     if (!sim) throw std::runtime_error("simulation cannot be NULL");
     
     /* Create output */

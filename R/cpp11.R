@@ -56,6 +56,10 @@ episimR_simulation_options <- function(sim) {
   .Call(`_episimR_episimR_simulation_options`, sim)
 }
 
+episimR_simulation_ninfected <- function(sim) {
+  .Call(`_episimR_episimR_simulation_ninfected`, sim)
+}
+
 episimR_simulation_isinfected <- function(sim, nodes) {
   .Call(`_episimR_episimR_simulation_isinfected`, sim, nodes)
 }

@@ -42,3 +42,8 @@ scalefree_graph <- function(size) {
 stored_graph <- function(filename) {
   episimR_stored_graph(as.character(filename))
 }
+
+#' @export
+userdefined_graph <- function(adjacencylist) {
+  episimR_userdefined_graph(lapply(adjacencylist, as.integer))
+}

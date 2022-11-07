@@ -68,6 +68,13 @@ extern "C" SEXP _episimR_episimR_stored_graph(SEXP filename) {
     return cpp11::as_sexp(episimR_stored_graph(cpp11::as_cpp<cpp11::decay_t<r_string>>(filename)));
   END_CPP11
 }
+// graph.cpp
+graph_R episimR_userdefined_graph(list input_al);
+extern "C" SEXP _episimR_episimR_userdefined_graph(SEXP input_al) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_userdefined_graph(cpp11::as_cpp<cpp11::decay_t<list>>(input_al)));
+  END_CPP11
+}
 // simulation.cpp
 simulation_R episimR_nextreaction_simulation(graph_R nw, transmission_time_R psi, sexp rho_, list opts);
 extern "C" SEXP _episimR_episimR_nextreaction_simulation(SEXP nw, SEXP psi, SEXP rho_, SEXP opts) {
@@ -225,6 +232,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_time_sample",                 (DL_FUNC) &_episimR_episimR_time_sample,                 4},
     {"_episimR_episimR_time_survivalprobability",    (DL_FUNC) &_episimR_episimR_time_survivalprobability,    4},
     {"_episimR_episimR_time_survivalquantile",       (DL_FUNC) &_episimR_episimR_time_survivalquantile,       4},
+    {"_episimR_episimR_userdefined_graph",           (DL_FUNC) &_episimR_episimR_userdefined_graph,           1},
     {NULL, NULL, 0}
 };
 }

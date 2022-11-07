@@ -57,6 +57,9 @@ To create networks, the following functions are available
     configmodel_graph(degrees)
     scalefree_graph(size)
     stored_graph(filename)
+    userdefined_graph(adjacencylist)
+    
+For user-defined graphs, the topology is defined by the adjacency list, which must be a *list* whose length defines the number of nodes. The *i*-th element of the list must be an *integer vector* with elements from [*1*,*n*] listing the neighbours of the *i*-th node. For example, `list(c(2,3), c(1,3), c(1,2))` represents the complete graph with 3 nodes.
 
 The topology of an existing contact network graph *g* returned by one of the functions above can be inspected with
 

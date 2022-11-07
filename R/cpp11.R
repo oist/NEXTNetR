@@ -36,6 +36,10 @@ episimR_stored_graph <- function(filename) {
   .Call(`_episimR_episimR_stored_graph`, filename)
 }
 
+episimR_userdefined_graph <- function(input_al) {
+  .Call(`_episimR_episimR_userdefined_graph`, input_al)
+}
+
 episimR_nextreaction_simulation <- function(nw, psi, rho_, opts) {
   .Call(`_episimR_episimR_nextreaction_simulation`, nw, psi, rho_, opts)
 }

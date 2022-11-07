@@ -1,4 +1,5 @@
-#include <optional>
+#include <utility>
+#include <limits>
 
 #include <cpp11.hpp>
 #include <cpp11/function.hpp>
@@ -132,4 +133,43 @@ graph_R episimR_scalefree_graph(int size) {
 [[cpp11::register]]
 graph_R episimR_stored_graph(r_string filename) {
     return new imported_network((std::string)filename);
+}
+
+namespace {
+
+class graph_userdefined : public graph_adjacencylist {
+public:
+    graph_userdefined(std::vector<std::vector<node_t>>&& al) {
+        adjacencylist = std::move(al);
+    }
+};
+  
+}
+
+[[cpp11::register]]
+graph_R episimR_userdefined_graph(list input_al) {
+    const std::size_t n = input_al.size();
+    if (n > std::numeric_limits<node_t>::max())
+      throw std::runtime_error("too many nodes");
+    
+    std::vector<std::vector<node_t>> adjacencylist;
+    adjacencylist.reserve(n);
+    for(node_t u = 0; u < (node_t)n; ++u) {
+        /* Append adjacency list for node u */
+        adjacencylist.emplace_back();
+        std::vector<node_t> &u_adj = adjacencylist.back();
+        
+        /* Fill adjacencylist for node u */
+        const integers input_u_adj = input_al[u];
+        const std::size_t k = input_u_adj.size();
+        u_adj.reserve(k);
+        for(std::size_t i = 0; i < k; ++i) {
+            const node_t v = ((integers)input_u_adj)[i];
+            if ((v < 1) || (v > (node_t)n))
+                throw std::runtime_error("nodes must be labelled consecutively from 1 to n");
+            u_adj.push_back(v - 1);
+        }
+    }
+    
+    return new graph_userdefined(std::move(adjacencylist));
 }

@@ -1,5 +1,11 @@
+#include "compiler.h"
+
 #include <memory>
 #include <optional>
+
+WARNINGS_DISABLE
+#include <boost/scope_exit.hpp>
+WARNINGS_ENABLE
 
 #include <cpp11.hpp>
 #include <cpp11/function.hpp>
@@ -38,7 +44,10 @@ simulation_R episimR_nextreaction_simulation(
     return { new simulate_next_reaction(*nw.get(), *psi.get(), rho,
                                         shuffle_neighbours),
              writable::list({"nw"_nm = nw, "psi"_nm = psi, "rho"_nm = rho_,
-                             "opts"_nm = opts_out }),
+                             "opts"_nm = opts_out,
+                             "cinf"_nm = writable::doubles { 0 },
+                             "tinf"_nm = writable::doubles { 0 },
+                             "trst"_nm = writable::doubles { 0 }}),
              true, true };
 }
 
@@ -117,20 +126,44 @@ data_frame episimR_simulation_step(const simulation_R& sim_, int steps) {
     simulation_algorithm& sim = *sim_.get();
 
     RNG_SCOPE_IF_NECESSARY;
+    
+    /* Get current infection & reset counters, arrange for them to be updated at the end */
+    writable::list sim_data(std::move(sim_.protected_data())); // move means modify in place
+    double infected_ = ((doubles)sim_data["cinf"])[0];
+    double total_infected_ = ((doubles)sim_data["tinf"])[0];
+    double total_reset_ = ((doubles)sim_data["trst"])[0];
+    BOOST_SCOPE_EXIT(&sim_data, &infected_, &total_infected_, &total_reset_) {
+        sim_data["cinf"] = writable::doubles { infected_ };
+        sim_data["tinf"] = writable::doubles { total_infected_ };
+        sim_data["trst"] = writable::doubles { total_reset_ };
+    } BOOST_SCOPE_EXIT_END
+      
+    /* Prepare output columns */
     writable::doubles times;
     times.reserve(steps);
-    writable::strings kinds;
+
+    writable::integers kinds;
     kinds.reserve(steps);
+    // Make it a factor vector, not plain integers
+    writable::strings kinds_levels;
+    for(int i=0; name((event_kind)i) != NULL; ++i)
+      kinds_levels.push_back(name((event_kind)i));
+    kinds.attr("class") = writable::strings { "factor" };
+    kinds.attr("levels") = kinds_levels;
+
     writable::integers nodes;
     nodes.reserve(steps);
+
     writable::doubles total_infected;
     total_infected.reserve(steps);
+
     writable::doubles total_reset;
     total_reset.reserve(steps);
+    
     writable::doubles infected;
     infected.reserve(steps);
     
-    double total_infected_ = 0.0, total_reset_ = 0.0, infected_ = 0.0;
+    /* Execute steps */
     for(int i = 0; i < steps; ++i) {
         const std::optional<event_t> ev_opt = sim.step(rng_engine());
         if (!ev_opt) break;
@@ -138,26 +171,26 @@ data_frame episimR_simulation_step(const simulation_R& sim_, int steps) {
         
         times.push_back(ev.time);
         switch (ev.kind) {
+            case event_kind::outside_infection:
             case event_kind::infection:
-              ++total_infected_;
-              ++infected_;
-              kinds.push_back("infection");
-              break;
+                ++total_infected_;
+                ++infected_;
+                break;
             case event_kind::reset:
-              ++total_reset_;
-              --infected_;
-              kinds.push_back("reset");
-              break;
+                ++total_reset_;
+                --infected_;
+                break;
             default:
-              kinds.push_back(NA_STRING);
               break;
         }
+        kinds.push_back(name(ev.kind) ? (int)(ev.kind) + 1 : NA_INTEGER);
         nodes.push_back(ev.node + 1);
         total_infected.push_back(total_infected_);
         total_reset.push_back(total_reset_);
         infected.push_back(infected_);
     }
     
+    /* Return data frame */
     return writable::data_frame({
         "time"_nm = times,
         "kind"_nm = kinds,

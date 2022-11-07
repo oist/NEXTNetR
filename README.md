@@ -106,12 +106,12 @@ The simulation can then be run for the specified number of steps with
 
 Running a simulation returns a `data.frame` which lists the event that occurred in each step in ascending order of time of occurrence. The result contains the 6 columns *time*, *kind* (infection or reset), *node* (1-based index of affected node), *total_infected* (total number of infection so far), *total_reset* (total number of reset so far), *infected* (number of currently infected nodes). *simulation_step* returns after the specified number of steps, but can be continued by simply calling *simulation_step* again.
 
-**Warning**: Currently, the *total_infected*, *total_reset* and *infected* columns **start again at zero** when a simulation is continued. This will be fixed in the future.
-
-The constituent parts of a simulation (contact network graph and time distribution) and the current state of the simulation (whether a node is infected or not) can be queried with
+The constituent parts of a simulation (contact network graph and time distribution) and the current state of the simulation
+(number of infected nodes and whether a node is infected or not) can be queried with
 
     simulation_transmissiontime(sim)
     simulation_resettime(sim)
     simulation_graph(sim)
     simulation_options(sim)
+    simulation_ninfected(sim)
     simulation_isinfected(sim, nodes)

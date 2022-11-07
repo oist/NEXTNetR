@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cpp11/external_pointer.hpp>
-
 #include "safe_external_ptr.hpp"
 
 #include "epidemics/types.h"

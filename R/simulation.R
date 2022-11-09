@@ -4,6 +4,11 @@ nextreaction_simulation <- function(nw, psi, rho = NULL, options = list()) {
 }
 
 #' @export
+nextreaction_simulation_meanfield <- function(N, R0, psi, rho = NULL, options = list()) {
+  episimR_nextreaction_simulation_meanfield(as.integer(N), as.double(R0), psi, rho, options)
+}
+
+#' @export
 simulation_transmissiontime <- function(sim) {
   episimR_simulation_transmissiontime(sim)
 }

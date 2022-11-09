@@ -10,6 +10,7 @@ SOURCES = \
 	rng.cpp \
 	epidemics/graph.cpp \
 	epidemics/NextReaction.cpp \
+	epidemics/NextReactionMeanField.cpp \
 	epidemics/nMGA.cpp \
 	epidemics/random.cpp \
 	epidemics/utility.cpp \

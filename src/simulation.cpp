@@ -19,6 +19,7 @@ WARNINGS_ENABLE
 #include "epidemics/types.h"
 #include "epidemics/algorithm.h"
 #include "epidemics/NextReaction.h"
+#include "epidemics/NextReactionMeanField.h"
 
 using namespace std::literals;
 using namespace episimR;
@@ -45,6 +46,29 @@ simulation_R episimR_nextreaction_simulation(
     return { new simulate_next_reaction(*nw.get(), *psi.get(), rho,
                                         shuffle_neighbours),
              writable::list({"nw"_nm = nw, "psi"_nm = psi, "rho"_nm = rho_,
+                             "opts"_nm = opts_out,
+                             "cinf"_nm = writable::doubles { 0 },
+                             "tinf"_nm = writable::doubles { 0 },
+                             "trst"_nm = writable::doubles { 0 }}),
+             true, true };
+}
+
+[[cpp11::register]]
+simulation_R episimR_nextreaction_simulation_meanfield(
+    int N, double R0, transmission_time_R psi, sexp rho_, list opts
+) {
+    if (!psi) throw std::runtime_error("transmission time distribution cannot be NULL");
+
+    // Reset time rho is optional, translate R_NilValue to nullptr
+    transmission_time* rho = nullptr;
+    if (rho_ != R_NilValue)
+        rho = transmission_time_R(rho_).get();
+
+    // Decoded options
+    const list opts_out = process_options(opts);
+
+    return { new simulate_next_reaction_mean_field(N, R0, *psi.get(), rho),
+             writable::list({"nw"_nm = R_NilValue, "psi"_nm = psi, "rho"_nm = rho_,
                              "opts"_nm = opts_out,
                              "cinf"_nm = writable::doubles { 0 },
                              "tinf"_nm = writable::doubles { 0 },

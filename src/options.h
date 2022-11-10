@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <optional>
+#include <unordered_map>
 
 #include <cpp11.hpp>
 #include <cpp11/function.hpp>

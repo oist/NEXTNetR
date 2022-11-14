@@ -91,13 +91,35 @@ The density, hazardrate, cumulative survival function (i.e. 1 - CDF) and surviva
 
 ## Creating, querying and running simulations
 
-Given a contact network *graph*, transmission time distribution *psi* and reset time distribution *rho*, a simulation using a specific algorithm is created with
+### Creating simulations using the NextReaction algorithm
+
+Given a contact network *graph*, transmission time distribution *psi* and reset time distribution *rho*, a simulation using the NextReaction algorithm is created with
 
     nextreaction_simulation(graph, psi, rho = NULL, options = list())
 
-The *options* parameter must be a named list specified the option names and their values. Currently, the only supported option is *shuffle_neighbours*, which can
-be set to either *TRUE* in which case the order of a node's neighbours is shuffled upon infection of the node, or *FALSE* in which case contacts are infected
-in the order in which they are reported by the specified network.
+The *options* parameter must be a named list specified the option names and their values. The supported options are:
+
+*shuffle_neighbours*
+: Shuffle neighbour order  upon infection of the node
+
+### Creating simulations using the NextReaction algorithm
+
+Given a contact network *graph*, transmission time distribution *psi* and reset time distribution *rho*, a simulation using the NextReaction algorithm is created with
+
+    nmga_simulation(graph, psi, rho = NULL, options = list())
+
+The *options* parameter must be a named list specified the option names and their values. he supported options are:
+
+*approx_threshold*
+: Threshold for infected nodes at which the approximate algorithm is used
+
+*max_dt*
+: Maximum timestep allowed for the approximate algorithm
+
+*tauprec*
+: Numerical precision used to invert the CDF in the exact algorithm
+
+### Querying and running simulations, obtaining results
 
 Before running a simulation, an initial set of infected nodes plus the times at which these become infected must be specified.
 

@@ -90,6 +90,13 @@ extern "C" SEXP _episimR_episimR_nextreaction_simulation_meanfield(SEXP N, SEXP 
   END_CPP11
 }
 // simulation.cpp
+simulation_R episimR_nmga_simulation(graph_R nw, transmission_time_R psi, sexp rho_, list opts);
+extern "C" SEXP _episimR_episimR_nmga_simulation(SEXP nw, SEXP psi, SEXP rho_, SEXP opts) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_nmga_simulation(cpp11::as_cpp<cpp11::decay_t<graph_R>>(nw), cpp11::as_cpp<cpp11::decay_t<transmission_time_R>>(psi), cpp11::as_cpp<cpp11::decay_t<sexp>>(rho_), cpp11::as_cpp<cpp11::decay_t<list>>(opts)));
+  END_CPP11
+}
+// simulation.cpp
 transmission_time_R episimR_simulation_transmissiontime(const simulation_R& sim);
 extern "C" SEXP _episimR_episimR_simulation_transmissiontime(SEXP sim) {
   BEGIN_CPP11
@@ -225,6 +232,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_lognormal_time",                    (DL_FUNC) &_episimR_episimR_lognormal_time,                    3},
     {"_episimR_episimR_nextreaction_simulation",           (DL_FUNC) &_episimR_episimR_nextreaction_simulation,           4},
     {"_episimR_episimR_nextreaction_simulation_meanfield", (DL_FUNC) &_episimR_episimR_nextreaction_simulation_meanfield, 5},
+    {"_episimR_episimR_nmga_simulation",                   (DL_FUNC) &_episimR_episimR_nmga_simulation,                   4},
     {"_episimR_episimR_scalefree_graph",                   (DL_FUNC) &_episimR_episimR_scalefree_graph,                   1},
     {"_episimR_episimR_simulation_addinfections",          (DL_FUNC) &_episimR_episimR_simulation_addinfections,          3},
     {"_episimR_episimR_simulation_graph",                  (DL_FUNC) &_episimR_episimR_simulation_graph,                  1},

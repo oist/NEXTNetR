@@ -48,6 +48,10 @@ episimR_nextreaction_simulation_meanfield <- function(N, R0, psi, rho_, opts) {
   .Call(`_episimR_episimR_nextreaction_simulation_meanfield`, N, R0, psi, rho_, opts)
 }
 
+episimR_nmga_simulation <- function(nw, psi, rho_, opts) {
+  .Call(`_episimR_episimR_nmga_simulation`, nw, psi, rho_, opts)
+}
+
 episimR_simulation_transmissiontime <- function(sim) {
   .Call(`_episimR_episimR_simulation_transmissiontime`, sim)
 }

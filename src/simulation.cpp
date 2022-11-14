@@ -20,6 +20,7 @@ WARNINGS_ENABLE
 #include "epidemics/algorithm.h"
 #include "epidemics/NextReaction.h"
 #include "epidemics/NextReactionMeanField.h"
+#include "epidemics/nMGA.h"
 
 using namespace std::literals;
 using namespace episimR;
@@ -69,6 +70,38 @@ simulation_R episimR_nextreaction_simulation_meanfield(
 
     return { new simulate_next_reaction_mean_field(N, R0, *psi.get(), rho),
              writable::list({"nw"_nm = R_NilValue, "psi"_nm = psi, "rho"_nm = rho_,
+                             "opts"_nm = opts_out,
+                             "cinf"_nm = writable::doubles { 0 },
+                             "tinf"_nm = writable::doubles { 0 },
+                             "trst"_nm = writable::doubles { 0 }}),
+             true, true };
+}
+
+[[cpp11::register]]
+simulation_R episimR_nmga_simulation(
+    graph_R nw, transmission_time_R psi, sexp rho_, list opts
+) {
+    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+    if (!psi) throw std::runtime_error("transmission time distribution cannot be NULL");
+
+    // Reset time rho is optional, translate R_NilValue to nullptr
+    transmission_time* rho = nullptr;
+    if (rho_ != R_NilValue)
+        rho = transmission_time_R(rho_).get();
+
+    // Decoded options
+    int approx_threshold = 100;
+    double max_dt = NAN;
+    double tauprec = 1e-6;
+    const list opts_out = process_options(opts,
+        option("approx_threshold", approx_threshold),
+        option("max_dt", max_dt),
+        option("tauprec", tauprec));
+        
+    return { new simulate_nmga(*nw.get(), *psi.get(), rho,
+                               false, approx_threshold,
+                               max_dt, tauprec),
+             writable::list({"nw"_nm = nw, "psi"_nm = psi, "rho"_nm = rho_,
                              "opts"_nm = opts_out,
                              "cinf"_nm = writable::doubles { 0 },
                              "tinf"_nm = writable::doubles { 0 },

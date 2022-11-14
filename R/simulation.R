@@ -1,3 +1,7 @@
+#' Create a simulator using the NextReaction algorithm
+#'
+#' Possible options are
+#'     shuffle_neighbours: Whether to shuffle the neighbours upon infecting a node
 #' @export
 nextreaction_simulation <- function(nw, psi, rho = NULL, options = list()) {
   episimR_nextreaction_simulation(nw, psi, rho, options)
@@ -6,6 +10,17 @@ nextreaction_simulation <- function(nw, psi, rho = NULL, options = list()) {
 #' @export
 nextreaction_simulation_meanfield <- function(N, R0, psi, rho = NULL, options = list()) {
   episimR_nextreaction_simulation_meanfield(as.integer(N), as.double(R0), psi, rho, options)
+}
+
+#' Create a simulator using the non-Markovian Gillespie (nMGA) algorithm
+#'
+#' Possible options are
+#'     approx_threshold: Threshold for infected nodes at which the approximate algorithm is used
+#'     max_dt: Maximum timestep allowed for the approximate algorithm
+#'     tauprec: Numerical precision used to invert the CDF in the exact algorithm
+#' @export
+nmga_simulation <- function(nw, psi, rho = NULL, options = list()) {
+  episimR_nmga_simulation(nw, psi, rho, options)
 }
 
 #' @export

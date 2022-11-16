@@ -8,5 +8,6 @@ nextreaction_simulation(nw, psi, rho = NULL, options = list())
 }
 \description{
 Possible options are
-shuffle_neighbours: Whether to shuffle the neighbours upon infecting a node
+shuffle_neighbours: Whether to shuffle the neighbours upon infecting a node. Default TRUE.
+edges_concurrent: Whether to activate all outgoing edges simultaenously or sequentially. If set to true, neighbours are implicitly shuffled and \emph{shuffle_neighbours} thus has no effect. Default FALSE.
 }

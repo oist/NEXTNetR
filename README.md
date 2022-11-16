@@ -100,7 +100,10 @@ Given a contact network *graph*, transmission time distribution *psi* and reset 
 The *options* parameter must be a named list specified the option names and their values. The supported options are:
 
 *shuffle_neighbours*
-: Shuffle neighbour order  upon infection of the node
+: Shuffle neighbour order  upon infection of the node. Default *true*.
+
+*edges_concurrent*
+: Whether to activate all outgoing edges simultaenously or sequentially. If set to true, neighbours are implicitly shuffled and *shuffle_neighbours* thus has no effect. Default *false*.
 
 ### Creating simulations using the NextReaction algorithm
 

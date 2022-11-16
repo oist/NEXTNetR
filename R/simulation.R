@@ -1,7 +1,8 @@
 #' Create a simulator using the NextReaction algorithm
 #'
 #' Possible options are
-#'     shuffle_neighbours: Whether to shuffle the neighbours upon infecting a node
+#'     shuffle_neighbours: Whether to shuffle the neighbours upon infecting a node. Default TRUE.
+#'     edges_concurrent: Whether to activate all outgoing edges simultaenously or sequentially. If set to true, neighbours are implicitly shuffled and *shuffle_neighbours* thus has no effect. Default FALSE.
 #' @export
 nextreaction_simulation <- function(nw, psi, rho = NULL, options = list()) {
   episimR_nextreaction_simulation(nw, psi, rho, options)

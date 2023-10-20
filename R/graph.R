@@ -54,6 +54,41 @@ scalefree_graph <- function(size) {
 }
 
 #' @export
+cubiclattice2d_graph <- function(length) {
+  episimR_cubiclattice2d_graph(length)
+}
+
+#' @export
+cubiclattice3d_graph <- function(length) {
+  episimR_cubiclattice3d_graph(length)
+}
+
+#' @export
+cubiclattice4d_graph <- function(length) {
+  episimR_cubiclattice4d_graph(length)
+}
+
+#' @export
+cubiclattice5d_graph <- function(length) {
+  episimR_cubiclattice5d_graph(length)
+}
+
+#' @export
+cubiclattice6d_graph <- function(length) {
+  episimR_cubiclattice6d_graph(length)
+}
+
+#' @export
+cubiclattice7d_graph <- function(length) {
+  episimR_cubiclattice7d_graph(length)
+}
+
+#' @export
+cubiclattice8d_graph <- function(length) {
+  episimR_cubiclattice8d_graph(length)
+}
+
+#' @export
 brownian_proximity_dyngraph <- function(size, avg_degree, radius, D, dt=NULL) {
   episimR_brownian_proximity_dyngraph(as.integer(size), as.double(avg_degree), as.double(radius),
                                       as.double(D), if (!is.null(dt)) dt else NULL)

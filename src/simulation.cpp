@@ -92,17 +92,14 @@ simulation_R episimR_nmga_simulation(
         rho = transmission_time_R(rho_).get();
 
     // Decoded options
-    int approx_threshold = 100;
-    double max_dt = NAN;
-    double tauprec = 1e-6;
+    simulate_nmga::params params;
     const list opts_out = process_options(opts,
-        option("approx_threshold", approx_threshold),
-        option("max_dt", max_dt),
-        option("tauprec", tauprec));
+        option("approx_threshold", params.approximation_threshold),
+        option("max_dt", params.maximal_dt),
+        option("tauprec", params.tau_precision),
+        option("SIR", params.SIR));
         
-    return { new simulate_nmga(*nw.get(), *psi.get(), rho,
-                               false, approx_threshold,
-                               max_dt, tauprec),
+    return { new simulate_nmga(*nw.get(), *psi.get(), rho, params),
              writable::list({"nw"_nm = nw, "psi"_nm = psi, "rho"_nm = rho_,
                              "opts"_nm = opts_out,
                              "cinf"_nm = writable::doubles { 0 },

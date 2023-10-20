@@ -1,6 +1,7 @@
 # These are the compiler flags and source files for the R package
 
-PKG_CXXFLAGS = --std=c++17 -DRNG=RNG_CUSTOM -DCPP11_USE_FMT=1 -DBOOST_NO_CXX17_HDR_EXECUTION
+PKG_CXXFLAGS = --std=c++17 -DRNG=RNG_CUSTOM -DCPP11_USE_FMT=1 -DBOOST_NO_CXX17_HDR_EXECUTION \
+	-I../ext/eon -I../ext/eon/ext -I../ext/eon/ext/dyndist
 
 SOURCES = \
 	cpp11.cpp \
@@ -8,11 +9,14 @@ SOURCES = \
 	graph.cpp \
 	simulation.cpp \
 	rng.cpp \
-	epidemics/graph.cpp \
-	epidemics/NextReaction.cpp \
-	epidemics/NextReactionMeanField.cpp \
-	epidemics/nMGA.cpp \
-	epidemics/random.cpp \
-	epidemics/utility.cpp \
+	../ext/eon/epidemics/graph.cpp \
+	../ext/eon/epidemics/dynamic_graph.cpp \
+	../ext/eon/epidemics/brownian_proximity_graph.cpp \
+	../ext/eon/epidemics/NextReaction.cpp \
+	../ext/eon/epidemics/NextReactionMeanField.cpp \
+	../ext/eon/epidemics/nMGA.cpp \
+	../ext/eon/epidemics/algorithm.cpp \
+	../ext/eon/epidemics/random.cpp \
+	../ext/eon/epidemics/utility.cpp \
 	
 OBJECTS = $(SOURCES:.cpp=.o)

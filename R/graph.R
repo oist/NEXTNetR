@@ -54,7 +54,7 @@ scalefree_graph <- function(size) {
 }
 
 #' @export
-episimR_brownian_proximity_dyngraph <- function(size, avg_degree, radius, D, dt=NULL) {
+brownian_proximity_dyngraph <- function(size, avg_degree, radius, D, dt=NULL) {
   episimR_brownian_proximity_dyngraph(as.integer(size), as.double(avg_degree), as.double(radius),
                                       as.double(D), if (!is.null(dt)) dt else NULL)
 }

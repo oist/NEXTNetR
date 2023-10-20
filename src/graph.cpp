@@ -116,9 +116,10 @@ doubles_matrix<> episimR_graph_coordinates(const graph_R& nw, integers nodes) {
     writable::doubles_matrix<> results(nodes.size(), d);
     std::vector<double> v(d, 0.0);
     for(std::size_t i=0, l=nodes.size(); i < l; ++i) {
-        ebd->coordinates(nodes[i], v);
-        for(std::size_t j=0; j < d; ++j)
-            results(i, j) = v[j];
+        if (ebd->coordinates(nodes[i]-1, v)) {
+            for(std::size_t j=0; j < d; ++j)
+                results(i, j) = v[j];
+        }
     } 
     return results;
 }

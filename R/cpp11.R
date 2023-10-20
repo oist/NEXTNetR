@@ -12,6 +12,10 @@ episimR_graph_adjacencylist <- function(nw) {
   .Call(`_episimR_episimR_graph_adjacencylist`, nw)
 }
 
+episimR_graph_coordinates <- function(nw, nodes) {
+  .Call(`_episimR_episimR_graph_coordinates`, nw, nodes)
+}
+
 episimR_erdos_reyni_graph <- function(size, avg_degree) {
   .Call(`_episimR_episimR_erdos_reyni_graph`, size, avg_degree)
 }
@@ -28,8 +32,52 @@ episimR_configmodel_graph <- function(degrees) {
   .Call(`_episimR_episimR_configmodel_graph`, degrees)
 }
 
+episimR_configmodel_clustered_alpha_graph <- function(degrees, alpha, beta) {
+  .Call(`_episimR_episimR_configmodel_clustered_alpha_graph`, degrees, alpha, beta)
+}
+
+episimR_configmodel_clustered_ck_graph <- function(degrees, ck, beta) {
+  .Call(`_episimR_episimR_configmodel_clustered_ck_graph`, degrees, ck, beta)
+}
+
+episimR_configmodel_clustered_triangles_graph <- function(degrees, triangles, beta) {
+  .Call(`_episimR_episimR_configmodel_clustered_triangles_graph`, degrees, triangles, beta)
+}
+
 episimR_scalefree_graph <- function(size) {
   .Call(`_episimR_episimR_scalefree_graph`, size)
+}
+
+episimR_cubiclattice2d_graph <- function(edge_length) {
+  .Call(`_episimR_episimR_cubiclattice2d_graph`, edge_length)
+}
+
+episimR_cubiclattice3d_graph <- function(edge_length) {
+  .Call(`_episimR_episimR_cubiclattice3d_graph`, edge_length)
+}
+
+episimR_cubiclattice4d_graph <- function(edge_length) {
+  .Call(`_episimR_episimR_cubiclattice4d_graph`, edge_length)
+}
+
+episimR_cubiclattice5d_graph <- function(edge_length) {
+  .Call(`_episimR_episimR_cubiclattice5d_graph`, edge_length)
+}
+
+episimR_cubiclattice6d_graph <- function(edge_length) {
+  .Call(`_episimR_episimR_cubiclattice6d_graph`, edge_length)
+}
+
+episimR_cubiclattice7d_graph <- function(edge_length) {
+  .Call(`_episimR_episimR_cubiclattice7d_graph`, edge_length)
+}
+
+episimR_cubiclattice8d_graph <- function(edge_length) {
+  .Call(`_episimR_episimR_cubiclattice8d_graph`, edge_length)
+}
+
+episimR_brownian_proximity_dyngraph <- function(size, avg_degree, radius, D, dt) {
+  .Call(`_episimR_episimR_brownian_proximity_dyngraph`, size, avg_degree, radius, D, dt)
 }
 
 episimR_stored_graph <- function(filename) {

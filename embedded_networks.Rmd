@@ -1,0 +1,35 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(data.table)
+library(episimR)
+library(ggplot2)
+```
+
+```{r}
+nw <- brownian_proximity_dyngraph(size=500, avg_degree=6, radius=1, D=0.0)
+#nw <- cubiclattice2d_graph(10)
+```
+
+```{r}
+al <- graph_adjacencylist(nw)
+points <- graph_coordinates(nw, al$nodes)
+edges <- rbindlist(lapply(al$nodes, function(n) {
+  nn <- al$neighbours[[n]]
+  data.table(n1=n, n2=nn,
+             x1=points[n, 1], y1=points[n, 2],
+             x2=points[nn, 1], y2=points[nn, 2])
+}))
+ggplot() +
+  geom_point(data=data.table(x=points[, 1], y=points[, 2]), aes(x=x, y=y)) +
+  geom_segment(data=edges, aes(x=x1, y=y1, xend=x2, yend=y2))
+```
+
+
+```{r}
+tt <- gamma_time(mean=1, var=1, p_infinity=0.0);
+```
+

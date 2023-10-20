@@ -10,6 +10,8 @@
 
 #include "epidemics/types.h"
 #include "epidemics/graph.h"
+#include "epidemics/dynamic_graph.h"
+#include "epidemics/brownian_proximity_graph.h"
 
 using namespace episimR;
 
@@ -110,11 +112,11 @@ doubles_matrix<> episimR_graph_coordinates(const graph_R& nw, integers nodes) {
     if (ebd == nullptr)
         throw std::runtime_error("graph is not embedded into R^d");
     
-    const std::size_t d = ebd.dimensionality();
+    const std::size_t d = ebd->dimensionality();
     writable::doubles_matrix<> results(nodes.size(), d);
     std::vector<double> v(d, 0.0);
     for(std::size_t i=0, l=nodes.size(); i < l; ++i) {
-        ebd.coordinates(nodes[i], v);
+        ebd->coordinates(nodes[i], v);
         for(std::size_t j=0; j < d; ++j)
             results(i, j) = v[j];
     } 
@@ -211,7 +213,7 @@ graph_R episimR_cubiclattice8d_graph(int edge_length) {
 
 [[cpp11::register]]
 graph_R episimR_brownian_proximity_dyngraph(int size, double avg_degree, double radius, double D, SEXP dt) {
-    RNG_SCOPE_IF_NECESSARY
+    RNG_SCOPE_IF_NECESSARY;
     if (dt == R_NilValue)
         return new brownian_proximity_graph(size, avg_degree, radius, D, rng_engine());
     else

@@ -41,13 +41,15 @@ simulation_R episimR_nextreaction_simulation(
 
     // Decoded options
     bool shuffle_neighbours = true;
-    bool edges_concurrent = false;
+    bool edges_concurrent = true;
+    bool SIR = false;
     const list opts_out = process_options(opts,
         option("shuffle_neighbours", shuffle_neighbours),
-        option("edges_concurrent", edges_concurrent));
+        option("edges_concurrent", edges_concurrent),
+        option("SIR", SIR));
 
     return { new simulate_next_reaction(*nw.get(), *psi.get(), rho,
-                                        shuffle_neighbours, edges_concurrent),
+                                        shuffle_neighbours, edges_concurrent, SIR),
              writable::list({"nw"_nm = nw, "psi"_nm = psi, "rho"_nm = rho_,
                              "opts"_nm = opts_out,
                              "cinf"_nm = writable::doubles { 0 },

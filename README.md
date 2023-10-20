@@ -56,6 +56,11 @@ To create networks, the following functions are available
     acyclic_graph(size, avg_degree, reduced_root_degree)
     configmodel_graph(degrees)
     scalefree_graph(size)
+    configmodel_clustered_graph(degrees, alpha_or_ck_or_triangles, beta)
+    cubiclattice2d_graph
+    ...
+    cubiclattice8d_graph
+    brownian_proximity_dyngraph(size, avg_degree, contact_radius, D, dt)
     stored_graph(filename)
     userdefined_graph(adjacencylist)
     
@@ -66,6 +71,10 @@ The topology of an existing contact network graph *g* returned by one of the fun
     graph_outdegree(graph, nodes)
     graph_neighbour(graph, nodes, indices)
     graph_adjacencylist(graph)
+
+For graph embedded into d-dimensional space, the coordinates of the nodes can be queried with
+
+    graph_coordinates(graph, nodes)
 
 ## Creating and querying time distributions
 
@@ -105,9 +114,9 @@ The *options* parameter must be a named list specified the option names and thei
 *edges_concurrent*
 : Whether to activate all outgoing edges simultaenously or sequentially. If set to true, neighbours are implicitly shuffled and *shuffle_neighbours* thus has no effect. Default *false*.
 
-### Creating simulations using the NextReaction algorithm
+### Creating simulations using the nMGA algorithm
 
-Given a contact network *graph*, transmission time distribution *psi* and reset time distribution *rho*, a simulation using the NextReaction algorithm is created with
+Given a contact network *graph*, transmission time distribution *psi* and reset time distribution *rho*, a simulation using the nMGA algorithm is created with
 
     nmga_simulation(graph, psi, rho = NULL, options = list())
 

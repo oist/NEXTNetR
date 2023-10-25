@@ -43,15 +43,26 @@ simulation_R episimR_nextreaction_simulation(
     bool shuffle_neighbours = true;
     bool edges_concurrent = true;
     bool SIR = false;
+    bool static_network = false;
     const list opts_out = process_options(opts,
         option("shuffle_neighbours", shuffle_neighbours),
         option("edges_concurrent", edges_concurrent),
-        option("SIR", SIR));
+        option("SIR", SIR),
+        option("static_network", static_network));
 
-    return { new simulate_next_reaction(*nw.get(), *psi.get(), rho,
-                                        shuffle_neighbours, edges_concurrent, SIR),
+    // Create simulation algorithm
+    simulation_algorithm* sim = new simulate_next_reaction(
+        *nw.get(), *psi.get(), rho, shuffle_neighbours, edges_concurrent, SIR);
+
+    // Create dynamic network simulator unless network is static, or override was set
+    const bool use_sodn = (dynamic_cast<dynamic_network*>nw.get() != nullptr) && !static_network;
+    simulate_on_dynamic_network* sodn = use_sodn ? new simulate_on_dynamic_network(&sim) : nullptr;
+
+    // Return simulation algorithm, store dynamic network simulator in meta-data list
+    return { sim,
              writable::list({"nw"_nm = nw, "psi"_nm = psi, "rho"_nm = rho_,
                              "opts"_nm = opts_out,
+                             "sodn"_nm = (sodn != nullptr) ? sodn_R(sodn) : R_NilValue,
                              "cinf"_nm = writable::doubles { 0 },
                              "tinf"_nm = writable::doubles { 0 },
                              "trst"_nm = writable::doubles { 0 }}),
@@ -193,12 +204,19 @@ void episimR_simulation_addinfections(const simulation_R& sim, integers nodes, d
 
 [[cpp11::register]]
 data_frame episimR_simulation_step(const simulation_R& sim_, int steps) {
+    RNG_SCOPE_IF_NECESSARY;
+
     if (!sim_) throw std::runtime_error("simulation cannot be NULL");
+
+    // Get simulation alorithm
     simulation_algorithm& sim = *sim_.get();
 
-    RNG_SCOPE_IF_NECESSARY;
-    
-    /* Get current infection & reset counters, arrange for them to be updated at the end */
+    // Get dynamic network simulation algorithm
+    sexp sodn_sexp = sim_data["sodn"];
+    simulate_on_dynamic_network* sodn = (
+        (sodn_exp != R_NilValue) ? sodn_R(sodn_sexp).get() : nullptr);
+
+    // Get current infection & reset counters, arrange for them to be updated at the end
     writable::list sim_data(std::move(sim_.protected_data())); // move means modify in place
     double infected_ = ((doubles)sim_data["cinf"])[0];
     double total_infected_ = ((doubles)sim_data["tinf"])[0];
@@ -209,20 +227,27 @@ data_frame episimR_simulation_step(const simulation_R& sim_, int steps) {
         sim_data["trst"] = writable::doubles { total_reset_ };
     } BOOST_SCOPE_EXIT_END
       
-    /* Prepare output columns */
+    // Prepare output columns
     writable::doubles times;
     times.reserve(steps);
 
     writable::integers kinds;
     kinds.reserve(steps);
+
     // Make it a factor vector, not plain integers
     writable::strings kinds_levels;
-    for(int i=0; name((event_kind)i) != NULL; ++i)
+    int network_event_offset = 0;
+    for(int i=0; name((event_kind)i) != NULL; ++i, ++network_event_offset)
       kinds_levels.push_back(name((event_kind)i));
+    for(int i=0; name((network_event_kind)i) != NULL; ++i)
+      kinds_levels.push_back(name((network_event_kind)i));
     kinds.attr("class") = writable::strings { "factor" };
     kinds.attr("levels") = kinds_levels;
 
     writable::integers nodes;
+    nodes.reserve(steps);
+
+    writable::integers neighbours;
     nodes.reserve(steps);
 
     writable::doubles total_infected;
@@ -234,38 +259,75 @@ data_frame episimR_simulation_step(const simulation_R& sim_, int steps) {
     writable::doubles infected;
     infected.reserve(steps);
     
-    /* Execute steps */
+    // Execute steps
     for(int i = 0; i < steps; ++i) {
-        const std::optional<event_t> ev_opt = sim.step(rng_engine());
-        if (!ev_opt) break;
-        const event_t ev = *ev_opt;
-        
-        times.push_back(ev.time);
-        switch (ev.kind) {
-            case event_kind::outside_infection:
-            case event_kind::infection:
-                ++total_infected_;
-                ++infected_;
-                break;
-            case event_kind::reset:
-                ++total_reset_;
-                --infected_;
-                break;
-            default:
-              break;
+        std::optional<network_or_epidemic_event_t> any_ev_opt:
+
+        // Use dynamic network simulator if available
+        if (sodn != nullptr)
+            any_ev_opt = sodn->step(rng_engine());
+        else
+            any_ev_opt = sim.step(rng_engine());
+
+        // Stop if there are no more events
+        if (!any_ev_opt) break;
+        const event_t any_ev = *any_ev_opt;
+
+        // Output row
+        double time;
+        int kind;
+        int node;
+        int neighbour = NA_INTEGER;
+
+        if (std::holds_alternative<event_t>(any_ev)) {
+            /* Epidemic event */
+            const auto ev = std::get<event_t>(any_ev);
+            /* Update counters */
+            switch (ev.kind) {
+                case event_kind::outside_infection:
+                case event_kind::infection:
+                    ++total_infected_;
+                    ++infected_;
+                    break;
+                case event_kind::reset:
+                    ++total_reset_;
+                    --infected_;
+                    break;
+                default:
+                  break;
+            }
+            // Fill row
+            time = ev.time;
+            kind = name(ev.kind) ? (int)(ev.kind) + 1 : NA_INTEGER;
+            node = ev.node + 1;
         }
-        kinds.push_back(name(ev.kind) ? (int)(ev.kind) + 1 : NA_INTEGER);
-        nodes.push_back(ev.node + 1);
+        else if (std::holds_alternative<network_event_t>(any_ev)) {
+            /* Network event */
+            const auto ev = std::get<network_event_t>(any_ev);
+            // Fill row
+            time = ev.time;
+            kind = name(ev.kind) ? (int)(ev.kind) + network_event_offset + 1 : NA_INTEGER;
+            node = ev.node + 1;
+            neighbour = ev.neighbour + 1;
+        }
+        else throw std::logic_error("unknown event type");
+
+        // Append row
+        times.push_back(time);
+        kinds.push_back(kind);
+        nodes.push_back(node);
+        neighbours.push_back(neighbour);
         total_infected.push_back(total_infected_);
         total_reset.push_back(total_reset_);
         infected.push_back(infected_);
     }
     
-    /* Return data frame */
+    // Return data frame
     return writable::data_frame({
         "time"_nm = times,
         "kind"_nm = kinds,
         "node"_nm = nodes,
+        "neighbour"_nm = neighbours,
         "total_infected"_nm = total_infected,
         "total_reset"_nm = total_reset,
         "infected"_nm = infected

@@ -128,8 +128,8 @@ episimR_simulation_addinfections <- function(sim, nodes, times) {
   invisible(.Call(`_episimR_episimR_simulation_addinfections`, sim, nodes, times))
 }
 
-episimR_simulation_step <- function(sim_, steps) {
-  .Call(`_episimR_episimR_simulation_step`, sim_, steps)
+episimR_simulation_run <- function(sim_, stop, opts) {
+  .Call(`_episimR_episimR_simulation_run`, sim_, stop, opts)
 }
 
 episimR_time_sample <- function(n, ttr, t, m) {

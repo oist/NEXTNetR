@@ -231,10 +231,10 @@ extern "C" SEXP _episimR_episimR_simulation_addinfections(SEXP sim, SEXP nodes, 
   END_CPP11
 }
 // simulation.cpp
-data_frame episimR_simulation_step(const simulation_R& sim_, int steps);
-extern "C" SEXP _episimR_episimR_simulation_step(SEXP sim_, SEXP steps) {
+data_frame episimR_simulation_run(const simulation_R& sim_, list stop, list opts);
+extern "C" SEXP _episimR_episimR_simulation_run(SEXP sim_, SEXP stop, SEXP opts) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_simulation_step(cpp11::as_cpp<cpp11::decay_t<const simulation_R&>>(sim_), cpp11::as_cpp<cpp11::decay_t<int>>(steps)));
+    return cpp11::as_sexp(episimR_simulation_run(cpp11::as_cpp<cpp11::decay_t<const simulation_R&>>(sim_), cpp11::as_cpp<cpp11::decay_t<list>>(stop), cpp11::as_cpp<cpp11::decay_t<list>>(opts)));
   END_CPP11
 }
 // transmission_time.cpp
@@ -336,7 +336,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_simulation_ninfected",                  (DL_FUNC) &_episimR_episimR_simulation_ninfected,                  1},
     {"_episimR_episimR_simulation_options",                    (DL_FUNC) &_episimR_episimR_simulation_options,                    1},
     {"_episimR_episimR_simulation_resettime",                  (DL_FUNC) &_episimR_episimR_simulation_resettime,                  1},
-    {"_episimR_episimR_simulation_step",                       (DL_FUNC) &_episimR_episimR_simulation_step,                       2},
+    {"_episimR_episimR_simulation_run",                        (DL_FUNC) &_episimR_episimR_simulation_run,                        3},
     {"_episimR_episimR_simulation_transmissiontime",           (DL_FUNC) &_episimR_episimR_simulation_transmissiontime,           1},
     {"_episimR_episimR_stored_graph",                          (DL_FUNC) &_episimR_episimR_stored_graph,                          1},
     {"_episimR_episimR_time_density",                          (DL_FUNC) &_episimR_episimR_time_density,                          2},

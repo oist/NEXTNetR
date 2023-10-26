@@ -60,6 +60,11 @@ simulation_addinfections <- function(sim, nodes, times) {
 }
 
 #' @export
-simulation_step <- function(sim_, steps) {
-  episimR_simulation_step(sim_, as.integer(steps))
+simulation_step <- function(sim_, steps, opts=list()) {
+  episimR_simulation_run(sim_, list(epidemic_steps=as.integer(steps)), as.list(opts))
+}
+
+#' @export
+simulation_run <- function(sim_, stop, opts=list()) {
+  episimR_simulation_run(sim_, as.list(stop), as.list(opts))
 }

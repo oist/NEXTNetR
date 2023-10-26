@@ -274,6 +274,7 @@ data_frame episimR_simulation_run(const simulation_R& sim_, list stop, list opts
 
     // kinds are a factor vector
     writable::integers kinds;
+    kinds.reserve(1); // make sure the SEXP is not null
     writable::strings kinds_levels;
     int network_event_offset = 0;
     for(int i=0; name((event_kind)i) != NULL; ++i, ++network_event_offset)
@@ -289,7 +290,7 @@ data_frame episimR_simulation_run(const simulation_R& sim_, list stop, list opts
             break;
         if ((stop_network_steps != NA_INTEGER) && (network_step_ >= stop_network_steps))
             break;
-        if (time >= stop_time)
+        if (time > stop_time)
             break;
         if (infected_ >= stop_infected)
             break;

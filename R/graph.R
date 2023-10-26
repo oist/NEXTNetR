@@ -19,6 +19,11 @@ graph_coordinates <- function(nw, nodes) {
 }
 
 #' @export
+graph_bounds <- function(nw) {
+  episimR_graph_bounds(nw)
+}
+
+#' @export
 erdos_reyni_graph <- function(size, avg_degree) {
   episimR_erdos_reyni_graph(as.integer(size), as.double(avg_degree))
 }

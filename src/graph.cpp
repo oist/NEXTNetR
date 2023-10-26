@@ -103,6 +103,26 @@ list episimR_graph_adjacencylist(const graph_R& nw) {
 }
 
 [[cpp11::register]]
+list episimR_graph_bounds(const graph_R& nw) {
+    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+
+    RNG_SCOPE_IF_NECESSARY;
+    
+    graph_embedding* const ebd = dynamic_cast<graph_embedding*>(nw.get());
+    if (ebd == nullptr)
+        throw std::runtime_error("graph is not embedded into R^d");
+    
+    const std::size_t d = ebd->dimensionality();
+    std::vector<double> a, b;
+    ebd->bounds(a, b);
+
+    return writable::list({
+        "lower"_nm = writable::doubles(a.begin(), a.end()),
+        "upper"_nm = writable::doubles(b.begin(), b.end())
+    });
+}
+
+[[cpp11::register]]
 doubles_matrix<> episimR_graph_coordinates(const graph_R& nw, integers nodes) {
     if (!nw) throw std::runtime_error("graph cannot be NULL"); 
 

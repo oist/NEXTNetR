@@ -12,6 +12,10 @@ episimR_graph_adjacencylist <- function(nw) {
   .Call(`_episimR_episimR_graph_adjacencylist`, nw)
 }
 
+episimR_graph_bounds <- function(nw) {
+  .Call(`_episimR_episimR_graph_bounds`, nw)
+}
+
 episimR_graph_coordinates <- function(nw, nodes) {
   .Call(`_episimR_episimR_graph_coordinates`, nw, nodes)
 }

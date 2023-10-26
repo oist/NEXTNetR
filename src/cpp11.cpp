@@ -27,6 +27,13 @@ extern "C" SEXP _episimR_episimR_graph_adjacencylist(SEXP nw) {
   END_CPP11
 }
 // graph.cpp
+list episimR_graph_bounds(const graph_R& nw);
+extern "C" SEXP _episimR_episimR_graph_bounds(SEXP nw) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_graph_bounds(cpp11::as_cpp<cpp11::decay_t<const graph_R&>>(nw)));
+  END_CPP11
+}
+// graph.cpp
 doubles_matrix<> episimR_graph_coordinates(const graph_R& nw, integers nodes);
 extern "C" SEXP _episimR_episimR_graph_coordinates(SEXP nw, SEXP nodes) {
   BEGIN_CPP11
@@ -322,6 +329,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_gamma_time",                            (DL_FUNC) &_episimR_episimR_gamma_time,                            3},
     {"_episimR_episimR_generic_time",                          (DL_FUNC) &_episimR_episimR_generic_time,                          7},
     {"_episimR_episimR_graph_adjacencylist",                   (DL_FUNC) &_episimR_episimR_graph_adjacencylist,                   1},
+    {"_episimR_episimR_graph_bounds",                          (DL_FUNC) &_episimR_episimR_graph_bounds,                          1},
     {"_episimR_episimR_graph_coordinates",                     (DL_FUNC) &_episimR_episimR_graph_coordinates,                     2},
     {"_episimR_episimR_graph_neighbour",                       (DL_FUNC) &_episimR_episimR_graph_neighbour,                       3},
     {"_episimR_episimR_graph_outdegree",                       (DL_FUNC) &_episimR_episimR_graph_outdegree,                       2},

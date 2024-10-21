@@ -55,12 +55,13 @@ To create networks, the following functions are available
     fully_connected_graph(size)
     acyclic_graph(size, avg_degree, reduced_root_degree)
     configmodel_graph(degrees)
-    scalefree_graph(size)
+    barabasialbert_graph(size, m)
     configmodel_clustered_graph(degrees, alpha_or_ck_or_triangles, beta)
     cubiclattice2d_graph
     ...
     cubiclattice8d_graph
     brownian_proximity_dyngraph(size, avg_degree, contact_radius, D, dt)
+    empirical_dyngraph(file, finite_duration, dt)
     stored_graph(filename)
     userdefined_graph(adjacencylist)
     

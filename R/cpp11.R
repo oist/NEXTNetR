@@ -48,8 +48,8 @@ episimR_configmodel_clustered_triangles_graph <- function(degrees, triangles, be
   .Call(`_episimR_episimR_configmodel_clustered_triangles_graph`, degrees, triangles, beta)
 }
 
-episimR_scalefree_graph <- function(size) {
-  .Call(`_episimR_episimR_scalefree_graph`, size)
+episimR_barabasialbert_graph <- function(size, m) {
+  .Call(`_episimR_episimR_barabasialbert_graph`, size, m)
 }
 
 episimR_cubiclattice2d_graph <- function(edge_length) {
@@ -82,6 +82,10 @@ episimR_cubiclattice8d_graph <- function(edge_length) {
 
 episimR_brownian_proximity_dyngraph <- function(size, avg_degree, radius, D, dt) {
   .Call(`_episimR_episimR_brownian_proximity_dyngraph`, size, avg_degree, radius, D, dt)
+}
+
+episimR_empirical_dyngraph <- function(file, finite_duration, dt) {
+  .Call(`_episimR_episimR_empirical_dyngraph`, file, finite_duration, dt)
 }
 
 episimR_stored_graph <- function(filename) {

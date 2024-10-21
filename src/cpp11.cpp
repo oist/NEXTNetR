@@ -90,10 +90,10 @@ extern "C" SEXP _episimR_episimR_configmodel_clustered_triangles_graph(SEXP degr
   END_CPP11
 }
 // graph.cpp
-graph_R episimR_scalefree_graph(int size);
-extern "C" SEXP _episimR_episimR_scalefree_graph(SEXP size) {
+graph_R episimR_barabasialbert_graph(int size, int m);
+extern "C" SEXP _episimR_episimR_barabasialbert_graph(SEXP size, SEXP m) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_scalefree_graph(cpp11::as_cpp<cpp11::decay_t<int>>(size)));
+    return cpp11::as_sexp(episimR_barabasialbert_graph(cpp11::as_cpp<cpp11::decay_t<int>>(size), cpp11::as_cpp<cpp11::decay_t<int>>(m)));
   END_CPP11
 }
 // graph.cpp
@@ -150,6 +150,13 @@ graph_R episimR_brownian_proximity_dyngraph(int size, double avg_degree, double 
 extern "C" SEXP _episimR_episimR_brownian_proximity_dyngraph(SEXP size, SEXP avg_degree, SEXP radius, SEXP D, SEXP dt) {
   BEGIN_CPP11
     return cpp11::as_sexp(episimR_brownian_proximity_dyngraph(cpp11::as_cpp<cpp11::decay_t<int>>(size), cpp11::as_cpp<cpp11::decay_t<double>>(avg_degree), cpp11::as_cpp<cpp11::decay_t<double>>(radius), cpp11::as_cpp<cpp11::decay_t<double>>(D), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dt)));
+  END_CPP11
+}
+// graph.cpp
+graph_R episimR_empirical_dyngraph(std::string file, bool finite_duration, double dt);
+extern "C" SEXP _episimR_episimR_empirical_dyngraph(SEXP file, SEXP finite_duration, SEXP dt) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_empirical_dyngraph(cpp11::as_cpp<cpp11::decay_t<std::string>>(file), cpp11::as_cpp<cpp11::decay_t<bool>>(finite_duration), cpp11::as_cpp<cpp11::decay_t<double>>(dt)));
   END_CPP11
 }
 // graph.cpp
@@ -311,6 +318,7 @@ extern "C" SEXP _episimR_episimR_generic_time(SEXP density, SEXP survivalprobabi
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_acyclic_graph",                         (DL_FUNC) &_episimR_episimR_acyclic_graph,                         3},
+    {"_episimR_episimR_barabasialbert_graph",                  (DL_FUNC) &_episimR_episimR_barabasialbert_graph,                  2},
     {"_episimR_episimR_brownian_proximity_dyngraph",           (DL_FUNC) &_episimR_episimR_brownian_proximity_dyngraph,           5},
     {"_episimR_episimR_configmodel_clustered_alpha_graph",     (DL_FUNC) &_episimR_episimR_configmodel_clustered_alpha_graph,     3},
     {"_episimR_episimR_configmodel_clustered_ck_graph",        (DL_FUNC) &_episimR_episimR_configmodel_clustered_ck_graph,        3},
@@ -323,6 +331,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_cubiclattice6d_graph",                  (DL_FUNC) &_episimR_episimR_cubiclattice6d_graph,                  1},
     {"_episimR_episimR_cubiclattice7d_graph",                  (DL_FUNC) &_episimR_episimR_cubiclattice7d_graph,                  1},
     {"_episimR_episimR_cubiclattice8d_graph",                  (DL_FUNC) &_episimR_episimR_cubiclattice8d_graph,                  1},
+    {"_episimR_episimR_empirical_dyngraph",                    (DL_FUNC) &_episimR_episimR_empirical_dyngraph,                    3},
     {"_episimR_episimR_erdos_reyni_graph",                     (DL_FUNC) &_episimR_episimR_erdos_reyni_graph,                     2},
     {"_episimR_episimR_exponential_time",                      (DL_FUNC) &_episimR_episimR_exponential_time,                      1},
     {"_episimR_episimR_fully_connected_graph",                 (DL_FUNC) &_episimR_episimR_fully_connected_graph,                 1},
@@ -337,7 +346,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_nextreaction_simulation",               (DL_FUNC) &_episimR_episimR_nextreaction_simulation,               4},
     {"_episimR_episimR_nextreaction_simulation_meanfield",     (DL_FUNC) &_episimR_episimR_nextreaction_simulation_meanfield,     5},
     {"_episimR_episimR_nmga_simulation",                       (DL_FUNC) &_episimR_episimR_nmga_simulation,                       4},
-    {"_episimR_episimR_scalefree_graph",                       (DL_FUNC) &_episimR_episimR_scalefree_graph,                       1},
     {"_episimR_episimR_simulation_addinfections",              (DL_FUNC) &_episimR_episimR_simulation_addinfections,              3},
     {"_episimR_episimR_simulation_graph",                      (DL_FUNC) &_episimR_episimR_simulation_graph,                      1},
     {"_episimR_episimR_simulation_isinfected",                 (DL_FUNC) &_episimR_episimR_simulation_isinfected,                 2},

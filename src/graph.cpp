@@ -193,8 +193,8 @@ graph_R episimR_configmodel_clustered_triangles_graph(integers degrees, integers
 }
 
 [[cpp11::register]]
-graph_R episimR_scalefree_graph(int size) {
-    return new scale_free(size, rng_engine());
+graph_R episimR_barabasialbert_graph(int size, int m) {
+    return new barabasi_albert(size, rng_engine(), m);
 }
 
 [[cpp11::register]]
@@ -239,6 +239,15 @@ graph_R episimR_brownian_proximity_dyngraph(int size, double avg_degree, double 
         return new brownian_proximity_graph(size, avg_degree, radius, D, rng_engine());
     else
         return new brownian_proximity_graph(size, avg_degree, radius, D, as_cpp<double>(dt), rng_engine());
+}
+
+[[cpp11::register]]
+graph_R episimR_empirical_dyngraph(std::string file, bool finite_duration, double dt) {
+    RNG_SCOPE_IF_NECESSARY;
+    if (finite_duration)
+        return new dynamic_empirical_network(file, dynamic_empirical_network::finite_duration, dt);
+    else
+        return new dynamic_empirical_network(file, dynamic_empirical_network::infitesimal_duration, dt);
 }
 
 [[cpp11::register]]

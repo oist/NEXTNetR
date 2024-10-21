@@ -40,19 +40,16 @@ simulation_R episimR_nextreaction_simulation(
         rho = transmission_time_R(rho_).get();
 
     // Decoded options
-    bool shuffle_neighbours = true;
-    bool edges_concurrent = true;
-    bool SIR = false;
+    simulate_next_reaction::params p;
     bool static_network = false;
     const list opts_out = process_options(opts,
-        option("shuffle_neighbours", shuffle_neighbours),
-        option("edges_concurrent", edges_concurrent),
-        option("SIR", SIR),
+        option("shuffle_neighbours", p.shuffle_neighbours),
+        option("edges_concurrent", p.edges_concurrent),
+        option("SIR", p.SIR),
         option("static_network", static_network));
 
     // Create simulation algorithm
-    simulation_algorithm* sim = new simulate_next_reaction(
-        *nw.get(), *psi.get(), rho, shuffle_neighbours, edges_concurrent, SIR);
+    simulation_algorithm* sim = new simulate_next_reaction(*nw.get(), *psi.get(), rho, p);
 
     // Create dynamic network simulator unless network is static, or override was set
     const bool use_sodn = (dynamic_cast<dynamic_network*>(nw.get()) != nullptr) && !static_network;

@@ -54,8 +54,8 @@ configmodel_clustered_graph <- function(degrees, alpha_or_ck_or_triangles, beta)
 }
 
 #' @export
-scalefree_graph <- function(size) {
-  episimR_scalefree_graph(as.integer(size))
+barabasialbert_graph <- function(size, m) {
+  episimR_barabasialbert_graph(as.integer(size), as.integer(m))
 }
 
 #' @export
@@ -97,6 +97,11 @@ cubiclattice8d_graph <- function(length) {
 brownian_proximity_dyngraph <- function(size, avg_degree, radius, D, dt=NULL) {
   episimR_brownian_proximity_dyngraph(as.integer(size), as.double(avg_degree), as.double(radius),
                                       as.double(D), if (!is.null(dt)) dt else NULL)
+}
+
+#' @export
+empirical_dyngraph <- function(file, finite_duration, dt) {
+  episimR_empirical_dyngraph(as.character(file), as.logical(finite_duration), as.double(dt))
 }
 
 #' @export

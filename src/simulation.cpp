@@ -338,6 +338,8 @@ data_frame episimR_simulation_run(const simulation_R& sim_, list stop, list opts
             // Fill row
             kind = name(ev.kind) ? (int)(ev.kind) + 1 : NA_INTEGER;
             node = ev.node + 1;
+            if (ev.kind == event_kind::infection)
+                neighbour = ev.source_node + 1;
         }
         else if (std::holds_alternative<network_event_t>(any_ev)) {
             // Network event

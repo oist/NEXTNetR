@@ -6,6 +6,20 @@
 #include <R_ext/Visibility.h>
 
 // graph.cpp
+int episimR_graph_size(const graph_R& nw);
+extern "C" SEXP _episimR_episimR_graph_size(SEXP nw) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_graph_size(cpp11::as_cpp<cpp11::decay_t<const graph_R&>>(nw)));
+  END_CPP11
+}
+// graph.cpp
+bool episimR_graph_is_undirected(const graph_R& nw);
+extern "C" SEXP _episimR_episimR_graph_is_undirected(SEXP nw) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_graph_is_undirected(cpp11::as_cpp<cpp11::decay_t<const graph_R&>>(nw)));
+  END_CPP11
+}
+// graph.cpp
 integers episimR_graph_outdegree(const graph_R& nw, integers nodes);
 extern "C" SEXP _episimR_episimR_graph_outdegree(SEXP nw, SEXP nodes) {
   BEGIN_CPP11
@@ -167,10 +181,10 @@ extern "C" SEXP _episimR_episimR_stored_graph(SEXP filename) {
   END_CPP11
 }
 // graph.cpp
-graph_R episimR_userdefined_graph(list input_al);
-extern "C" SEXP _episimR_episimR_userdefined_graph(SEXP input_al) {
+graph_R episimR_userdefined_graph(list input_al, bool is_undirected);
+extern "C" SEXP _episimR_episimR_userdefined_graph(SEXP input_al, SEXP is_undirected) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_userdefined_graph(cpp11::as_cpp<cpp11::decay_t<list>>(input_al)));
+    return cpp11::as_sexp(episimR_userdefined_graph(cpp11::as_cpp<cpp11::decay_t<list>>(input_al), cpp11::as_cpp<cpp11::decay_t<bool>>(is_undirected)));
   END_CPP11
 }
 // simulation.cpp
@@ -340,8 +354,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_graph_adjacencylist",                   (DL_FUNC) &_episimR_episimR_graph_adjacencylist,                   1},
     {"_episimR_episimR_graph_bounds",                          (DL_FUNC) &_episimR_episimR_graph_bounds,                          1},
     {"_episimR_episimR_graph_coordinates",                     (DL_FUNC) &_episimR_episimR_graph_coordinates,                     2},
+    {"_episimR_episimR_graph_is_undirected",                   (DL_FUNC) &_episimR_episimR_graph_is_undirected,                   1},
     {"_episimR_episimR_graph_neighbour",                       (DL_FUNC) &_episimR_episimR_graph_neighbour,                       3},
     {"_episimR_episimR_graph_outdegree",                       (DL_FUNC) &_episimR_episimR_graph_outdegree,                       2},
+    {"_episimR_episimR_graph_size",                            (DL_FUNC) &_episimR_episimR_graph_size,                            1},
     {"_episimR_episimR_lognormal_time",                        (DL_FUNC) &_episimR_episimR_lognormal_time,                        3},
     {"_episimR_episimR_nextreaction_simulation",               (DL_FUNC) &_episimR_episimR_nextreaction_simulation,               4},
     {"_episimR_episimR_nextreaction_simulation_meanfield",     (DL_FUNC) &_episimR_episimR_nextreaction_simulation_meanfield,     5},
@@ -360,7 +376,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_time_sample",                           (DL_FUNC) &_episimR_episimR_time_sample,                           4},
     {"_episimR_episimR_time_survivalprobability",              (DL_FUNC) &_episimR_episimR_time_survivalprobability,              4},
     {"_episimR_episimR_time_survivalquantile",                 (DL_FUNC) &_episimR_episimR_time_survivalquantile,                 4},
-    {"_episimR_episimR_userdefined_graph",                     (DL_FUNC) &_episimR_episimR_userdefined_graph,                     1},
+    {"_episimR_episimR_userdefined_graph",                     (DL_FUNC) &_episimR_episimR_userdefined_graph,                     2},
     {NULL, NULL, 0}
 };
 }

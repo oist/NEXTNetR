@@ -1,4 +1,14 @@
 #' @export
+graph_size <- function(nw) {
+  episimR_graph_size(nw)
+}
+
+#' @export
+graph_is_undirected <- function(nw) {
+  episimR_graph_is_undirected(nw)
+}
+
+#' @export
 graph_outdegree <- function(nw, nodes) {
   episimR_graph_outdegree(nw, as.integer(nodes))
 }
@@ -110,6 +120,6 @@ stored_graph <- function(filename) {
 }
 
 #' @export
-userdefined_graph <- function(adjacencylist) {
-  episimR_userdefined_graph(lapply(adjacencylist, as.integer))
+userdefined_graph <- function(adjacencylist, is_undirected = FALSE) {
+  episimR_userdefined_graph(lapply(adjacencylist, as.integer), as.logical(is_undirected))
 }

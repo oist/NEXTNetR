@@ -132,13 +132,12 @@ list episimR_graph_bounds(const graph_R& nw) {
     if (ebd == nullptr)
         throw std::runtime_error("graph is not embedded into R^d");
     
-    const std::size_t d = ebd->dimensionality();
     std::vector<double> a, b;
     ebd->bounds(a, b);
 
     return writable::list({
-        "lower"_nm = writable::doubles(a.begin(), a.end()),
-        "upper"_nm = writable::doubles(b.begin(), b.end())
+        writable::doubles(a.begin(), a.end()),
+        writable::doubles(b.begin(), b.end())
     });
 }
 

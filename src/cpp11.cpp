@@ -55,6 +55,13 @@ extern "C" SEXP _episimR_episimR_graph_coordinates(SEXP nw, SEXP nodes) {
   END_CPP11
 }
 // graph.cpp
+graph_R episimR_stored_graph(r_string filename);
+extern "C" SEXP _episimR_episimR_stored_graph(SEXP filename) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(episimR_stored_graph(cpp11::as_cpp<cpp11::decay_t<r_string>>(filename)));
+  END_CPP11
+}
+// graph.cpp
 graph_R episimR_erdos_reyni_graph(int size, double avg_degree);
 extern "C" SEXP _episimR_episimR_erdos_reyni_graph(SEXP size, SEXP avg_degree) {
   BEGIN_CPP11
@@ -174,10 +181,10 @@ extern "C" SEXP _episimR_episimR_empirical_dyngraph(SEXP file, SEXP finite_durat
   END_CPP11
 }
 // graph.cpp
-graph_R episimR_stored_graph(r_string filename);
-extern "C" SEXP _episimR_episimR_stored_graph(SEXP filename) {
+graph_R episimR_sirx_dyngraph(const graph_R& nw, double kappa0, double kappa);
+extern "C" SEXP _episimR_episimR_sirx_dyngraph(SEXP nw, SEXP kappa0, SEXP kappa) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_stored_graph(cpp11::as_cpp<cpp11::decay_t<r_string>>(filename)));
+    return cpp11::as_sexp(episimR_sirx_dyngraph(cpp11::as_cpp<cpp11::decay_t<const graph_R&>>(nw), cpp11::as_cpp<cpp11::decay_t<double>>(kappa0), cpp11::as_cpp<cpp11::decay_t<double>>(kappa)));
   END_CPP11
 }
 // graph.cpp
@@ -370,6 +377,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_simulation_resettime",                  (DL_FUNC) &_episimR_episimR_simulation_resettime,                  1},
     {"_episimR_episimR_simulation_run",                        (DL_FUNC) &_episimR_episimR_simulation_run,                        3},
     {"_episimR_episimR_simulation_transmissiontime",           (DL_FUNC) &_episimR_episimR_simulation_transmissiontime,           1},
+    {"_episimR_episimR_sirx_dyngraph",                         (DL_FUNC) &_episimR_episimR_sirx_dyngraph,                         3},
     {"_episimR_episimR_stored_graph",                          (DL_FUNC) &_episimR_episimR_stored_graph,                          1},
     {"_episimR_episimR_time_density",                          (DL_FUNC) &_episimR_episimR_time_density,                          2},
     {"_episimR_episimR_time_hazardrate",                       (DL_FUNC) &_episimR_episimR_time_hazardrate,                       2},

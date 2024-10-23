@@ -115,6 +115,11 @@ empirical_dyngraph <- function(file, finite_duration, dt) {
 }
 
 #' @export
+sirx_dyngraph <- function(graph, kappa0, kappa) {
+  episimR_sirx_dyngraph(graph, as.numeric(kappa0), as.numeric(kappa))
+}
+
+#' @export
 stored_graph <- function(filename) {
   episimR_stored_graph(as.character(filename))
 }

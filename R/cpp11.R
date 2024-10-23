@@ -28,6 +28,10 @@ episimR_graph_coordinates <- function(nw, nodes) {
   .Call(`_episimR_episimR_graph_coordinates`, nw, nodes)
 }
 
+episimR_stored_graph <- function(filename) {
+  .Call(`_episimR_episimR_stored_graph`, filename)
+}
+
 episimR_erdos_reyni_graph <- function(size, avg_degree) {
   .Call(`_episimR_episimR_erdos_reyni_graph`, size, avg_degree)
 }
@@ -96,12 +100,12 @@ episimR_empirical_dyngraph <- function(file, finite_duration, dt) {
   .Call(`_episimR_episimR_empirical_dyngraph`, file, finite_duration, dt)
 }
 
-episimR_stored_graph <- function(filename) {
-  .Call(`_episimR_episimR_stored_graph`, filename)
+episimR_sirx_dyngraph <- function(nw, kappa0, kappa) {
+  .Call(`_episimR_episimR_sirx_dyngraph`, nw, kappa0, kappa)
 }
 
-episimR_userdefined_graph <- function(input_al) {
-  .Call(`_episimR_episimR_userdefined_graph`, input_al)
+episimR_userdefined_graph <- function(input_al, is_undirected) {
+  .Call(`_episimR_episimR_userdefined_graph`, input_al, is_undirected)
 }
 
 episimR_nextreaction_simulation <- function(nw, psi, rho_, opts) {

@@ -165,6 +165,11 @@ doubles_matrix<> episimR_graph_coordinates(const graph_R& nw, integers nodes) {
 }
 
 [[cpp11::register]]
+graph_R episimR_stored_graph(r_string filename) {
+    return new imported_network((std::string)filename);
+}
+
+[[cpp11::register]]
 graph_R episimR_erdos_reyni_graph(int size, double avg_degree) {
     RNG_SCOPE_IF_NECESSARY;
     return new erdos_reyni(size, avg_degree, rng_engine());
@@ -271,8 +276,17 @@ graph_R episimR_empirical_dyngraph(std::string file, bool finite_duration, doubl
 }
 
 [[cpp11::register]]
-graph_R episimR_stored_graph(r_string filename) {
-    return new imported_network((std::string)filename);
+graph_R episimR_sirx_dyngraph(const graph_R& nw, double kappa0, double kappa) {
+    if (!nw) throw std::runtime_error("underlying graph cannot be null"); 
+
+    RNG_SCOPE_IF_NECESSARY;
+    
+    /* dynamic_sirx_networ stores the underlying network by reference, so
+     * add it to the externalptr metadata to extend its lifetime
+    */
+    return { new dynamic_sirx_network(*nw.get(), kappa0, kappa),
+             writable::list({"nw"_nm = nw}),
+             true, true };
 }
 
 namespace {

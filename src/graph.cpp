@@ -257,12 +257,15 @@ graph_R episimR_cubiclattice8d_graph(int edge_length) {
 }
 
 [[cpp11::register]]
-graph_R episimR_brownian_proximity_dyngraph(int size, double avg_degree, double radius, double D, SEXP dt) {
+graph_R episimR_brownian_proximity_dyngraph(int size, double avg_degree, double radius,
+                                            double D0, double D1, double gamma, SEXP dt) {
     RNG_SCOPE_IF_NECESSARY;
     if (dt == R_NilValue)
-        return new brownian_proximity_graph(size, avg_degree, radius, D, rng_engine());
+        return new brownian_proximity_graph(size, avg_degree, radius, D0, D1, gamma,
+                                            rng_engine());
     else
-        return new brownian_proximity_graph(size, avg_degree, radius, D, as_cpp<double>(dt), rng_engine());
+        return new brownian_proximity_graph(size, avg_degree, radius, D0, D1, gamma,
+                                            as_cpp<double>(dt), rng_engine());
 }
 
 [[cpp11::register]]

@@ -167,10 +167,10 @@ extern "C" SEXP _episimR_episimR_cubiclattice8d_graph(SEXP edge_length) {
   END_CPP11
 }
 // graph.cpp
-graph_R episimR_brownian_proximity_dyngraph(int size, double avg_degree, double radius, double D, SEXP dt);
-extern "C" SEXP _episimR_episimR_brownian_proximity_dyngraph(SEXP size, SEXP avg_degree, SEXP radius, SEXP D, SEXP dt) {
+graph_R episimR_brownian_proximity_dyngraph(int size, double avg_degree, double radius, double D0, double D1, double gamma, SEXP dt);
+extern "C" SEXP _episimR_episimR_brownian_proximity_dyngraph(SEXP size, SEXP avg_degree, SEXP radius, SEXP D0, SEXP D1, SEXP gamma, SEXP dt) {
   BEGIN_CPP11
-    return cpp11::as_sexp(episimR_brownian_proximity_dyngraph(cpp11::as_cpp<cpp11::decay_t<int>>(size), cpp11::as_cpp<cpp11::decay_t<double>>(avg_degree), cpp11::as_cpp<cpp11::decay_t<double>>(radius), cpp11::as_cpp<cpp11::decay_t<double>>(D), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dt)));
+    return cpp11::as_sexp(episimR_brownian_proximity_dyngraph(cpp11::as_cpp<cpp11::decay_t<int>>(size), cpp11::as_cpp<cpp11::decay_t<double>>(avg_degree), cpp11::as_cpp<cpp11::decay_t<double>>(radius), cpp11::as_cpp<cpp11::decay_t<double>>(D0), cpp11::as_cpp<cpp11::decay_t<double>>(D1), cpp11::as_cpp<cpp11::decay_t<double>>(gamma), cpp11::as_cpp<cpp11::decay_t<SEXP>>(dt)));
   END_CPP11
 }
 // graph.cpp
@@ -340,7 +340,7 @@ extern "C" {
 static const R_CallMethodDef CallEntries[] = {
     {"_episimR_episimR_acyclic_graph",                         (DL_FUNC) &_episimR_episimR_acyclic_graph,                         3},
     {"_episimR_episimR_barabasialbert_graph",                  (DL_FUNC) &_episimR_episimR_barabasialbert_graph,                  2},
-    {"_episimR_episimR_brownian_proximity_dyngraph",           (DL_FUNC) &_episimR_episimR_brownian_proximity_dyngraph,           5},
+    {"_episimR_episimR_brownian_proximity_dyngraph",           (DL_FUNC) &_episimR_episimR_brownian_proximity_dyngraph,           7},
     {"_episimR_episimR_configmodel_clustered_alpha_graph",     (DL_FUNC) &_episimR_episimR_configmodel_clustered_alpha_graph,     3},
     {"_episimR_episimR_configmodel_clustered_ck_graph",        (DL_FUNC) &_episimR_episimR_configmodel_clustered_ck_graph,        3},
     {"_episimR_episimR_configmodel_clustered_triangles_graph", (DL_FUNC) &_episimR_episimR_configmodel_clustered_triangles_graph, 3},

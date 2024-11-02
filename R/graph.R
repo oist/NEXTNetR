@@ -104,9 +104,14 @@ cubiclattice8d_graph <- function(length) {
 }
 
 #' @export
-brownian_proximity_dyngraph <- function(size, avg_degree, radius, D, dt=NULL) {
+brownian_proximity_dyngraph <- function(size, avg_degree, radius, D0, D1=NULL,
+                                        gamma=0.0, dt=NULL)
+{
+  if (is.null(D1))
+    D1 <- D0  
   episimR_brownian_proximity_dyngraph(as.integer(size), as.double(avg_degree), as.double(radius),
-                                      as.double(D), if (!is.null(dt)) dt else NULL)
+                                      as.double(D0), as.double(D1), as.double(gamma),
+                                      if (!is.null(dt)) dt else NULL)
 }
 
 #' @export

@@ -92,8 +92,8 @@ episimR_cubiclattice8d_graph <- function(edge_length) {
   .Call(`_episimR_episimR_cubiclattice8d_graph`, edge_length)
 }
 
-episimR_brownian_proximity_dyngraph <- function(size, avg_degree, radius, D, dt) {
-  .Call(`_episimR_episimR_brownian_proximity_dyngraph`, size, avg_degree, radius, D, dt)
+episimR_brownian_proximity_dyngraph <- function(size, avg_degree, radius, D0, D1, gamma, dt) {
+  .Call(`_episimR_episimR_brownian_proximity_dyngraph`, size, avg_degree, radius, D0, D1, gamma, dt)
 }
 
 episimR_empirical_dyngraph <- function(file, finite_duration, dt) {

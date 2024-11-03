@@ -299,9 +299,9 @@ data_frame episimR_simulation_run(const simulation_R& sim_, list stop, list opts
         // Perform step, use dynamic network simulator if available
         std::optional<network_or_epidemic_event_t> any_ev_opt;
         if (sodn != nullptr)
-            any_ev_opt = sodn->step(rng_engine());
+            any_ev_opt = sodn->step(rng_engine(), stop_time);
         else
-            any_ev_opt = sim.step(rng_engine());
+            any_ev_opt = sim.step(rng_engine(), stop_time);
 
         // Stop if there are no more events
         if (!any_ev_opt)

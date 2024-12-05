@@ -6,19 +6,19 @@
 #include <cpp11/function.hpp>
 #include <cpp11/external_pointer.hpp>
 
-#include "episimR_types.h"
+#include "NEXTNetR_types.h"
 #include "rng.h"
 
-#include "epidemics/types.h"
-#include "epidemics/random.h"
+#include "nextnet/types.h"
+#include "nextnet/random.h"
 
-using namespace episimR;
+using namespace nextnetR;
 
 using namespace cpp11;
 namespace writable = cpp11::writable;
 
 [[cpp11::register]]
-doubles episimR_time_sample(int n, const transmission_time_R& ttr, interval_t t, int m) {
+doubles nextnetR_time_sample(int n, const transmission_time_R& ttr, interval_t t, int m) {
     if (!ttr) throw std::runtime_error("time distribution cannot be NULL"); 
 
     RNG_SCOPE_IF_NECESSARY;
@@ -31,7 +31,7 @@ doubles episimR_time_sample(int n, const transmission_time_R& ttr, interval_t t,
 }
 
 [[cpp11::register]]
-doubles episimR_time_density(const transmission_time_R& ttr, doubles taus) {
+doubles nextnetR_time_density(const transmission_time_R& ttr, doubles taus) {
     if (!ttr) throw std::runtime_error("time distribution cannot be NULL"); 
 
     transmission_time& tt = *(ttr.get());
@@ -44,7 +44,7 @@ doubles episimR_time_density(const transmission_time_R& ttr, doubles taus) {
 }
 
 [[cpp11::register]]
-doubles episimR_time_hazardrate(const transmission_time_R& ttr, doubles taus) {
+doubles nextnetR_time_hazardrate(const transmission_time_R& ttr, doubles taus) {
     if (!ttr) throw std::runtime_error("time distribution cannot be NULL"); 
 
     transmission_time& tt = *(ttr.get());
@@ -57,7 +57,7 @@ doubles episimR_time_hazardrate(const transmission_time_R& ttr, doubles taus) {
 }
 
 [[cpp11::register]]
-doubles episimR_time_survivalprobability(const transmission_time_R& ttr, doubles taus, doubles ts, integers ms) {
+doubles nextnetR_time_survivalprobability(const transmission_time_R& ttr, doubles taus, doubles ts, integers ms) {
     if (!ttr)
       throw std::runtime_error("time distribution cannot be NULL"); 
     if ((taus.size() != ts.size()) || (taus.size() != ms.size()))
@@ -80,7 +80,7 @@ doubles episimR_time_survivalprobability(const transmission_time_R& ttr, doubles
 }
 
 [[cpp11::register]]
-doubles episimR_time_survivalquantile(const transmission_time_R& ttr, doubles ps, doubles ts, integers ms) {
+doubles nextnetR_time_survivalquantile(const transmission_time_R& ttr, doubles ps, doubles ts, integers ms) {
   if (!ttr)
     throw std::runtime_error("time distribution cannot be NULL"); 
   if ((ps.size() != ts.size()) || (ps.size() != ms.size()))
@@ -103,17 +103,17 @@ doubles episimR_time_survivalquantile(const transmission_time_R& ttr, doubles ps
 }
 
 [[cpp11::register]]
-transmission_time_R episimR_exponential_time(double lambda) {
+transmission_time_R nextnetR_exponential_time(double lambda) {
     return new transmission_time_exponential(lambda);
 }
 
 [[cpp11::register]]
-transmission_time_R episimR_lognormal_time(double mean, double var, double pinf = 0.0) {
+transmission_time_R nextnetR_lognormal_time(double mean, double var, double pinf = 0.0) {
     return new transmission_time_lognormal(mean, var, pinf);
 }
 
 [[cpp11::register]]
-transmission_time_R episimR_gamma_time(double mean, double var, double pinf = 0.0) {
+transmission_time_R nextnetR_gamma_time(double mean, double var, double pinf = 0.0) {
     return new transmission_time_gamma(mean, var, pinf);
 }
 
@@ -177,7 +177,7 @@ struct rfunction_transmission_time : public transmission_time {
 };
 
 [[cpp11::register]]
-transmission_time_R episimR_generic_time(
+transmission_time_R nextnetR_generic_time(
     SEXP density,
     SEXP survivalprobability, bool probability_is_trinary,
     SEXP survivalquantile, bool quantile_is_trinary,

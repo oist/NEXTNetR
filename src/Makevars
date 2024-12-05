@@ -2,22 +2,22 @@
 
 PKG_CXXFLAGS = --std=c++17 -Wno-c++20-extensions -Wno-macro-redefined\
 	-DRNG=RNG_STDMT19937 -DCPP11_USE_FMT=1 -DBOOST_NO_CXX17_HDR_EXECUTION \
-	-I../ext/eon -I../ext/eon/ext -I../ext/eon/ext/dyndist
+	-I../ext/nextnet -I../ext/nextnet/ext -I../ext/nextnet/ext/dyndist
 
 SOURCES = \
 	cpp11.cpp \
 	transmission_time.cpp \
-	graph.cpp \
+	network.cpp \
 	simulation.cpp \
 	rng.cpp \
-	../ext/eon/epidemics/graph.cpp \
-	../ext/eon/epidemics/dynamic_graph.cpp \
-	../ext/eon/epidemics/brownian_proximity_graph.cpp \
-	../ext/eon/epidemics/NextReaction.cpp \
-	../ext/eon/epidemics/NextReactionMeanField.cpp \
-	../ext/eon/epidemics/nMGA.cpp \
-	../ext/eon/epidemics/algorithm.cpp \
-	../ext/eon/epidemics/random.cpp \
-	../ext/eon/epidemics/utility.cpp \
+	../ext/nextnet/nextnet/network.cpp \
+	../ext/nextnet/nextnet/temporal_network.cpp \
+	../ext/nextnet/nextnet/brownian_proximity_network.cpp \
+	../ext/nextnet/nextnet/NextReaction.cpp \
+	../ext/nextnet/nextnet/NextReactionMeanField.cpp \
+	../ext/nextnet/nextnet/nMGA.cpp \
+	../ext/nextnet/nextnet/algorithm.cpp \
+	../ext/nextnet/nextnet/random.cpp \
+	../ext/nextnet/nextnet/utility.cpp \
 	
 OBJECTS = $(SOURCES:.cpp=.o)

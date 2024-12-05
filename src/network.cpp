@@ -5,21 +5,21 @@
 #include <cpp11/function.hpp>
 #include <cpp11/external_pointer.hpp>
 
-#include "episimR_types.h"
+#include "NEXTNetR_types.h"
 #include "rng.h"
 
-#include "epidemics/types.h"
-#include "epidemics/graph.h"
-#include "epidemics/dynamic_graph.h"
-#include "epidemics/brownian_proximity_graph.h"
+#include "nextnet/types.h"
+#include "nextnet/network.h"
+#include "nextnet/temporal_network.h"
+#include "nextnet/brownian_proximity_network.h"
 
-using namespace episimR;
+using namespace nextnetR;
 
 using namespace cpp11;
 namespace writable = cpp11::writable;
 
 [[cpp11::register]]
-int episimR_graph_size(const graph_R& nw) {
+int nextnetR_network_size(const network_R& nw) {
     if (!nw) throw std::runtime_error("graph cannot be NULL"); 
     
     /* Must enter RNG scope since graphs may generate their topology on the fly */
@@ -29,7 +29,7 @@ int episimR_graph_size(const graph_R& nw) {
 }
 
 [[cpp11::register]]
-bool episimR_graph_is_undirected(const graph_R& nw) {
+bool nextnetR_network_is_undirected(const network_R& nw) {
     if (!nw) throw std::runtime_error("graph cannot be NULL"); 
     
     /* Must enter RNG scope since graphs may generate their topology on the fly */
@@ -39,7 +39,7 @@ bool episimR_graph_is_undirected(const graph_R& nw) {
 }
 
 [[cpp11::register]]
-integers episimR_graph_outdegree(const graph_R& nw, integers nodes) {
+integers nextnetR_network_outdegree(const network_R& nw, integers nodes) {
     if (!nw) throw std::runtime_error("graph cannot be NULL"); 
     
     /* Must enter RNG scope since graphs may generate their topology on the fly */
@@ -56,7 +56,7 @@ integers episimR_graph_outdegree(const graph_R& nw, integers nodes) {
 }
 
 [[cpp11::register]]
-integers episimR_graph_neighbour(const graph_R& nw, integers nodes, integers indices) {
+integers nextnetR_network_neighbour(const network_R& nw, integers nodes, integers indices) {
     if (!nw) throw std::runtime_error("graph cannot be NULL"); 
 
     /* Must enter RNG scope since graphs may generate their topology on the fly */
@@ -86,13 +86,13 @@ integers episimR_graph_neighbour(const graph_R& nw, integers nodes, integers ind
 }
 
 [[cpp11::register]]
-list episimR_graph_adjacencylist(const graph_R& nw) {
+list nextnetR_network_adjacencylist(const network_R& nw) {
     if (!nw) throw std::runtime_error("graph cannot be NULL"); 
 
     /* Must enter RNG scope since graphs may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
 
-    /* TODO: For instances of graph_adjacencylist, this could be done more efficiently */
+    /* TODO: For instances of network_adjacencylist, this could be done more efficiently */
 
     /* Allocate output, a vector of node labels and a list of neighbour vectors */
     const int l = nw->nodes();
@@ -123,12 +123,12 @@ list episimR_graph_adjacencylist(const graph_R& nw) {
 }
 
 [[cpp11::register]]
-list episimR_graph_bounds(const graph_R& nw) {
+list nextnetR_network_bounds(const network_R& nw) {
     if (!nw) throw std::runtime_error("graph cannot be NULL"); 
 
     RNG_SCOPE_IF_NECESSARY;
     
-    graph_embedding* const ebd = dynamic_cast<graph_embedding*>(nw.get());
+    network_embedding* const ebd = dynamic_cast<network_embedding*>(nw.get());
     if (ebd == nullptr)
         throw std::runtime_error("graph is not embedded into R^d");
     
@@ -142,12 +142,12 @@ list episimR_graph_bounds(const graph_R& nw) {
 }
 
 [[cpp11::register]]
-doubles_matrix<> episimR_graph_coordinates(const graph_R& nw, integers nodes) {
+doubles_matrix<> nextnetR_network_coordinates(const network_R& nw, integers nodes) {
     if (!nw) throw std::runtime_error("graph cannot be NULL"); 
 
     RNG_SCOPE_IF_NECESSARY;
     
-    graph_embedding* const ebd = dynamic_cast<graph_embedding*>(nw.get());
+    network_embedding* const ebd = dynamic_cast<network_embedding*>(nw.get());
     if (ebd == nullptr)
         throw std::runtime_error("graph is not embedded into R^d");
     
@@ -164,43 +164,43 @@ doubles_matrix<> episimR_graph_coordinates(const graph_R& nw, integers nodes) {
 }
 
 [[cpp11::register]]
-graph_R episimR_stored_graph(r_string filename) {
-    return new imported_network((std::string)filename);
+network_R nextnetR_empirical_network(r_string filename) {
+    return new empirical_network((std::string)filename);
 }
 
 [[cpp11::register]]
-graph_R episimR_erdos_reyni_graph(int size, double avg_degree) {
+network_R nextnetR_erdos_reyni_network(int size, double avg_degree) {
     RNG_SCOPE_IF_NECESSARY;
     return new erdos_reyni(size, avg_degree, rng_engine());
 }
 
 [[cpp11::register]]
-graph_R episimR_fully_connected_graph(int size) {
+network_R nextnetR_fully_connected_network(int size) {
     RNG_SCOPE_IF_NECESSARY;
     return new fully_connected(size, rng_engine());
 }
 
 [[cpp11::register]]
-graph_R episimR_acyclic_graph(int size, double avg_degree, bool reduced_root_degree) {
+network_R nextnetR_acyclic_network(int size, double avg_degree, bool reduced_root_degree) {
     RNG_SCOPE_IF_NECESSARY;
     return new acyclic(avg_degree, reduced_root_degree, rng_engine());
 }
 
 [[cpp11::register]]
-graph_R episimR_configmodel_graph(integers degrees) {
+network_R nextnetR_configmodel_network(integers degrees) {
     RNG_SCOPE_IF_NECESSARY;
     return new config_model(std::vector<int>(degrees.begin(), degrees.end()), rng_engine());
 }
 
 [[cpp11::register]]
-graph_R episimR_configmodel_clustered_alpha_graph(integers degrees, double alpha, double beta) {
+network_R nextnetR_configmodel_clustered_alpha_network(integers degrees, double alpha, double beta) {
     RNG_SCOPE_IF_NECESSARY;
     return new config_model_clustered_serrano(std::vector<int>(degrees.begin(), degrees.end()),
                                               alpha, beta, rng_engine());
 }
 
 [[cpp11::register]]
-graph_R episimR_configmodel_clustered_ck_graph(integers degrees, SEXP ck, double beta) {
+network_R nextnetR_configmodel_clustered_ck_network(integers degrees, SEXP ck, double beta) {
     RNG_SCOPE_IF_NECESSARY;
     function ck_rf = ck;
     auto ck_lambda = [ck_rf] (int k) { return as_cpp<double>(ck_rf(k)); };
@@ -209,7 +209,7 @@ graph_R episimR_configmodel_clustered_ck_graph(integers degrees, SEXP ck, double
 }
 
 [[cpp11::register]]
-graph_R episimR_configmodel_clustered_triangles_graph(integers degrees, integers triangles, double beta) {
+network_R nextnetR_configmodel_clustered_triangles_network(integers degrees, integers triangles, double beta) {
     RNG_SCOPE_IF_NECESSARY;
     return new config_model_clustered_serrano(std::vector<int>(degrees.begin(), degrees.end()),
                                               std::vector<int>(triangles.begin(), triangles.end()),
@@ -217,85 +217,85 @@ graph_R episimR_configmodel_clustered_triangles_graph(integers degrees, integers
 }
 
 [[cpp11::register]]
-graph_R episimR_barabasialbert_graph(int size, int m) {
+network_R nextnetR_barabasialbert_network(int size, int m) {
     return new barabasi_albert(size, rng_engine(), m);
 }
 
 [[cpp11::register]]
-graph_R episimR_cubiclattice2d_graph(int edge_length) {
+network_R nextnetR_cubiclattice2d_network(int edge_length) {
     return new cubic_lattice_2d(edge_length);
 }
 
 [[cpp11::register]]
-graph_R episimR_cubiclattice3d_graph(int edge_length) {
+network_R nextnetR_cubiclattice3d_network(int edge_length) {
     return new cubic_lattice_3d(edge_length);
 }
 
 [[cpp11::register]]
-graph_R episimR_cubiclattice4d_graph(int edge_length) {
+network_R nextnetR_cubiclattice4d_network(int edge_length) {
     return new cubic_lattice_4d(edge_length);
 }
 
 [[cpp11::register]]
-graph_R episimR_cubiclattice5d_graph(int edge_length) {
+network_R nextnetR_cubiclattice5d_network(int edge_length) {
     return new cubic_lattice_5d(edge_length);
 }
 
 [[cpp11::register]]
-graph_R episimR_cubiclattice6d_graph(int edge_length) {
+network_R nextnetR_cubiclattice6d_network(int edge_length) {
     return new cubic_lattice_6d(edge_length);
 }
 
 [[cpp11::register]]
-graph_R episimR_cubiclattice7d_graph(int edge_length) {
+network_R nextnetR_cubiclattice7d_network(int edge_length) {
     return new cubic_lattice_7d(edge_length);
 }
 
 [[cpp11::register]]
-graph_R episimR_cubiclattice8d_graph(int edge_length) {
+network_R nextnetR_cubiclattice8d_network(int edge_length) {
     return new cubic_lattice_8d(edge_length);
 }
 
 [[cpp11::register]]
-graph_R episimR_brownian_proximity_dyngraph(int size, double avg_degree, double radius,
+network_R nextnetR_brownian_proximity_temporalnetwork(int size, double avg_degree, double radius,
                                             double D0, double D1, double gamma, SEXP dt) {
     RNG_SCOPE_IF_NECESSARY;
     if (dt == R_NilValue)
-        return new brownian_proximity_graph(size, avg_degree, radius, D0, D1, gamma,
-                                            rng_engine());
+        return new brownian_proximity_network(size, avg_degree, radius, D0, D1, gamma,
+                                              rng_engine());
     else
-        return new brownian_proximity_graph(size, avg_degree, radius, D0, D1, gamma,
-                                            as_cpp<double>(dt), rng_engine());
+        return new brownian_proximity_network(size, avg_degree, radius, D0, D1, gamma,
+                                              as_cpp<double>(dt), rng_engine());
 }
 
 [[cpp11::register]]
-graph_R episimR_empirical_dyngraph(std::string file, bool finite_duration, double dt) {
+network_R nextnetR_empirical_temporalnetwork(std::string file, bool finite_duration, double dt) {
     RNG_SCOPE_IF_NECESSARY;
     if (finite_duration)
-        return new dynamic_empirical_network(file, dynamic_empirical_network::finite_duration, dt);
+        return new empirical_temporal_network(file, empirical_temporal_network::finite_duration, dt);
     else
-        return new dynamic_empirical_network(file, dynamic_empirical_network::infitesimal_duration, dt);
+        return new empirical_temporal_network(file, empirical_temporal_network::infitesimal_duration, dt);
 }
 
 [[cpp11::register]]
-graph_R episimR_sirx_dyngraph(const graph_R& nw, double kappa0, double kappa) {
+network_R nextnetR_sirx_temporalnetwork(const network_R& nw, double kappa0, double kappa) {
     if (!nw) throw std::runtime_error("underlying graph cannot be null"); 
 
     RNG_SCOPE_IF_NECESSARY;
     
-    /* dynamic_sirx_networ stores the underlying network by reference, so
+    /* temporal_sirx_network stores the underlying network by reference, so
      * add it to the externalptr metadata to extend its lifetime
     */
-    return { new dynamic_sirx_network(*nw.get(), kappa0, kappa),
+    return { new temporal_sirx_network(*nw.get(), kappa0, kappa),
              writable::list({"nw"_nm = nw}),
              true, true };
 }
 
 namespace {
 
-class graph_userdefined : public graph_adjacencylist {
+class nextnetR_adjacencylist_network_impl : public adjacencylist_network {
 public:
-    graph_userdefined(std::vector<std::vector<node_t>>&& al, bool undirected_ = false)
+    nextnetR_adjacencylist_network_impl(std::vector<std::vector<node_t>>&& al, bool undirected_ = false)
         :undirected(undirected_)
     {
         adjacencylist = std::move(al);
@@ -312,7 +312,7 @@ private:
 }
 
 [[cpp11::register]]
-graph_R episimR_userdefined_graph(list input_al, bool is_undirected) {
+network_R nextnetR_adjacencylist_network(list input_al, bool is_undirected) {
     const std::size_t n = input_al.size();
     if (n > std::numeric_limits<node_t>::max())
       throw std::runtime_error("too many nodes");
@@ -368,5 +368,5 @@ graph_R episimR_userdefined_graph(list input_al, bool is_undirected) {
         throw std::runtime_error(std::to_string(directed_edges.size()) + " directed edges found " +
                                  "in network claimed to be undirected");
     
-    return new graph_userdefined(std::move(adjacencylist));
+    return new nextnetR_adjacencylist_network_impl(std::move(adjacencylist), is_undirected);
 }

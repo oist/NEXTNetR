@@ -8,19 +8,19 @@
 #include <cpp11/function.hpp>
 #include <cpp11/external_pointer.hpp>
 
-#include "episimR_types.h"
+#include "NEXTNetR_types.h"
 #include "rng.h"
 
-#include "epidemics/types.h"
-#include "epidemics/algorithm.h"
-#include "epidemics/NextReaction.h"
+#include "nextnet/types.h"
+#include "nextnet/algorithm.h"
+#include "nextnet/NextReaction.h"
 
 using namespace std::literals;
-using namespace episimR;
+using namespace nextnetR;
 using namespace cpp11;
 namespace writable = cpp11::writable;
 
-namespace episimR {
+namespace nextnetR {
 
 typedef std::unordered_map<std::string, sexp> options_collection_type;
 
@@ -119,4 +119,4 @@ list process_options(const list& opts, Handlers... handlers)
     return opts_out_list;
 }
 
-} /* namespace episimR */
+} /* namespace nextnetR */

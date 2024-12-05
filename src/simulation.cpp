@@ -12,24 +12,24 @@ WARNINGS_ENABLE
 #include <cpp11/function.hpp>
 #include <cpp11/external_pointer.hpp>
 
-#include "episimR_types.h"
+#include "NEXTNetR_types.h"
 #include "rng.h"
 #include "options.h"
 
-#include "epidemics/types.h"
-#include "epidemics/algorithm.h"
-#include "epidemics/NextReaction.h"
-#include "epidemics/NextReactionMeanField.h"
-#include "epidemics/nMGA.h"
+#include "nextnet/types.h"
+#include "nextnet/algorithm.h"
+#include "nextnet/NextReaction.h"
+#include "nextnet/NextReactionMeanField.h"
+#include "nextnet/nMGA.h"
 
 using namespace std::literals;
-using namespace episimR;
+using namespace nextnetR;
 using namespace cpp11;
 namespace writable = cpp11::writable;
 
 [[cpp11::register]]
-simulation_R episimR_nextreaction_simulation(
-    graph_R nw, transmission_time_R psi, sexp rho_, list opts
+simulation_R nextnetR_nextreaction_simulation(
+    network_R nw, transmission_time_R psi, sexp rho_, list opts
 ) {
     if (!nw) throw std::runtime_error("graph cannot be NULL"); 
     if (!psi) throw std::runtime_error("transmission time distribution cannot be NULL");
@@ -52,13 +52,13 @@ simulation_R episimR_nextreaction_simulation(
     simulation_algorithm* sim = new simulate_next_reaction(*nw.get(), *psi.get(), rho, p);
 
     // Create dynamic network simulator unless network is static, or override was set
-    const bool use_sodn = (dynamic_cast<dynamic_network*>(nw.get()) != nullptr) && !static_network;
-    simulate_on_dynamic_network* sodn = use_sodn ? new simulate_on_dynamic_network(*sim) : nullptr;
+    const bool use_sotn = (dynamic_cast<temporal_network*>(nw.get()) != nullptr) && !static_network;
+    simulate_on_temporal_network* sotn = use_sotn ? new simulate_on_temporal_network(*sim) : nullptr;
 
     // Return simulation algorithm, store dynamic network simulator in meta-data list
     return { sim,
              writable::list({"nw"_nm = nw, "psi"_nm = psi, "rho"_nm = rho_,
-                             "sodn"_nm = use_sodn ? (sexp)sodn_R(sodn) : (sexp)R_NilValue,
+                             "sotn"_nm = use_sotn ? (sexp)sotn_R(sotn) : (sexp)R_NilValue,
                              "opts"_nm = opts_out,
                              "step"_nm = writable::integers { 0 },
                              "nwst"_nm = writable::integers { 0 },
@@ -69,7 +69,7 @@ simulation_R episimR_nextreaction_simulation(
 }
 
 [[cpp11::register]]
-simulation_R episimR_nextreaction_simulation_meanfield(
+simulation_R nextnetR_nextreaction_simulation_meanfield(
     int N, double R0, transmission_time_R psi, sexp rho_, list opts
 ) {
     if (!psi) throw std::runtime_error("transmission time distribution cannot be NULL");
@@ -84,7 +84,7 @@ simulation_R episimR_nextreaction_simulation_meanfield(
 
     return { new simulate_next_reaction_mean_field(N, R0, *psi.get(), rho),
              writable::list({"nw"_nm = R_NilValue, "psi"_nm = psi, "rho"_nm = rho_,
-                             "sodn"_nm = R_NilValue,
+                             "sotn"_nm = R_NilValue,
                              "opts"_nm = opts_out,
                              "step"_nm = writable::integers { 0 },
                              "nwst"_nm = writable::integers { 0 },
@@ -95,8 +95,8 @@ simulation_R episimR_nextreaction_simulation_meanfield(
 }
 
 [[cpp11::register]]
-simulation_R episimR_nmga_simulation(
-    graph_R nw, transmission_time_R psi, sexp rho_, list opts
+simulation_R nextnetR_nmga_simulation(
+    network_R nw, transmission_time_R psi, sexp rho_, list opts
 ) {
     if (!nw) throw std::runtime_error("graph cannot be NULL"); 
     if (!psi) throw std::runtime_error("transmission time distribution cannot be NULL");
@@ -116,7 +116,7 @@ simulation_R episimR_nmga_simulation(
         
     return { new simulate_nmga(*nw.get(), *psi.get(), rho, params),
              writable::list({"nw"_nm = nw, "psi"_nm = psi, "rho"_nm = rho_,
-                             "sodn"_nm = R_NilValue,
+                             "sotn"_nm = R_NilValue,
                              "opts"_nm = opts_out,
                              "step"_nm = writable::integers { 0 },
                              "nwst"_nm = writable::integers { 0 },
@@ -127,35 +127,35 @@ simulation_R episimR_nmga_simulation(
 }
 
 [[cpp11::register]]
-transmission_time_R episimR_simulation_transmissiontime(const simulation_R& sim) {
+transmission_time_R nextnetR_simulation_transmissiontime(const simulation_R& sim) {
     if (!sim) throw std::runtime_error("simulation cannot be NULL");
     
     return ((list)sim.protected_data())["psi"];
 }
 
 [[cpp11::register]]
-SEXP episimR_simulation_resettime(const simulation_R& sim) {
+SEXP nextnetR_simulation_resettime(const simulation_R& sim) {
     if (!sim) throw std::runtime_error("simulation cannot be NULL");
     
     return ((list)sim.protected_data())["rho"];
 }
 
 [[cpp11::register]]
-graph_R episimR_simulation_graph(const simulation_R& sim) {
+network_R nextnetR_simulation_graph(const simulation_R& sim) {
     if (!sim) throw std::runtime_error("simulation cannot be NULL");
     
     return ((list)sim.protected_data())["nw"];
 }
 
 [[cpp11::register]]
-list episimR_simulation_options(const simulation_R& sim) {
+list nextnetR_simulation_options(const simulation_R& sim) {
     if (!sim) throw std::runtime_error("simulation cannot be NULL");
     
     return ((list)sim.protected_data())["opts"];
 }
 
 [[cpp11::register]]
-list episimR_simulation_ninfected(const simulation_R& sim) {
+list nextnetR_simulation_ninfected(const simulation_R& sim) {
   if (!sim) throw std::runtime_error("simulation cannot be NULL");
   
   const list sim_data = sim.protected_data();
@@ -167,7 +167,7 @@ list episimR_simulation_ninfected(const simulation_R& sim) {
 }
 
 [[cpp11::register]]
-logicals episimR_simulation_isinfected(const simulation_R& sim, integers nodes) {
+logicals nextnetR_simulation_isinfected(const simulation_R& sim, integers nodes) {
     if (!sim) throw std::runtime_error("simulation cannot be NULL");
     
     /* Create output */
@@ -183,7 +183,7 @@ logicals episimR_simulation_isinfected(const simulation_R& sim, integers nodes) 
 }
 
 [[cpp11::register]]
-void episimR_simulation_addinfections(const simulation_R& sim, integers nodes, doubles times) {
+void nextnetR_simulation_addinfections(const simulation_R& sim, integers nodes, doubles times) {
     if (!sim) throw std::runtime_error("simulation cannot be NULL");
 
     if (nodes.size() != times.size())
@@ -208,7 +208,7 @@ void episimR_simulation_addinfections(const simulation_R& sim, integers nodes, d
 }
 
 [[cpp11::register]]
-data_frame episimR_simulation_run(const simulation_R& sim_, list stop, list opts) {
+data_frame nextnetR_simulation_run(const simulation_R& sim_, list stop, list opts) {
     RNG_SCOPE_IF_NECESSARY;
 
     if (!sim_) throw std::runtime_error("simulation cannot be NULL");
@@ -240,9 +240,9 @@ data_frame episimR_simulation_run(const simulation_R& sim_, list stop, list opts
     writable::list sim_data(std::move(sim_.protected_data())); // move means modify in place
 
     // Get dynamic network simulation algorithm
-    const sexp sodn_sexp = (sexp)sim_data["sodn"];
-    simulate_on_dynamic_network* const sodn = (
-        (sodn_sexp != R_NilValue) ? sodn_R(sodn_sexp).get() : nullptr);
+    const sexp sotn_sexp = (sexp)sim_data["sotn"];
+    simulate_on_temporal_network* const sotn = (
+        (sotn_sexp != R_NilValue) ? sotn_R(sotn_sexp).get() : nullptr);
 
     // Get current infection & reset counters, arrange for them to be updated at the end
     double time = R_NegInf;
@@ -274,8 +274,8 @@ data_frame episimR_simulation_run(const simulation_R& sim_, list stop, list opts
     kinds.reserve(1); // make sure the SEXP is not null
     writable::strings kinds_levels;
     int network_event_offset = 0;
-    for(int i=0; name((event_kind)i) != NULL; ++i, ++network_event_offset)
-      kinds_levels.push_back(name((event_kind)i));
+    for(int i=0; name((epidemic_event_kind)i) != NULL; ++i, ++network_event_offset)
+      kinds_levels.push_back(name((epidemic_event_kind)i));
     for(int i=0; name((network_event_kind)i) != NULL; ++i)
       kinds_levels.push_back(name((network_event_kind)i));
 
@@ -298,8 +298,8 @@ data_frame episimR_simulation_run(const simulation_R& sim_, list stop, list opts
 
         // Perform step, use dynamic network simulator if available
         std::optional<network_or_epidemic_event_t> any_ev_opt;
-        if (sodn != nullptr)
-            any_ev_opt = sodn->step(rng_engine(), stop_time);
+        if (sotn != nullptr)
+            any_ev_opt = sotn->step(rng_engine(), stop_time);
         else
             any_ev_opt = sim.step(rng_engine(), stop_time);
 
@@ -313,19 +313,19 @@ data_frame episimR_simulation_run(const simulation_R& sim_, list stop, list opts
         int node;
         int neighbour = NA_INTEGER;
 
-        if (std::holds_alternative<event_t>(any_ev)) {
+        if (std::holds_alternative<epidemic_event_t>(any_ev)) {
             // Epidemic event
-            const auto ev = std::get<event_t>(any_ev);
+            const auto ev = std::get<epidemic_event_t>(any_ev);
             // Update state
             time = ev.time;
             ++epidemic_step_;
             switch (ev.kind) {
-                case event_kind::outside_infection:
-                case event_kind::infection:
+                case epidemic_event_kind::outside_infection:
+                case epidemic_event_kind::infection:
                     ++total_infected_;
                     ++infected_;
                     break;
-                case event_kind::reset:
+                case epidemic_event_kind::reset:
                     ++total_reset_;
                     --infected_;
                     break;
@@ -338,7 +338,7 @@ data_frame episimR_simulation_run(const simulation_R& sim_, list stop, list opts
             // Fill row
             kind = name(ev.kind) ? (int)(ev.kind) + 1 : NA_INTEGER;
             node = ev.node + 1;
-            if (ev.kind == event_kind::infection)
+            if (ev.kind == epidemic_event_kind::infection)
                 neighbour = ev.source_node + 1;
         }
         else if (std::holds_alternative<network_event_t>(any_ev)) {

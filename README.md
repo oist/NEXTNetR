@@ -1,20 +1,20 @@
 # Introduction
 
-*episimR* is an R package that allows non-Markovian epidemics for arbitrary transmission time and recovery (reset) time distribution to be simulated on arbitrary contact network graphs. *episimR* is an R wrapper around the C++ simulator <https://github.com/samuelcure/Epidemics-On-Networks>.
+*NEXTNetR* (*N*ext-reaction-based *E*pidemics e*X*tended to *T*emporal *Net*works) is an R package for the efficient simulation of epidemics on complex networks with arbitrary transmission and recovery time distributions. *NEXTNetR* is an R wrapper around the C++ library NEXTNet <https://github.com/oist/NEXTNet>.
 
 # Installation
 
-The latest version of *episimR* can be installed directly from Github by executing the following in R:
+The latest version of *NEXTNetR* can be installed directly from Github by executing the following in R:
 
     install.packages(c("devtools", "git2r"))
-    devtools::install_git("git@github.com:fgp/episimR.git")
+    devtools::install_git("git@github.com:oist/NEXTNetR")
 
 # Synopsis
 
 The following R script sets up and runs a simulation on an Erdös-Reyni network with lognormally distributed transmission time (i.e. the generation time between subsequent infections) and lognormally distribured reset time (the time until an infected node becomes susecptible again).
 
     # Load library
-    library(episimR)
+    library(NEXTNetR)
 
     # Parameters, which are network size (N), average number of contacts (K), 
     # mean infection transmission time (Mi) and variance (Vi),
@@ -26,8 +26,8 @@ The following R script sets up and runs a simulation on an Erdös-Reyni network 
     Mr <- 50
     Vr <- 20
 
-    # Create contact network graph
-    g <- erdos_reyni_graph(N, K)
+    # Create contact network network
+    g <- erdos_reyni_network(N, K)
 
     # Create transmission and reset time distributions
     psi <- lognormal_time(Mi, Vi)
@@ -38,44 +38,44 @@ The following R script sets up and runs a simulation on an Erdös-Reyni network 
     simulation_addinfections(sim, nodes=c(1), times=c(0.0))
 
     # Run simulation for 1e5 steps
-    r <- simulation_step(sim, 1e5)
+    r <- simulation_run(sim, list(epidemic_steps=1e5))
 
     # Plot the number of infected nodes against time
     plot(r$time, r$infected, type='l')
 
 # Reference
 
-To run a simulation, two objects must be created first, a *contact network graph*, and a *transmission time* distribution.
+To run a simulation, two objects must be created first, a *network*, and a *transmission time* distribution.
 
-## Creating and querying contact network graphs
+## Creating and querying contact network networks
 
 To create networks, the following functions are available
 
-    erdos_reyni_graph(size, avg_degree)
-    fully_connected_graph(size)
-    acyclic_graph(size, avg_degree, reduced_root_degree)
-    configmodel_graph(degrees)
-    barabasialbert_graph(size, m)
-    configmodel_clustered_graph(degrees, alpha_or_ck_or_triangles, beta)
-    cubiclattice2d_graph
+    erdos_reyni_network(size, avg_degree)
+    fully_connected_network(size)
+    acyclic_network(size, avg_degree, reduced_root_degree)
+    configmodel_network(degrees)
+    barabasialbert_network(size, m)
+    configmodel_clustered_network(degrees, alpha_or_ck_or_triangles, beta)
+    cubiclattice2d_network
     ...
-    cubiclattice8d_graph
-    brownian_proximity_dyngraph(size, avg_degree, contact_radius, D, dt)
-    empirical_dyngraph(file, finite_duration, dt)
-    stored_graph(filename)
-    userdefined_graph(adjacencylist)
+    cubiclattice8d_network
+    brownian_proximity_temporalnetwork(size, avg_degree, contact_radius, D, dt)
+    empirical_temporalnetwork(file, finite_duration, dt)
+    empirical_network(filename)
+    adjacencylist_network(adjacencylist)
     
-For user-defined graphs, the topology is defined by the adjacency list, which must be a *list* whose length defines the number of nodes. The *i*-th element of the list must be an *integer vector* with elements from [*1*,*n*] listing the neighbours of the *i*-th node. For example, `list(c(2,3), c(1,3), c(1,2))` represents the complete graph with 3 nodes.
+For user-defined networks, the topology is defined by the adjacency list, which must be a *list* whose length defines the number of nodes. The *i*-th element of the list must be an *integer vector* with elements from [*1*,*n*] listing the neighbours of the *i*-th node. For example, `list(c(2,3), c(1,3), c(1,2))` represents the complete network with 3 nodes.
 
-The topology of an existing contact network graph *g* returned by one of the functions above can be inspected with
+The topology of an existing contact network network *g* returned by one of the functions above can be inspected with
 
-    graph_outdegree(graph, nodes)
-    graph_neighbour(graph, nodes, indices)
-    graph_adjacencylist(graph)
+    network_outdegree(network, nodes)
+    network_neighbour(network, nodes, indices)
+    network_adjacencylist(network)
 
-For graph embedded into d-dimensional space, the coordinates of the nodes can be queried with
+For network embedded into d-dimensional space, the coordinates of the nodes can be queried with
 
-    graph_coordinates(graph, nodes)
+    network_coordinates(network, nodes)
 
 ## Creating and querying time distributions
 
@@ -103,9 +103,9 @@ The density, hazardrate, cumulative survival function (i.e. 1 - CDF) and surviva
 
 ### Creating simulations using the NextReaction algorithm
 
-Given a contact network *graph*, transmission time distribution *psi* and reset time distribution *rho*, a simulation using the NextReaction algorithm is created with
+Given a contact network *network*, transmission time distribution *psi* and reset time distribution *rho*, a simulation using the NextReaction algorithm is created with
 
-    nextreaction_simulation(graph, psi, rho = NULL, options = list())
+    nextreaction_simulation(network, psi, rho = NULL, options = list())
 
 The *options* parameter must be a named list specified the option names and their values. The supported options are:
 
@@ -115,13 +115,19 @@ The *options* parameter must be a named list specified the option names and thei
 *edges_concurrent*
 : Whether to activate all outgoing edges simultaenously or sequentially. If set to true, neighbours are implicitly shuffled and *shuffle_neighbours* thus has no effect. Default *false*.
 
+*SIR*
+: Whether to simulate using a SIR (*S*usceptiple, *I*nfected, *R*ecovered) or SIS (*S*usceptiple, *I*nfected, *S*usceptible) model. If set to true, the model is SIR, i.e. recovered individuals do not become susceptible again.
+
+*static_network*
+: Whether to treat a temporal network as static. By default, if a temporal network is specified, the network will evolve over time as the simulation commences. If *static_network* is set to true, the network is not evolved.
+
 ### Creating simulations using the nMGA algorithm
 
-Given a contact network *graph*, transmission time distribution *psi* and reset time distribution *rho*, a simulation using the nMGA algorithm is created with
+Given a contact network *network*, transmission time distribution *psi* and reset time distribution *rho*, a simulation using the nMGA algorithm is created with
 
-    nmga_simulation(graph, psi, rho = NULL, options = list())
+    nmga_simulation(network, psi, rho = NULL, options = list())
 
-The *options* parameter must be a named list specified the option names and their values. he supported options are:
+The *options* parameter must be a named list which specifies the option names and their values. The supported options are:
 
 *approx_threshold*
 : Threshold for infected nodes at which the approximate algorithm is used
@@ -132,24 +138,48 @@ The *options* parameter must be a named list specified the option names and thei
 *tauprec*
 : Numerical precision used to invert the CDF in the exact algorithm
 
+### Creating simulations using the REGIR algorithm
+
+The R wrapper currently does not support the REGIR algorithm
+
 ### Querying and running simulations, obtaining results
 
 Before running a simulation, an initial set of infected nodes plus the times at which these become infected must be specified.
 
     simulation_addinfections(sim, nodes, times)
 
-The simulation can then be run for the specified number of steps with
+The simulation can then be run until one of a list of possible stopping conditions is reached with
 
-    simulation_step(sim, steps)
+    simulation_run(sim, stopping_condition)
+    
+The *stopping_condition* parameter must be a named list which specifies the stopping conditions to apply. The supported conditions are:
+
+*epidemic_steps*
+: Stop after the specified number of epidemic steps (i.e. infections or recoveries/resets)
+
+*network_steps*
+: Stop after the specified number of network topology changes
+
+*time*
+: Stop at the specified simulation time
+
+*infected*
+: Stop when the current number of infected nodes reaches the specified threshold. Recovered/reset nodes to not count towards infected nodes here.
+
+*total_infected*
+: Stop when the cumulative number of infection events reaches the specified threshold.
+
+*total_reset*
+: Stop when the cumulative number of recover/reset events reaches the specified threshold.
 
 Running a simulation returns a `data.frame` which lists the event that occurred in each step in ascending order of time of occurrence. The result contains the 6 columns *time*, *kind* (infection or reset), *node* (1-based index of affected node), *total_infected* (total number of infection so far), *total_reset* (total number of reset so far), *infected* (number of currently infected nodes). *simulation_step* returns after the specified number of steps, but can be continued by simply calling *simulation_step* again.
 
-The constituent parts of a simulation (contact network graph and time distribution) and the current state of the simulation
+The constituent parts of a simulation (contact network network and time distribution) and the current state of the simulation
 (number of infected nodes and whether a node is infected or not) can be queried with
 
     simulation_transmissiontime(sim)
     simulation_resettime(sim)
-    simulation_graph(sim)
+    simulation_network(sim)
     simulation_options(sim)
     simulation_ninfected(sim)
     simulation_isinfected(sim, nodes)

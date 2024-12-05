@@ -1,5 +1,5 @@
-Package: episimR
-Title: Non-markovian epidemics simulator
+Package: NEXTNetR
+Title: Efficient simulation of epidemics on complex networks using the NEXTNet library
 Version: 0.1
 Authors@R: 
     person("Florian", "Pflug", , "florian.pflug@oist.jp", role = c("aut", "cre"),

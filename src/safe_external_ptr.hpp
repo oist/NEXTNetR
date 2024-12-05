@@ -13,7 +13,7 @@
 #include "cpp11/r_vector.hpp"  // for type_error
 #include "cpp11/sexp.hpp"      // for sexp
 
-namespace episimR {
+namespace nextnetR {
 
 
 template <typename T>

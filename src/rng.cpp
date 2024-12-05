@@ -8,7 +8,7 @@
 
 using namespace cpp11;
 
-namespace episimR {
+namespace nextnetR {
 
 /******************************
  * R_rng_state_tracker
@@ -91,13 +91,13 @@ rng_t& rng_engine() {
 #endif
 }
 
-} /* namespace episimR */
+} /* namespace nextnetR */
 
 /******************************************
  * rng_t::operator() [ epidemics/types.h ]
  ******************************************/
 
-using namespace episimR;
+using namespace nextnetR;
 
 #if RNG == RNG_CUSTOM
 /* Implemenets operator() for the rng_t type defined by epidemic's types.h */

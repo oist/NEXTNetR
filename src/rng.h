@@ -8,7 +8,7 @@
 #include <cpp11.hpp>
 #include <Rmath.h>
 
-#include "epidemics/types.h"
+#include "nextnet/types.h"
 
 #if (RNG != RNG_CUSTOM)
   #define RNG_SCOPE_IF_NECESSARY
@@ -16,7 +16,7 @@
   #define RNG_SCOPE_IF_NECESSARY R_rng_scope rngscope
 #endif
 
-namespace episimR {
+namespace nextnetR {
 
 /**
  * @brief State tracker for R's RNG state
@@ -122,7 +122,7 @@ struct R_rng_adapter {
   
   template<std::size_t L>
   std::seed_seq generate_seed() {
-    episimR::r_rng_state.ensure_scope_was_entered();
+    nextnetR::r_rng_state.ensure_scope_was_entered();
     // Generate specified number of uint32 values
     std::array<std::uint32_t, L> s;
     for(std::size_t i=0; i < L; ++i)
@@ -132,4 +132,4 @@ struct R_rng_adapter {
   }
 };
 
-} /* namespace episimR */
+} /* namespace nextnetR */

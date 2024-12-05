@@ -109,24 +109,19 @@ brownian_proximity_temporalnetwork <- function(size, avg_degree, radius, D0, D1=
 {
   if (is.null(D1))
     D1 <- D0  
-  nextnetR_brownian_proximity_tempornextnetR_(as.integer(size), as.double(avg_degree), as.double(radius),
-                                      as.double(D0), as.double(D1), as.double(gamma),
-                                      if (!is.null(dt)) dt else NULL)
-}
-
-#' @export
-empirical_temporalnetwork <- function(file, finite_duration, dt) {
-  nextnetR_empirical_tempornextnetR_(as.character(file), as.logical(finite_duration), as.double(dt))
+  nextnetR_brownian_proximity_temporalnetwork(as.integer(size), as.double(avg_degree), as.double(radius),
+                                              as.double(D0), as.double(D1), as.double(gamma),
+                                              if (!is.null(dt)) dt else NULL)
 }
 
 #' @export
 sirx_temporalnetwork <- function(graph, kappa0, kappa) {
-  nextnetR_sirx_tempornextnetR_(graph, as.numeric(kappa0), as.numeric(kappa))
+  nextnetR_sirx_temporalnetwork(graph, as.numeric(kappa0), as.numeric(kappa))
 }
 
 #' @export
-empirical_network <- function(filename) {
-  nextnetR_empirical_network(as.character(filename))
+empirical_temporalnetwork <- function(file, finite_duration, dt) {
+  nextnetR_empirical_temporalnetwork(as.character(file), as.logical(finite_duration), as.double(dt))
 }
 
 #' @export

@@ -213,6 +213,39 @@ doubles_matrix<> nextnetR_network_coordinates(const network_R& nw, integers node
 }
 
 [[cpp11::register]]
+list nextnetR_reproduction_matrix(const network_R& nw) {
+    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+
+    RNG_SCOPE_IF_NECESSARY;
+
+
+    double r = NAN, c = NAN, k1 = NAN, k2 = NAN, k3 = NAN, m_bar = NAN, R0 = NAN, R_r = NAN, R_pert = NAN;
+    std::vector<std::vector<double>> Mkk = reproduction_matrix(*nw.get(), 3, &r, &c, &k1, &k2, &k3,
+                                                               &m_bar, &R0, &R_r, &R_pert);
+
+    // copy result into an R matrix
+    writable::doubles_matrix<> M(Mkk.size(), Mkk.size());
+    for(std::size_t i=0; i < Mkk.size(); ++i) {
+        for(std::size_t j=0; j < Mkk[i].size(); ++j)
+            M(i, j) = Mkk[i][j];
+    }
+
+
+    return writable::list({
+        "M"_nm = M,
+        "r"_nm = r,
+        "c"_nm = c,
+        "k1"_nm = k1,
+        "k2"_nm = k2,
+        "k3"_nm = k3,
+        "m_bar"_nm = m_bar,
+        "R0"_nm = R0,
+        "R_r"_nm = R_r,
+        "R_pert"_nm = R_pert
+    });
+}
+
+[[cpp11::register]]
 network_R nextnetR_empirical_network(r_string filename) {
     return new empirical_network((std::string)filename);
 }

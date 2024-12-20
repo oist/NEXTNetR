@@ -99,6 +99,13 @@ network_coordinates <- function(nw, nodes) {
   nextnetR_network_coordinates(nw, as.integer(nodes))
 }
 
+#' Computes the reproduction matrix \eqn{M_kk}
+#' @export
+network_reproduction_matrix <- function(nw) {
+  nextnetR_reproduction_matrix(nw)
+}
+
+
 #' @title Create a Erdös-Réyni network 
 #' 
 #' @description

@@ -62,6 +62,13 @@ extern "C" SEXP _NEXTNetR_nextnetR_network_coordinates(SEXP nw, SEXP nodes) {
   END_CPP11
 }
 // network.cpp
+list nextnetR_reproduction_matrix(const network_R& nw);
+extern "C" SEXP _NEXTNetR_nextnetR_reproduction_matrix(SEXP nw) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nextnetR_reproduction_matrix(cpp11::as_cpp<cpp11::decay_t<const network_R&>>(nw)));
+  END_CPP11
+}
+// network.cpp
 network_R nextnetR_empirical_network(r_string filename);
 extern "C" SEXP _NEXTNetR_nextnetR_empirical_network(SEXP filename) {
   BEGIN_CPP11
@@ -385,6 +392,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_nextreaction_simulation",                 (DL_FUNC) &_NEXTNetR_nextnetR_nextreaction_simulation,                 4},
     {"_NEXTNetR_nextnetR_nextreaction_simulation_meanfield",       (DL_FUNC) &_NEXTNetR_nextnetR_nextreaction_simulation_meanfield,       5},
     {"_NEXTNetR_nextnetR_nmga_simulation",                         (DL_FUNC) &_NEXTNetR_nextnetR_nmga_simulation,                         4},
+    {"_NEXTNetR_nextnetR_reproduction_matrix",                     (DL_FUNC) &_NEXTNetR_nextnetR_reproduction_matrix,                     1},
     {"_NEXTNetR_nextnetR_simulation_addinfections",                (DL_FUNC) &_NEXTNetR_nextnetR_simulation_addinfections,                3},
     {"_NEXTNetR_nextnetR_simulation_graph",                        (DL_FUNC) &_NEXTNetR_nextnetR_simulation_graph,                        1},
     {"_NEXTNetR_nextnetR_simulation_isinfected",                   (DL_FUNC) &_NEXTNetR_nextnetR_simulation_isinfected,                   2},

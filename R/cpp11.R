@@ -32,6 +32,10 @@ nextnetR_network_coordinates <- function(nw, nodes) {
   .Call(`_NEXTNetR_nextnetR_network_coordinates`, nw, nodes)
 }
 
+nextnetR_reproduction_matrix <- function(nw) {
+  .Call(`_NEXTNetR_nextnetR_reproduction_matrix`, nw)
+}
+
 nextnetR_empirical_network <- function(filename) {
   .Call(`_NEXTNetR_nextnetR_empirical_network`, filename)
 }

@@ -125,6 +125,13 @@ extern "C" SEXP _NEXTNetR_nextnetR_configmodel_clustered_triangles_network(SEXP 
   END_CPP11
 }
 // network.cpp
+network_R nextnetR_watts_strogatz_network(int size, int k, double p);
+extern "C" SEXP _NEXTNetR_nextnetR_watts_strogatz_network(SEXP size, SEXP k, SEXP p) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nextnetR_watts_strogatz_network(cpp11::as_cpp<cpp11::decay_t<int>>(size), cpp11::as_cpp<cpp11::decay_t<int>>(k), cpp11::as_cpp<cpp11::decay_t<double>>(p)));
+  END_CPP11
+}
+// network.cpp
 network_R nextnetR_barabasialbert_network(int size, int m);
 extern "C" SEXP _NEXTNetR_nextnetR_barabasialbert_network(SEXP size, SEXP m) {
   BEGIN_CPP11
@@ -407,6 +414,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_time_sample",                             (DL_FUNC) &_NEXTNetR_nextnetR_time_sample,                             4},
     {"_NEXTNetR_nextnetR_time_survivalprobability",                (DL_FUNC) &_NEXTNetR_nextnetR_time_survivalprobability,                4},
     {"_NEXTNetR_nextnetR_time_survivalquantile",                   (DL_FUNC) &_NEXTNetR_nextnetR_time_survivalquantile,                   4},
+    {"_NEXTNetR_nextnetR_watts_strogatz_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_watts_strogatz_network,                  3},
     {"_NEXTNetR_nextnetR_weighted_adjacencylist_network",          (DL_FUNC) &_NEXTNetR_nextnetR_weighted_adjacencylist_network,          2},
     {"_NEXTNetR_nextnetR_weighted_network_adjacencylist",          (DL_FUNC) &_NEXTNetR_nextnetR_weighted_network_adjacencylist,          1},
     {NULL, NULL, 0}

@@ -68,6 +68,10 @@ nextnetR_configmodel_clustered_triangles_network <- function(degrees, triangles,
   .Call(`_NEXTNetR_nextnetR_configmodel_clustered_triangles_network`, degrees, triangles, beta)
 }
 
+nextnetR_watts_strogatz_network <- function(size, k, p) {
+  .Call(`_NEXTNetR_nextnetR_watts_strogatz_network`, size, k, p)
+}
+
 nextnetR_barabasialbert_network <- function(size, m) {
   .Call(`_NEXTNetR_nextnetR_barabasialbert_network`, size, m)
 }

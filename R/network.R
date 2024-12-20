@@ -194,6 +194,24 @@ configmodel_clustered_network <- function(degrees, alpha_or_ck_or_triangles, bet
     nextnetR_configmodel_clustered_triangles_network(degrees, as.integers(alpha_or_ck_or_triangles), beta)
 }
 
+#' @title Create an Watts-Strogatz network
+#' 
+#' @description
+#' Create an Watts-Strogatz  network with the given size and parameters \eqn{k}, \eqn{p}
+#' 
+#' @param size number of nodes in the network
+#' @param k parameter k
+#' @param p parameter p
+#' @returns a network object
+#' 
+#' @seealso \code{\link{network_properties}}
+#' 
+#' @export
+wattsstrogatz_network <- function(size, k, p) {
+  nextnetR_watts_strogatz_network(as.integer(size), as.integer(k), as.numeric(p))
+}
+
+
 #' @title Create an Barabasi-Albert network
 #' 
 #' @description

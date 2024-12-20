@@ -20,6 +20,10 @@ nextnetR_network_adjacencylist <- function(nw) {
   .Call(`_NEXTNetR_nextnetR_network_adjacencylist`, nw)
 }
 
+nextnetR_weighted_network_adjacencylist <- function(nw) {
+  .Call(`_NEXTNetR_nextnetR_weighted_network_adjacencylist`, nw)
+}
+
 nextnetR_network_bounds <- function(nw) {
   .Call(`_NEXTNetR_nextnetR_network_bounds`, nw)
 }
@@ -106,6 +110,10 @@ nextnetR_sirx_temporalnetwork <- function(nw, kappa0, kappa) {
 
 nextnetR_adjacencylist_network <- function(input_al, is_undirected) {
   .Call(`_NEXTNetR_nextnetR_adjacencylist_network`, input_al, is_undirected)
+}
+
+nextnetR_weighted_adjacencylist_network <- function(input_al, is_undirected) {
+  .Call(`_NEXTNetR_nextnetR_weighted_adjacencylist_network`, input_al, is_undirected)
 }
 
 nextnetR_nextreaction_simulation <- function(nw, psi, rho_, opts) {

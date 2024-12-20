@@ -41,6 +41,13 @@ extern "C" SEXP _NEXTNetR_nextnetR_network_adjacencylist(SEXP nw) {
   END_CPP11
 }
 // network.cpp
+list nextnetR_weighted_network_adjacencylist(const network_R& nw);
+extern "C" SEXP _NEXTNetR_nextnetR_weighted_network_adjacencylist(SEXP nw) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nextnetR_weighted_network_adjacencylist(cpp11::as_cpp<cpp11::decay_t<const network_R&>>(nw)));
+  END_CPP11
+}
+// network.cpp
 list nextnetR_network_bounds(const network_R& nw);
 extern "C" SEXP _NEXTNetR_nextnetR_network_bounds(SEXP nw) {
   BEGIN_CPP11
@@ -192,6 +199,13 @@ network_R nextnetR_adjacencylist_network(list input_al, bool is_undirected);
 extern "C" SEXP _NEXTNetR_nextnetR_adjacencylist_network(SEXP input_al, SEXP is_undirected) {
   BEGIN_CPP11
     return cpp11::as_sexp(nextnetR_adjacencylist_network(cpp11::as_cpp<cpp11::decay_t<list>>(input_al), cpp11::as_cpp<cpp11::decay_t<bool>>(is_undirected)));
+  END_CPP11
+}
+// network.cpp
+network_R nextnetR_weighted_adjacencylist_network(list input_al, bool is_undirected);
+extern "C" SEXP _NEXTNetR_nextnetR_weighted_adjacencylist_network(SEXP input_al, SEXP is_undirected) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nextnetR_weighted_adjacencylist_network(cpp11::as_cpp<cpp11::decay_t<list>>(input_al), cpp11::as_cpp<cpp11::decay_t<bool>>(is_undirected)));
   END_CPP11
 }
 // simulation.cpp
@@ -385,6 +399,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_time_sample",                             (DL_FUNC) &_NEXTNetR_nextnetR_time_sample,                             4},
     {"_NEXTNetR_nextnetR_time_survivalprobability",                (DL_FUNC) &_NEXTNetR_nextnetR_time_survivalprobability,                4},
     {"_NEXTNetR_nextnetR_time_survivalquantile",                   (DL_FUNC) &_NEXTNetR_nextnetR_time_survivalquantile,                   4},
+    {"_NEXTNetR_nextnetR_weighted_adjacencylist_network",          (DL_FUNC) &_NEXTNetR_nextnetR_weighted_adjacencylist_network,          2},
+    {"_NEXTNetR_nextnetR_weighted_network_adjacencylist",          (DL_FUNC) &_NEXTNetR_nextnetR_weighted_network_adjacencylist,          1},
     {NULL, NULL, 0}
 };
 }

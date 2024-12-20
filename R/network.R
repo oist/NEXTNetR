@@ -29,6 +29,13 @@
 #'   *neighbours* is a list of vectors, where *neighbours\[i\]* lists the neighbours of
 #'   node \eqn{i}.
 #'   
+#' * `weighted_network_adjacencylist(nw)`
+#'   returns a named list which contains two entries, *nodes* and *neighbours*.
+#'   *nodes* contains the indices of all nodes in the network, i.e. `1:network_size(nw)`.
+#'   *neighbours* is a list of named two-element lists containing vectores "n" and "w". The vector "n"
+#'   in *neighbours\[i\]* contains the neighbours of node \eqn{i}, and the vector "w" contains the
+#'   corresponding weights.
+#'   
 #' * `network_bounds(nw)`
 #'   for networks embedded into \eqn{d}-dimensional space, this function returns a list containing
 #'   two vectors of length \eqn{d}, \eqn{x} and \eqn{y}. \eqn{x} is a lower-bound and \eqn{y} the
@@ -72,6 +79,13 @@ network_neighbour <- function(nw, nodes, indices) {
 network_adjacencylist <- function(nw) {
   nextnetR_network_adjacencylist(nw)
 }
+
+#' @rdname network_properties
+#' @export
+weighted_network_adjacencylist <- function(nw) {
+  nextnetR_weighted_network_adjacencylist(nw)
+}
+
 
 #' @rdname network_properties
 #' @export
@@ -261,6 +275,24 @@ empirical_network <- function(filename) {
 adjacencylist_network <- function(adjacencylist, is_undirected = FALSE) {
   nextnetR_adjacencylist_network(lapply(adjacencylist, as.integer), as.logical(is_undirected))
 }
+
+#' @title Create a network from an adjacency list
+#' 
+#' @description
+#' Create an network object from an adjacencylist
+#'
+#' @param adjacencylist a list of vectors containing the neighbours of each node. Same format as the second entry in the return value of \code{\link{weighted_network_adjacencylist}}.
+#' @param is_undirected true if the network is supposed to be undirected, i.e. contains a link from \eqn{i} to \eqn{j} exactly if it contains a link from \eqn{j} to \eqn{i}
+#' @returns a network object
+#' 
+#' @seealso \code{\link{weighted_network_adjacencylist}}
+#' 
+#' @export
+weighted_adjacencylist_network <- function(adjacencylist, is_undirected = FALSE) {
+  nextnetR_weighted_adjacencylist_network(lapply(adjacencylist, function(e) list(n=as.integer(e$n), w=as.numeric(e$w))),
+                                          as.logical(is_undirected))
+}
+
 
 #' @title Create a Brownian proximity network
 #' 

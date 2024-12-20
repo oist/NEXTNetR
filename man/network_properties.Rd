@@ -7,6 +7,7 @@
 \alias{network_outdegree}
 \alias{network_neighbour}
 \alias{network_adjacencylist}
+\alias{weighted_network_adjacencylist}
 \alias{network_bounds}
 \alias{network_coordinates}
 \title{Querying properties of networks}
@@ -20,6 +21,8 @@ network_outdegree(nw, nodes)
 network_neighbour(nw, nodes, indices)
 
 network_adjacencylist(nw)
+
+weighted_network_adjacencylist(nw)
 
 network_bounds(nw)
 
@@ -50,6 +53,12 @@ returns a named list which contains two entries, \emph{nodes} and \emph{neighbou
 \emph{nodes} contains the indices of all nodes in the network, i.e. \code{1:network_size(nw)}.
 \emph{neighbours} is a list of vectors, where \emph{neighbours[i]} lists the neighbours of
 node \eqn{i}.
+\item \code{weighted_network_adjacencylist(nw)}
+returns a named list which contains two entries, \emph{nodes} and \emph{neighbours}.
+\emph{nodes} contains the indices of all nodes in the network, i.e. \code{1:network_size(nw)}.
+\emph{neighbours} is a list of named two-element lists containing vectores "n" and "w". The vector "n"
+in \emph{neighbours[i]} contains the neighbours of node \eqn{i}, and the vector "w" contains the
+corresponding weights.
 \item \code{network_bounds(nw)}
 for networks embedded into \eqn{d}-dimensional space, this function returns a list containing
 two vectors of length \eqn{d}, \eqn{x} and \eqn{y}. \eqn{x} is a lower-bound and \eqn{y} the

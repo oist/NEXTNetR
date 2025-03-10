@@ -1,4 +1,29 @@
 #' @export
+exponential_time <- function(lambda) {
+  nextnetR_exponential_time(as.double(lambda))
+}
+
+#' @export
+lognormal_time <- function(mean, var, p_infinity = 0.0) {
+  nextnetR_gamma_time(as.double(mean), as.double(var), as.double(p_infinity))
+}
+
+#' @export
+gamma_time <- function(mean, var, p_infinity) {
+  nextnetR_gamma_time(as.double(mean), as.double(var), as.double(p_infinity))
+}
+
+#' @export
+generic_time <- function(density, survivalprobability, probability_is_trinary,
+                         survivalquantile, quantile_is_trinary,
+                         sample, p_infinity)
+{
+  nextnetR_generic_time(density, survivalprobability, as.logical(probability_is_trinary),
+                       survivalquantile, as.logical(quantile_is_trinary),
+                       sample, as.double(p_infinity))
+}
+
+#' @export
 time_sample <- function(n, ttr, t=0, m=1) {
   nextnetR_time_sample(as.integer(n), ttr, as.double(t), as.integer(m))
 }
@@ -37,27 +62,3 @@ time_survivalquantile <- function(ttr, p, t = 0, m = 1) {
   nextnetR_time_survivalquantile(ttr, p, m, t)
 }
 
-#' @export
-exponential_time <- function(lambda) {
-  nextnetR_exponential_time(as.double(lambda))
-}
-
-#' @export
-lognormal_time <- function(mean, var, p_infinity = 0.0) {
-  nextnetR_gamma_time(as.double(mean), as.double(var), as.double(p_infinity))
-}
-
-#' @export
-gamma_time <- function(mean, var, p_infinity) {
-  nextnetR_gamma_time(as.double(mean), as.double(var), as.double(p_infinity))
-}
-
-#' @export
-generic_time <- function(density, survivalprobability, probability_is_trinary,
-                         survivalquantile, quantile_is_trinary,
-                         sample, p_infinity)
-{
-  nextnetR_generic_time(density, survivalprobability, as.logical(probability_is_trinary),
-                       survivalquantile, as.logical(quantile_is_trinary),
-                       sample, as.double(p_infinity))
-}

@@ -1,121 +1,41 @@
-#' @name network_properties
-#' @title Querying properties of networks
-#' 
-#' @description These functions allow properties and the topology of networks to be inspected
-#' 
-#' @param nw a network object
-#' @param nodes vector of node indices
-#' @param indices vector of neighbour indices
-#' 
-#' @returns
-#' * `network_is_undirected(nw)`
-#'   returns true if the network is not directed, i.e. if there is a link from node \eqn{i}
-#'   to \eqn{j} exactly if there is a link from node \eqn{j} to \eqn{i}.
-#'   
-#' * `network_size(nw)`
-#'   returns the number of nodes in the network
-#'   
-#' * `network_outdegree(nw, node)`
-#'   returns a vector of the same length as `nodes` containing  the out-degrees (i.e. number
-#'   of outgoing links) of the nodes in `nodes`.
-#'   
-#' * `network_neighbour(nw, nodes, indices)`
-#'   returns a vector of the same length as `nodes` and `indices` containing the neighbours
-#'   with the given index of the given nodes.
-#'   
-#' * `network_adjacencylist(nw)`
-#'   returns a named list which contains two entries, *nodes* and *neighbours*.
-#'   *nodes* contains the indices of all nodes in the network, i.e. `1:network_size(nw)`.
-#'   *neighbours* is a list of vectors, where *neighbours\[i\]* lists the neighbours of
-#'   node \eqn{i}.
-#'   
-#' * `weighted_network_adjacencylist(nw)`
-#'   returns a named list which contains two entries, *nodes* and *neighbours*.
-#'   *nodes* contains the indices of all nodes in the network, i.e. `1:network_size(nw)`.
-#'   *neighbours* is a list of named two-element lists containing vectores "n" and "w". The vector "n"
-#'   in *neighbours\[i\]* contains the neighbours of node \eqn{i}, and the vector "w" contains the
-#'   corresponding weights.
-#'   
-#' * `network_bounds(nw)`
-#'   for networks embedded into \eqn{d}-dimensional space, this function returns a list containing
-#'   two vectors of length \eqn{d}, \eqn{x} and \eqn{y}. \eqn{x} is a lower-bound and \eqn{y} the
-#'   upper bound for the coordinates of the nodes in the network.
-#'   
-#' * `network_coordinates(nw, nodes)`
-#'   for networks embedded into \eqn{d}-dimensional space, this function returns a \eqn{n\times d}{n x d}
-#'   matrix containing the coordinates of the \eqn{n} nodes listed in `nodes`.
-NULL
-
-#' @name network_constructors
+#' @name network_types
 #' @title Creating networks
+#'
+#' TODO: Writeme
+#'
+#' [empirical_network]
+#' [erdos_renyi_network]
+#' [fully_connected_network]
+#' [acyclic_network]
+#' [configmodel_network]
+#' [configmodel_clustered_network]
+#' [wattsstrogatz_network]
+#' [barabasialbert_network]
+#' [cubiclattice2d_network]
+#' [cubiclattice3d_network]
+#' [cubiclattice4d_network]
+#' [cubiclattice5d_network]
+#' [cubiclattice6d_network]
+#' [cubiclattice7d_network]
+#' [cubiclattice8d_network]
+#' [adjacencylist_network]
+#' [weighted_adjacencylist_network]
+#'
+#' [empirical_temporalnetwork]
+#' [brownian_proximity_temporalnetwork]
+#' [sirx_temporalnetwork]
 NULL
 
-#' @rdname network_properties
-#' @export
-network_is_undirected <- function(nw) {
-  nextnetR_network_is_undirected(nw)
-}
-
-#' @rdname network_properties
-#' @export
-network_size <- function(nw) {
-  nextnetR_network_size(nw)
-}
-
-#' @rdname network_properties
-#' @export
-network_outdegree <- function(nw, nodes) {
-  nextnetR_network_outdegree(nw, as.integer(nodes))
-}
-
-#' @rdname network_properties
-#' @export
-network_neighbour <- function(nw, nodes, indices) {
-  nextnetR_network_neighbour(nw, as.integer(nodes), as.integer(indices))
-}
-
-#' @rdname network_properties
-#' @export
-network_adjacencylist <- function(nw) {
-  nextnetR_network_adjacencylist(nw)
-}
-
-#' @rdname network_properties
-#' @export
-weighted_network_adjacencylist <- function(nw) {
-  nextnetR_weighted_network_adjacencylist(nw)
-}
-
-
-#' @rdname network_properties
-#' @export
-network_bounds <- function(nw) {
-  nextnetR_network_bounds(nw)
-}
-
-#' @rdname network_properties
-#' @export
-network_coordinates <- function(nw, nodes) {
-  nextnetR_network_coordinates(nw, as.integer(nodes))
-}
-
-#' Computes the reproduction matrix \eqn{M_kk}
-#' @export
-network_reproduction_matrix <- function(nw) {
-  nextnetR_reproduction_matrix(nw)
-}
-
-
-#' @title Create a Erdös-Réyni network 
+#' @title Create a Erdös-Rényi network 
 #' 
 #' @description
-#' Creates a Erdös-Réyni network with the given size and average degree
+#' Creates a Erdös-Rényi network with the given size and average degree
 #' 
 #' @param size number of nodes
 #' @param avg_degree average number of neighbour each node has
 #' @returns a network object
 #' 
-#' @seealso \code{\link{network_properties}}
+#' @seealso network_properties, network_types
 #' 
 #' @export
 erdos_reyni_network <- function(size, avg_degree) {
@@ -130,7 +50,7 @@ erdos_reyni_network <- function(size, avg_degree) {
 #' @param size number of nodes
 #' @returns a network object
 #' 
-#' @seealso \code{\link{network_properties}}
+#' @seealso network_properties, network_types
 #' 
 #' @export
 fully_connected_network <- function(size) {
@@ -148,7 +68,7 @@ fully_connected_network <- function(size) {
 #' @param reduced_root_degree if true, the degree of the root node is reduced by one
 #' @returns a network object
 #' 
-#' @seealso \code{\link{network_properties}}
+#' @seealso network_properties, network_types
 #' 
 #' @export
 acyclic_network <- function(size, avg_degree, reduced_root_degree) {
@@ -163,7 +83,7 @@ acyclic_network <- function(size, avg_degree, reduced_root_degree) {
 #' @param degrees a vector of length \eqn{N} listing the degrees of all nodes
 #' @returns a network object
 #' 
-#' @seealso \code{\link{network_properties}}
+#' @seealso network_properties, network_types
 #' 
 #' @export
 configmodel_network <- function(degrees) {
@@ -182,7 +102,7 @@ configmodel_network <- function(degrees) {
 #' @param beta TODO
 #' @returns a network object
 #' 
-#' @seealso \code{\link{network_properties}}
+#' @seealso network_properties, network_types
 #' 
 #' @export
 configmodel_clustered_network <- function(degrees, alpha_or_ck_or_triangles, beta) {
@@ -204,7 +124,7 @@ configmodel_clustered_network <- function(degrees, alpha_or_ck_or_triangles, bet
 #' @param p parameter p
 #' @returns a network object
 #' 
-#' @seealso \code{\link{network_properties}}
+#' @seealso network_properties, network_types
 #' 
 #' @export
 wattsstrogatz_network <- function(size, k, p) {
@@ -221,7 +141,7 @@ wattsstrogatz_network <- function(size, k, p) {
 #' @param m number of nodes each new node attaches to
 #' @returns a network object
 #' 
-#' @seealso \code{\link{network_properties}}
+#' @seealso network_properties, network_types
 #' 
 #' @export
 barabasialbert_network <- function(size, m) {
@@ -236,7 +156,7 @@ barabasialbert_network <- function(size, m) {
 #' @param length the number of nodes on each side of the \eqn{d}-dimensional cube
 #' @returns a network object
 #' 
-#' @seealso \code{\link{network_properties}}
+#' @seealso network_properties, network_types
 #' 
 #' @export
 cubiclattice2d_network <- function(length) {
@@ -294,7 +214,7 @@ empirical_network <- function(filename) {
 #' @param is_undirected true if the network is supposed to be undirected, i.e. contains a link from \eqn{i} to \eqn{j} exactly if it contains a link from \eqn{j} to \eqn{i}
 #' @returns a network object
 #' 
-#' @seealso \code{\link{network_adjacencylist}}
+#' @seealso network_properties, network_types
 #' 
 #' @export
 adjacencylist_network <- function(adjacencylist, is_undirected = FALSE) {
@@ -310,14 +230,13 @@ adjacencylist_network <- function(adjacencylist, is_undirected = FALSE) {
 #' @param is_undirected true if the network is supposed to be undirected, i.e. contains a link from \eqn{i} to \eqn{j} exactly if it contains a link from \eqn{j} to \eqn{i}
 #' @returns a network object
 #' 
-#' @seealso \code{\link{weighted_network_adjacencylist}}
+#' @seealso network_properties, network_types
 #' 
 #' @export
 weighted_adjacencylist_network <- function(adjacencylist, is_undirected = FALSE) {
   nextnetR_weighted_adjacencylist_network(lapply(adjacencylist, function(e) list(n=as.integer(e$n), w=as.numeric(e$w))),
                                           as.logical(is_undirected))
 }
-
 
 #' @title Create a Brownian proximity network
 #' 
@@ -343,8 +262,7 @@ weighted_adjacencylist_network <- function(adjacencylist, is_undirected = FALSE)
 #' @param dt the time step used when evolving the network
 #' @returns a network object
 #' 
-#' @seealso \code{\link{network_coordinates}}
-#' @seealso \code{\link{network_bounds}}
+#' @seealso network_coordinates, network_bounds
 #' 
 #' @export
 brownian_proximity_temporalnetwork <- function(size, avg_degree, radius, D0, D1=NULL,
@@ -371,3 +289,107 @@ empirical_temporalnetwork <- function(file, finite_duration, dt) {
   nextnetR_empirical_temporalnetwork(as.character(file), as.logical(finite_duration), as.double(dt))
 }
 
+#' @name network_properties
+#' @title Querying properties of networks
+#' 
+#' @description These functions allow properties and the topology of networks to be inspected
+#'
+#' @seealso network_types
+#' 
+#' @param nw a network object
+#' @param nodes vector of node indices
+#' @param indices vector of neighbour indices
+#' 
+#' @returns
+#' * `network_is_undirected(nw)`
+#'   returns true if the network is not directed, i.e. if there is a link from node \eqn{i}
+#'   to \eqn{j} exactly if there is a link from node \eqn{j} to \eqn{i}.
+#'   
+#' * `network_size(nw)`
+#'   returns the number of nodes in the network
+#'   
+#' * `network_outdegree(nw, node)`
+#'   returns a vector of the same length as `nodes` containing  the out-degrees (i.e. number
+#'   of outgoing links) of the nodes in `nodes`.
+#'   
+#' * `network_neighbour(nw, nodes, indices)`
+#'   returns a vector of the same length as `nodes` and `indices` containing the neighbours
+#'   with the given index of the given nodes.
+#'   
+#' * `network_adjacencylist(nw)`
+#'   returns a named list which contains two entries, *nodes* and *neighbours*.
+#'   *nodes* contains the indices of all nodes in the network, i.e. `1:network_size(nw)`.
+#'   *neighbours* is a list of vectors, where *neighbours\[i\]* lists the neighbours of
+#'   node \eqn{i}.
+#'   
+#' * `weighted_network_adjacencylist(nw)`
+#'   returns a named list which contains two entries, *nodes* and *neighbours*.
+#'   *nodes* contains the indices of all nodes in the network, i.e. `1:network_size(nw)`.
+#'   *neighbours* is a list of named two-element lists containing vectores "n" and "w". The vector "n"
+#'   in *neighbours\[i\]* contains the neighbours of node \eqn{i}, and the vector "w" contains the
+#'   corresponding weights.
+#'   
+#' * `network_bounds(nw)`
+#'   for networks embedded into \eqn{d}-dimensional space, this function returns a list containing
+#'   two vectors of length \eqn{d}, \eqn{x} and \eqn{y}. \eqn{x} is a lower-bound and \eqn{y} the
+#'   upper bound for the coordinates of the nodes in the network.
+#'   
+#' * `network_coordinates(nw, nodes)`
+#'   for networks embedded into \eqn{d}-dimensional space, this function returns a \eqn{n\times d}{n x d}
+#'   matrix containing the coordinates of the \eqn{n} nodes listed in `nodes`.
+NULL
+
+#' @rdname network_properties
+#' @export
+network_is_undirected <- function(nw) {
+  nextnetR_network_is_undirected(nw)
+}
+
+#' @rdname network_properties
+#' @export
+network_size <- function(nw) {
+  nextnetR_network_size(nw)
+}
+
+#' @rdname network_properties
+#' @export
+network_outdegree <- function(nw, nodes) {
+  nextnetR_network_outdegree(nw, as.integer(nodes))
+}
+
+#' @rdname network_properties
+#' @export
+network_neighbour <- function(nw, nodes, indices) {
+  nextnetR_network_neighbour(nw, as.integer(nodes), as.integer(indices))
+}
+
+#' @rdname network_properties
+#' @export
+network_adjacencylist <- function(nw) {
+  nextnetR_network_adjacencylist(nw)
+}
+
+#' @rdname network_properties
+#' @export
+weighted_network_adjacencylist <- function(nw) {
+  nextnetR_weighted_network_adjacencylist(nw)
+}
+
+
+#' @rdname network_properties
+#' @export
+network_bounds <- function(nw) {
+  nextnetR_network_bounds(nw)
+}
+
+#' @rdname network_properties
+#' @export
+network_coordinates <- function(nw, nodes) {
+  nextnetR_network_coordinates(nw, as.integer(nodes))
+}
+
+#' Computes the reproduction matrix \eqn{M_kk}
+#' @export
+network_reproduction_matrix <- function(nw) {
+  nextnetR_reproduction_matrix(nw)
+}

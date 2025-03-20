@@ -122,7 +122,7 @@ struct rfunction_transmission_time : public transmission_time {
         :transmission_time(pinf)
     {}
 
-    virtual interval_t sample(rng_t& e, interval_t t, int m) const {
+    virtual interval_t sample(rng_t& e, interval_t t, double m) const {
         if (sample_rf) {
             // Since the sample() R code will likely use the RNG relinquish before calling
             R_rng_relinquish rngrel;
@@ -145,7 +145,7 @@ struct rfunction_transmission_time : public transmission_time {
             return as_cpp<double>(survivalprobability_rf(tau));
     }
     
-    virtual double survivalprobability(interval_t tau, interval_t t, int m) const {
+    virtual double survivalprobability(interval_t tau, interval_t t, double m) const {
         if (survivalprobability_is_trinary)
             return as_cpp<double>(survivalprobability_rf(tau, t, m));
         else
@@ -161,7 +161,7 @@ struct rfunction_transmission_time : public transmission_time {
             return transmission_time::survivalquantile(u);
     }
     
-    virtual double survivalquantile(double u, interval_t t, int m) const {
+    virtual double survivalquantile(double u, interval_t t, double m) const {
         if (survivalquantile_rf && survivalquantile_is_trinary)
             return as_cpp<double>((*survivalquantile_rf)(u, t, m));
         else

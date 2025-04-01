@@ -35,12 +35,21 @@ NULL
 #' @param avg_degree average number of neighbour each node has
 #' @returns a network object
 #' 
+#' @details
+#' 
+#' The name of this function was previously miss-spelled `erdos_reyni_network`,
+#' and it is still available also under its old name.
+#' 
 #' @seealso network_properties, network_types
 #' 
 #' @export
-erdos_reyni_network <- function(size, avg_degree) {
-  nextnetR_erdos_reyni_network(as.integer(size), as.double(avg_degree))
+erdos_renyi_network <- function(size, avg_degree) {
+  nextnetR_erdos_renyi_network(as.integer(size), as.double(avg_degree))
 }
+
+#' @rdname erdos_renyi_network
+#' @export
+erdos_reyni_network <- erdos_renyi_network
 
 #' @title Create a fully-connected network 
 #' 

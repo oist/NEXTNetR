@@ -76,10 +76,10 @@ extern "C" SEXP _NEXTNetR_nextnetR_empirical_network(SEXP filename) {
   END_CPP11
 }
 // network.cpp
-network_R nextnetR_erdos_reyni_network(int size, double avg_degree);
-extern "C" SEXP _NEXTNetR_nextnetR_erdos_reyni_network(SEXP size, SEXP avg_degree) {
+network_R nextnetR_erdos_renyi_network(int size, double avg_degree);
+extern "C" SEXP _NEXTNetR_nextnetR_erdos_renyi_network(SEXP size, SEXP avg_degree) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_erdos_reyni_network(cpp11::as_cpp<cpp11::decay_t<int>>(size), cpp11::as_cpp<cpp11::decay_t<double>>(avg_degree)));
+    return cpp11::as_sexp(nextnetR_erdos_renyi_network(cpp11::as_cpp<cpp11::decay_t<int>>(size), cpp11::as_cpp<cpp11::decay_t<double>>(avg_degree)));
   END_CPP11
 }
 // network.cpp
@@ -383,7 +383,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_cubiclattice8d_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_cubiclattice8d_network,                  1},
     {"_NEXTNetR_nextnetR_empirical_network",                       (DL_FUNC) &_NEXTNetR_nextnetR_empirical_network,                       1},
     {"_NEXTNetR_nextnetR_empirical_temporalnetwork",               (DL_FUNC) &_NEXTNetR_nextnetR_empirical_temporalnetwork,               3},
-    {"_NEXTNetR_nextnetR_erdos_reyni_network",                     (DL_FUNC) &_NEXTNetR_nextnetR_erdos_reyni_network,                     2},
+    {"_NEXTNetR_nextnetR_erdos_renyi_network",                     (DL_FUNC) &_NEXTNetR_nextnetR_erdos_renyi_network,                     2},
     {"_NEXTNetR_nextnetR_exponential_time",                        (DL_FUNC) &_NEXTNetR_nextnetR_exponential_time,                        1},
     {"_NEXTNetR_nextnetR_fully_connected_network",                 (DL_FUNC) &_NEXTNetR_nextnetR_fully_connected_network,                 1},
     {"_NEXTNetR_nextnetR_gamma_time",                              (DL_FUNC) &_NEXTNetR_nextnetR_gamma_time,                              3},

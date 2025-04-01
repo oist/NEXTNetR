@@ -251,9 +251,9 @@ network_R nextnetR_empirical_network(r_string filename) {
 }
 
 [[cpp11::register]]
-network_R nextnetR_erdos_reyni_network(int size, double avg_degree) {
+network_R nextnetR_erdos_renyi_network(int size, double avg_degree) {
     RNG_SCOPE_IF_NECESSARY;
-    return new erdos_reyni(size, avg_degree, rng_engine());
+    return new erdos_renyi(size, avg_degree, rng_engine());
 }
 
 [[cpp11::register]]

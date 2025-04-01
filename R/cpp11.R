@@ -40,8 +40,8 @@ nextnetR_empirical_network <- function(filename) {
   .Call(`_NEXTNetR_nextnetR_empirical_network`, filename)
 }
 
-nextnetR_erdos_reyni_network <- function(size, avg_degree) {
-  .Call(`_NEXTNetR_nextnetR_erdos_reyni_network`, size, avg_degree)
+nextnetR_erdos_renyi_network <- function(size, avg_degree) {
+  .Call(`_NEXTNetR_nextnetR_erdos_renyi_network`, size, avg_degree)
 }
 
 nextnetR_fully_connected_network <- function(size) {

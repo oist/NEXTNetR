@@ -16,5 +16,5 @@ a network object
 Creates a fully-connected network with the given size
 }
 \seealso{
-\code{\link{network_properties}}
+\code{\link{network_properties}}, \code{\link{network_types}}
 }

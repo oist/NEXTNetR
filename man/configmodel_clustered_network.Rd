@@ -19,8 +19,8 @@ a network object
 \description{
 Creates a network in nodes have the degrees specified and numbers of trianges specified
 
-TODO: citatation
+TODO: citation
 }
 \seealso{
-\code{\link{network_properties}}
+\code{\link{network_properties}}, \code{\link{network_types}}
 }

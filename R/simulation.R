@@ -19,7 +19,7 @@ NULL
 #' * *shuffle_neighbours*: Whether to shuffle the neighbours upon infecting a node. Default TRUE.
 #' * *edges_concurrent*: Whether to activate all outgoing edges simultaenously or sequentially. If set to true, neighbours are implicitly shuffled and *shuffle_neighbours* thus has no effect. Default FALSE.
 #'
-#' @seealso simulation_properties
+#' @seealso \code{\link{simulation_functions}}
 #'
 #' @md
 #' @export
@@ -38,6 +38,8 @@ nextreaction_simulation_meanfield <- function(N, R0, psi, rho = NULL, options = 
 #' * *approx_threshold*: Threshold for infected nodes at which the approximate algorithm is used
 #' * *max_dt*: Maximum timestep allowed for the approximate algorithm
 #' * *tauprec*: Numerical precision used to invert the CDF in the exact algorithm
+#'
+#' @seealso \code{\link{simulation_functions}}
 #'
 #' @md
 #' @export
@@ -75,7 +77,10 @@ nmga_simulation <- function(nw, psi, rho = NULL, options = list()) {
 #'   
 #' * `simulation_addinfections(sim, nodes, times)`
 #'   markes the nodes in `nodes` as infected at the specific times in `times`
-#'
+#'   
+#' * `simulation_fun(sim, stop, opts)`
+#'   runs the simulation, see \code{\link{simulation_run}} for details
+#'   
 #' @md
 NULL
 
@@ -165,7 +170,9 @@ simulation_addinfections <- function(sim, nodes, times) {
 #' * *epidemic_events*: Include epidemic events in the returned `data.frame`. Default *true*
 #'     
 #' @example basic_simulation.R
-#' 
+#'
+#' @seealso \code{\link{simulation_functions}}
+#'
 #' @md
 #' @export
 simulation_run <- function(sim, stop, opts=list()) {
@@ -175,8 +182,9 @@ simulation_run <- function(sim, stop, opts=list()) {
 #' Outdated version of `simulation_run`
 #
 # @description This is a compatibility wrapper for `simulation_run`.
-#
-#' @rdname simulation_functions
+#'
+#' @seealso \code{\link{simulation_run}}, \code{\link{simulation_functions}}
+#'
 #' @export
 simulation_step <- function(sim_, steps, opts=list()) {
   nextnetR_simulation_run(sim_, list(epidemic_steps=as.integer(steps)), as.list(opts))

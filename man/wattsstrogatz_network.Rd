@@ -20,5 +20,5 @@ a network object
 Create an Watts-Strogatz  network with the given size and parameters \eqn{k}, \eqn{p}
 }
 \seealso{
-\code{\link{network_properties}}
+\code{\link{network_properties}}, \code{\link{network_types}}
 }

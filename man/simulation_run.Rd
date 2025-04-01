@@ -54,3 +54,6 @@ Possible return value options are:
 \item \emph{epidemic_events}: Include epidemic events in the returned \code{data.frame}. Default \emph{true}
 }
 }
+\seealso{
+\code{\link{simulation_functions}}
+}

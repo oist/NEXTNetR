@@ -18,5 +18,5 @@ a network object
 Create an network object from an adjacencylist
 }
 \seealso{
-\code{\link{network_adjacencylist}}
+\code{\link{network_properties}}, \code{\link{network_types}}
 }

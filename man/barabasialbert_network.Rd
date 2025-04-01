@@ -18,5 +18,5 @@ a network object
 Create an Barabasi-Albert prefential attachment network with the given size and parameter \eqn{m}
 }
 \seealso{
-\code{\link{network_properties}}
+\code{\link{network_properties}}, \code{\link{network_types}}
 }

@@ -14,3 +14,6 @@ Possible options are
 \item \emph{tauprec}: Numerical precision used to invert the CDF in the exact algorithm
 }
 }
+\seealso{
+\code{\link{simulation_functions}}
+}

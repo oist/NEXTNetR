@@ -46,7 +46,5 @@ The network evolves in descreet time steps of length \code{dt}. If left unspecif
 \code{dt} is chosen automatically based on the diffusivities and contact radius.
 }
 \seealso{
-\code{\link{network_coordinates}}
-
-\code{\link{network_bounds}}
+\code{\link{network_coordinates}}, \code{\link{network_bounds}}
 }

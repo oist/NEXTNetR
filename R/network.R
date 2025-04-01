@@ -1,29 +1,29 @@
 #' @name network_types
 #' @title Creating networks
+#' 
+#' @description 
+#' NEXTNetR currently supports the following types of static, unweighted networks
+#' 
+#' * [empirical_network]
+#' * [erdos_renyi_network]
+#' * [fully_connected_network]
+#' * [acyclic_network]
+#' * [configmodel_network]
+#' * [configmodel_clustered_network]
+#' * [wattsstrogatz_network]
+#' * [barabasialbert_network]
+#' * [cubiclattice_network]
+#' * [adjacencylist_network]
 #'
-#' TODO: Writeme
+#' the following static weighted networks
 #'
-#' [empirical_network]
-#' [erdos_renyi_network]
-#' [fully_connected_network]
-#' [acyclic_network]
-#' [configmodel_network]
-#' [configmodel_clustered_network]
-#' [wattsstrogatz_network]
-#' [barabasialbert_network]
-#' [cubiclattice2d_network]
-#' [cubiclattice3d_network]
-#' [cubiclattice4d_network]
-#' [cubiclattice5d_network]
-#' [cubiclattice6d_network]
-#' [cubiclattice7d_network]
-#' [cubiclattice8d_network]
-#' [adjacencylist_network]
-#' [weighted_adjacencylist_network]
+#' * [weighted_adjacencylist_network]
 #'
-#' [empirical_temporalnetwork]
-#' [brownian_proximity_temporalnetwork]
-#' [sirx_temporalnetwork]
+#' and following temporal networks
+#'
+#' * [empirical_temporalnetwork]
+#' * [brownian_proximity_temporalnetwork]
+#' * [sirx_temporalnetwork]
 NULL
 
 #' @title Create a Erdös-Rényi network 
@@ -40,7 +40,7 @@ NULL
 #' The name of this function was previously miss-spelled `erdos_reyni_network`,
 #' and it is still available also under its old name.
 #' 
-#' @seealso network_properties, network_types
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
 erdos_renyi_network <- function(size, avg_degree) {
@@ -59,7 +59,7 @@ erdos_reyni_network <- erdos_renyi_network
 #' @param size number of nodes
 #' @returns a network object
 #' 
-#' @seealso network_properties, network_types
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
 fully_connected_network <- function(size) {
@@ -77,7 +77,7 @@ fully_connected_network <- function(size) {
 #' @param reduced_root_degree if true, the degree of the root node is reduced by one
 #' @returns a network object
 #' 
-#' @seealso network_properties, network_types
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
 acyclic_network <- function(size, avg_degree, reduced_root_degree) {
@@ -92,7 +92,7 @@ acyclic_network <- function(size, avg_degree, reduced_root_degree) {
 #' @param degrees a vector of length \eqn{N} listing the degrees of all nodes
 #' @returns a network object
 #' 
-#' @seealso network_properties, network_types
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
 configmodel_network <- function(degrees) {
@@ -104,14 +104,14 @@ configmodel_network <- function(degrees) {
 #' @description
 #' Creates a network in nodes have the degrees specified and numbers of trianges specified
 #' 
-#' TODO: citatation
+#' TODO: citation
 #' 
 #' @param degrees a vector of length \eqn{N} listing the degrees of all nodes
 #' @param alpha_or_ck_or_triangles TODO
 #' @param beta TODO
 #' @returns a network object
 #' 
-#' @seealso network_properties, network_types
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
 configmodel_clustered_network <- function(degrees, alpha_or_ck_or_triangles, beta) {
@@ -133,7 +133,7 @@ configmodel_clustered_network <- function(degrees, alpha_or_ck_or_triangles, bet
 #' @param p parameter p
 #' @returns a network object
 #' 
-#' @seealso network_properties, network_types
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
 wattsstrogatz_network <- function(size, k, p) {
@@ -150,13 +150,14 @@ wattsstrogatz_network <- function(size, k, p) {
 #' @param m number of nodes each new node attaches to
 #' @returns a network object
 #' 
-#' @seealso network_properties, network_types
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
 barabasialbert_network <- function(size, m) {
   nextnetR_barabasialbert_network(as.integer(size), as.integer(m))
 }
 
+#' @name cubiclattice_network
 #' @title Create an cubic lattice
 #' 
 #' @description
@@ -165,50 +166,60 @@ barabasialbert_network <- function(size, m) {
 #' @param length the number of nodes on each side of the \eqn{d}-dimensional cube
 #' @returns a network object
 #' 
-#' @seealso network_properties, network_types
-#' 
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
+
+#' @rdname cubiclattice_network
 #' @export
 cubiclattice2d_network <- function(length) {
   nextnetR_cubiclattice2d_network(length)
 }
 
-#' @rdname cubiclattice2d_network
+#' @rdname cubiclattice_network
 #' @export
 cubiclattice3d_network <- function(length) {
   nextnetR_cubiclattice3d_network(length)
 }
 
-#' @rdname cubiclattice2d_network
+#' @rdname cubiclattice_network
 #' @export
 cubiclattice4d_network <- function(length) {
   nextnetR_cubiclattice4d_network(length)
 }
 
-#' @rdname cubiclattice2d_network
+#' @rdname cubiclattice_network
 #' @export
 cubiclattice5d_network <- function(length) {
   nextnetR_cubiclattice5d_network(length)
 }
 
-#' @rdname cubiclattice2d_network
+#' @rdname cubiclattice_network
 #' @export
 cubiclattice6d_network <- function(length) {
   nextnetR_cubiclattice6d_network(length)
 }
 
-#' @rdname cubiclattice2d_network
+#' @rdname cubiclattice_network
 #' @export
 cubiclattice7d_network <- function(length) {
   nextnetR_cubiclattice7d_network(length)
 }
 
-#' @rdname cubiclattice2d_network
+#' @rdname cubiclattice_network
 #' @export
 cubiclattice8d_network <- function(length) {
   nextnetR_cubiclattice8d_network(length)
 }
 
-#' @rdname network_constructors
+#' @title Creates a network for an adjacency list stored in a file
+#' 
+#' @description
+#' The file must contain one line per node listing that node's neighbours
+#' separated by commas. Nodes are referred to by their line numbers which
+#' start with zero.
+#' 
+#' @param filename name of the file
+#' @returns a network object
+#' 
 #' @export
 empirical_network <- function(filename) {
   nextnetR_empirical_network(as.character(filename))
@@ -223,7 +234,7 @@ empirical_network <- function(filename) {
 #' @param is_undirected true if the network is supposed to be undirected, i.e. contains a link from \eqn{i} to \eqn{j} exactly if it contains a link from \eqn{j} to \eqn{i}
 #' @returns a network object
 #' 
-#' @seealso network_properties, network_types
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
 adjacencylist_network <- function(adjacencylist, is_undirected = FALSE) {
@@ -233,13 +244,13 @@ adjacencylist_network <- function(adjacencylist, is_undirected = FALSE) {
 #' @title Create a network from an adjacency list
 #' 
 #' @description
-#' Create an network object from an adjacencylist
+#' Create an network object from an adjacency list
 #'
 #' @param adjacencylist a list of vectors containing the neighbours of each node. Same format as the second entry in the return value of \code{\link{weighted_network_adjacencylist}}.
 #' @param is_undirected true if the network is supposed to be undirected, i.e. contains a link from \eqn{i} to \eqn{j} exactly if it contains a link from \eqn{j} to \eqn{i}
 #' @returns a network object
 #' 
-#' @seealso network_properties, network_types
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
 weighted_adjacencylist_network <- function(adjacencylist, is_undirected = FALSE) {
@@ -271,7 +282,7 @@ weighted_adjacencylist_network <- function(adjacencylist, is_undirected = FALSE)
 #' @param dt the time step used when evolving the network
 #' @returns a network object
 #' 
-#' @seealso network_coordinates, network_bounds
+#' @seealso \code{\link{network_coordinates}}, \code{\link{network_bounds}}
 #' 
 #' @export
 brownian_proximity_temporalnetwork <- function(size, avg_degree, radius, D0, D1=NULL,
@@ -303,7 +314,7 @@ empirical_temporalnetwork <- function(file, finite_duration, dt) {
 #' 
 #' @description These functions allow properties and the topology of networks to be inspected
 #'
-#' @seealso network_types
+#' @seealso \code{\link{network_types}}
 #' 
 #' @param nw a network object
 #' @param nodes vector of node indices

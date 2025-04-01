@@ -25,5 +25,5 @@ The name of this function was previously miss-spelled \code{erdos_reyni_network}
 and it is still available also under its old name.
 }
 \seealso{
-network_properties, network_types
+\code{\link{network_properties}}, \code{\link{network_types}}
 }

@@ -25,5 +25,5 @@ Possible options are
 Create a simulator using the NextReaction algorithm
 }
 \seealso{
-simulation_properties
+\code{\link{simulation_functions}}
 }

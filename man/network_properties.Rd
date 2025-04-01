@@ -71,3 +71,6 @@ matrix containing the coordinates of the \eqn{n} nodes listed in \code{nodes}.
 \description{
 These functions allow properties and the topology of networks to be inspected
 }
+\seealso{
+\code{\link{network_types}}
+}

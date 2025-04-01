@@ -9,7 +9,6 @@
 \alias{simulation_isinfected}
 \alias{simulation_ninfected}
 \alias{simulation_addinfections}
-\alias{simulation_step}
 \title{Running simulations and querying their state and properties}
 \usage{
 simulation_transmissiontime(sim)
@@ -25,8 +24,6 @@ simulation_isinfected(sim, nodes)
 simulation_ninfected(sim)
 
 simulation_addinfections(sim, nodes, times)
-
-simulation_step(sim_, steps, opts = list())
 }
 \arguments{
 \item{sim}{a simulation object}
@@ -47,6 +44,8 @@ returns a boolen vector (of same length as \code{nodes}) containing true if the 
 returns the current number of infected nodes
 \item \code{simulation_addinfections(sim, nodes, times)}
 markes the nodes in \code{nodes} as infected at the specific times in \code{times}
+\item \code{simulation_fun(sim, stop, opts)}
+runs the simulation, see \code{\link{simulation_run}} for details
 }
 }
 \description{

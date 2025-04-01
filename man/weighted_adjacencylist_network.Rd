@@ -15,8 +15,8 @@ weighted_adjacencylist_network(adjacencylist, is_undirected = FALSE)
 a network object
 }
 \description{
-Create an network object from an adjacencylist
+Create an network object from an adjacency list
 }
 \seealso{
-\code{\link{weighted_network_adjacencylist}}
+\code{\link{network_properties}}, \code{\link{network_types}}
 }

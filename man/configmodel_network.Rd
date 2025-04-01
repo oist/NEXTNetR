@@ -16,5 +16,5 @@ a network object
 Creates a network in nodes have the degrees specified
 }
 \seealso{
-\code{\link{network_properties}}
+\code{\link{network_properties}}, \code{\link{network_types}}
 }

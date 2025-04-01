@@ -21,5 +21,5 @@ Creates an acyclic network with the given size and average degree. Node
 degrees follow a Possonian distribution.
 }
 \seealso{
-\code{\link{network_properties}}
+\code{\link{network_properties}}, \code{\link{network_types}}
 }

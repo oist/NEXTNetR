@@ -21,9 +21,9 @@ namespace writable = cpp11::writable;
 
 [[cpp11::register]]
 int nextnetR_network_size(const network_R& nw) {
-    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+    if (!nw) throw std::runtime_error("network cannot be NULL"); 
     
-    /* Must enter RNG scope since graphs may generate their topology on the fly */
+    /* Must enter RNG scope since networks may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
     
     return nw->nodes();
@@ -31,9 +31,9 @@ int nextnetR_network_size(const network_R& nw) {
 
 [[cpp11::register]]
 bool nextnetR_network_is_undirected(const network_R& nw) {
-    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+    if (!nw) throw std::runtime_error("network cannot be NULL"); 
     
-    /* Must enter RNG scope since graphs may generate their topology on the fly */
+    /* Must enter RNG scope since networks may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
     
     return nw->is_undirected();
@@ -41,9 +41,9 @@ bool nextnetR_network_is_undirected(const network_R& nw) {
 
 [[cpp11::register]]
 integers nextnetR_network_outdegree(const network_R& nw, integers nodes) {
-    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+    if (!nw) throw std::runtime_error("network cannot be NULL"); 
     
-    /* Must enter RNG scope since graphs may generate their topology on the fly */
+    /* Must enter RNG scope since networks may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
     
     const std::size_t l = nodes.size();
@@ -58,9 +58,9 @@ integers nextnetR_network_outdegree(const network_R& nw, integers nodes) {
 
 [[cpp11::register]]
 integers nextnetR_network_neighbour(const network_R& nw, integers nodes, integers indices) {
-    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+    if (!nw) throw std::runtime_error("network cannot be NULL"); 
 
-    /* Must enter RNG scope since graphs may generate their topology on the fly */
+    /* Must enter RNG scope since networks may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
     
     if (nodes.size() != indices.size())
@@ -88,9 +88,9 @@ integers nextnetR_network_neighbour(const network_R& nw, integers nodes, integer
 
 [[cpp11::register]]
 list nextnetR_network_adjacencylist(const network_R& nw) {
-    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+    if (!nw) throw std::runtime_error("network cannot be NULL"); 
 
-    /* Must enter RNG scope since graphs may generate their topology on the fly */
+    /* Must enter RNG scope since networks may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
 
     /* TODO: For instances of network_adjacencylist, this could be done more efficiently */
@@ -131,7 +131,7 @@ list nextnetR_weighted_network_adjacencylist(const network_R& nw) {
     if (nw_weighted == nullptr)
         throw std::runtime_error("network is not weighted");
 
-    /* Must enter RNG scope since graphs may generate their topology on the fly */
+    /* Must enter RNG scope since networks may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
 
     /* TODO: For instances of weighted_network_adjacencylist, this could be done more efficiently */
@@ -173,13 +173,13 @@ list nextnetR_weighted_network_adjacencylist(const network_R& nw) {
 
 [[cpp11::register]]
 list nextnetR_network_bounds(const network_R& nw) {
-    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+    if (!nw) throw std::runtime_error("network cannot be NULL"); 
 
     RNG_SCOPE_IF_NECESSARY;
     
     network_embedding* const ebd = dynamic_cast<network_embedding*>(nw.get());
     if (ebd == nullptr)
-        throw std::runtime_error("graph is not embedded into R^d");
+        throw std::runtime_error("network is not embedded into R^d");
     
     std::vector<double> a, b;
     ebd->bounds(a, b);
@@ -192,13 +192,13 @@ list nextnetR_network_bounds(const network_R& nw) {
 
 [[cpp11::register]]
 doubles_matrix<> nextnetR_network_coordinates(const network_R& nw, integers nodes) {
-    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+    if (!nw) throw std::runtime_error("network cannot be NULL"); 
 
     RNG_SCOPE_IF_NECESSARY;
     
     network_embedding* const ebd = dynamic_cast<network_embedding*>(nw.get());
     if (ebd == nullptr)
-        throw std::runtime_error("graph is not embedded into R^d");
+        throw std::runtime_error("network is not embedded into R^d");
     
     const std::size_t d = ebd->dimensionality();
     writable::doubles_matrix<> results(nodes.size(), d);
@@ -214,7 +214,7 @@ doubles_matrix<> nextnetR_network_coordinates(const network_R& nw, integers node
 
 [[cpp11::register]]
 list nextnetR_reproduction_matrix(const network_R& nw) {
-    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+    if (!nw) throw std::runtime_error("network cannot be NULL"); 
 
     RNG_SCOPE_IF_NECESSARY;
 
@@ -367,7 +367,7 @@ network_R nextnetR_empirical_temporalnetwork(std::string file, bool finite_durat
 
 [[cpp11::register]]
 network_R nextnetR_sirx_temporalnetwork(const network_R& nw, double kappa0, double kappa) {
-    if (!nw) throw std::runtime_error("underlying graph cannot be null"); 
+    if (!nw) throw std::runtime_error("underlying network cannot be null"); 
 
     RNG_SCOPE_IF_NECESSARY;
     

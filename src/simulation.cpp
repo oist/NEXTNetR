@@ -31,7 +31,7 @@ namespace writable = cpp11::writable;
 simulation_R nextnetR_nextreaction_simulation(
     network_R nw, transmission_time_R psi, sexp rho_, list opts
 ) {
-    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+    if (!nw) throw std::runtime_error("network cannot be NULL"); 
     if (!psi) throw std::runtime_error("transmission time distribution cannot be NULL");
 
     // Reset time rho is optional, translate R_NilValue to nullptr
@@ -98,7 +98,7 @@ simulation_R nextnetR_nextreaction_simulation_meanfield(
 simulation_R nextnetR_nmga_simulation(
     network_R nw, transmission_time_R psi, sexp rho_, list opts
 ) {
-    if (!nw) throw std::runtime_error("graph cannot be NULL"); 
+    if (!nw) throw std::runtime_error("network cannot be NULL"); 
     if (!psi) throw std::runtime_error("transmission time distribution cannot be NULL");
 
     // Reset time rho is optional, translate R_NilValue to nullptr
@@ -141,7 +141,7 @@ SEXP nextnetR_simulation_resettime(const simulation_R& sim) {
 }
 
 [[cpp11::register]]
-network_R nextnetR_simulation_graph(const simulation_R& sim) {
+network_R nextnetR_simulation_network(const simulation_R& sim) {
     if (!sim) throw std::runtime_error("simulation cannot be NULL");
     
     return ((list)sim.protected_data())["nw"];

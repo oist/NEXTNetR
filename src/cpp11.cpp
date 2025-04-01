@@ -258,10 +258,10 @@ extern "C" SEXP _NEXTNetR_nextnetR_simulation_resettime(SEXP sim) {
   END_CPP11
 }
 // simulation.cpp
-network_R nextnetR_simulation_graph(const simulation_R& sim);
-extern "C" SEXP _NEXTNetR_nextnetR_simulation_graph(SEXP sim) {
+network_R nextnetR_simulation_network(const simulation_R& sim);
+extern "C" SEXP _NEXTNetR_nextnetR_simulation_network(SEXP sim) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_simulation_graph(cpp11::as_cpp<cpp11::decay_t<const simulation_R&>>(sim)));
+    return cpp11::as_sexp(nextnetR_simulation_network(cpp11::as_cpp<cpp11::decay_t<const simulation_R&>>(sim)));
   END_CPP11
 }
 // simulation.cpp
@@ -401,8 +401,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_nmga_simulation",                         (DL_FUNC) &_NEXTNetR_nextnetR_nmga_simulation,                         4},
     {"_NEXTNetR_nextnetR_reproduction_matrix",                     (DL_FUNC) &_NEXTNetR_nextnetR_reproduction_matrix,                     1},
     {"_NEXTNetR_nextnetR_simulation_addinfections",                (DL_FUNC) &_NEXTNetR_nextnetR_simulation_addinfections,                3},
-    {"_NEXTNetR_nextnetR_simulation_graph",                        (DL_FUNC) &_NEXTNetR_nextnetR_simulation_graph,                        1},
     {"_NEXTNetR_nextnetR_simulation_isinfected",                   (DL_FUNC) &_NEXTNetR_nextnetR_simulation_isinfected,                   2},
+    {"_NEXTNetR_nextnetR_simulation_network",                      (DL_FUNC) &_NEXTNetR_nextnetR_simulation_network,                      1},
     {"_NEXTNetR_nextnetR_simulation_ninfected",                    (DL_FUNC) &_NEXTNetR_nextnetR_simulation_ninfected,                    1},
     {"_NEXTNetR_nextnetR_simulation_options",                      (DL_FUNC) &_NEXTNetR_nextnetR_simulation_options,                      1},
     {"_NEXTNetR_nextnetR_simulation_resettime",                    (DL_FUNC) &_NEXTNetR_nextnetR_simulation_resettime,                    1},

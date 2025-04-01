@@ -58,7 +58,7 @@ nmga_simulation <- function(nw, psi, rho = NULL, options = list()) {
 #'   return the [reset/recovery time][time_properties] distribution
 #'   
 #' * `simulation_network(sim)`
-#'   return the [network][network_properties]
+#'   return the [network][network_properties]. Previusly called `simulation_graph`.
 #'   
 #' * `simulation_options(sim)`
 #'   return the algorithm options specified when the simulation was created
@@ -90,9 +90,13 @@ simulation_resettime <- function(sim) {
 
 #' @rdname simulation_functions
 #' @export
-simulation_graph <- function(sim) {
-  nextnetR_simulation_graph(sim)
+simulation_network <- function(sim) {
+  nextnetR_simulation_network(sim)
 }
+
+#' @rdname simulation_graph
+#' @export
+simulation_graph <- simulation_network
 
 #' @rdname simulation_functions
 #' @export

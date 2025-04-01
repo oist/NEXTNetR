@@ -144,8 +144,8 @@ nextnetR_simulation_resettime <- function(sim) {
   .Call(`_NEXTNetR_nextnetR_simulation_resettime`, sim)
 }
 
-nextnetR_simulation_graph <- function(sim) {
-  .Call(`_NEXTNetR_nextnetR_simulation_graph`, sim)
+nextnetR_simulation_network <- function(sim) {
+  .Call(`_NEXTNetR_nextnetR_simulation_network`, sim)
 }
 
 nextnetR_simulation_options <- function(sim) {

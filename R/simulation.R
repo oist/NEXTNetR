@@ -16,10 +16,12 @@ NULL
 #' @param options named list of algorithm options, see below
 #'
 #' Possible options are
-#'     shuffle_neighbours: Whether to shuffle the neighbours upon infecting a node. Default TRUE.
-#'     edges_concurrent: Whether to activate all outgoing edges simultaenously or sequentially. If set to true, neighbours are implicitly shuffled and *shuffle_neighbours* thus has no effect. Default FALSE.
+#' * *shuffle_neighbours*: Whether to shuffle the neighbours upon infecting a node. Default TRUE.
+#' * *edges_concurrent*: Whether to activate all outgoing edges simultaenously or sequentially. If set to true, neighbours are implicitly shuffled and *shuffle_neighbours* thus has no effect. Default FALSE.
 #'
 #' @seealso simulation_properties
+#'
+#' @md
 #' @export
 nextreaction_simulation <- function(nw, psi, rho = NULL, options = list()) {
   nextnetR_nextreaction_simulation(nw, psi, rho, options)
@@ -33,9 +35,11 @@ nextreaction_simulation_meanfield <- function(N, R0, psi, rho = NULL, options = 
 #' Create a simulator using the non-Markovian Gillespie (nMGA) algorithm
 #'
 #' Possible options are
-#'     approx_threshold: Threshold for infected nodes at which the approximate algorithm is used
-#'     max_dt: Maximum timestep allowed for the approximate algorithm
-#'     tauprec: Numerical precision used to invert the CDF in the exact algorithm
+#' * *approx_threshold*: Threshold for infected nodes at which the approximate algorithm is used
+#' * *max_dt*: Maximum timestep allowed for the approximate algorithm
+#' * *tauprec*: Numerical precision used to invert the CDF in the exact algorithm
+#'
+#' @md
 #' @export
 nmga_simulation <- function(nw, psi, rho = NULL, options = list()) {
   nextnetR_nmga_simulation(nw, psi, rho, options)
@@ -71,9 +75,8 @@ nmga_simulation <- function(nw, psi, rho = NULL, options = list()) {
 #'   
 #' * `simulation_addinfections(sim, nodes, times)`
 #'   markes the nodes in `nodes` as infected at the specific times in `times`
-#'   
-#' * `simulation_run(sim, stop, opts=list())`
-#    runs 
+#'
+#' @md
 NULL
 
 #' @rdname simulation_functions
@@ -122,10 +125,51 @@ simulation_addinfections <- function(sim, nodes, times) {
   nextnetR_simulation_addinfections(sim, as.integer(nodes), as.double(times))
 }
 
-#' @rdname simulation_functions
+#' Runs a simulation until a stopping condition occurs
+#' 
+#' Runs the specified simulation until a stopping condition occurs and returns
+#' a table listing all events that occurred. `simulation_run` can be called
+#' repeatedly and will continue from the point where the last run stopped.
+#' 
+#' @param sim a simulation object 
+#' @param stop a list of stopping conditions
+#' @param opts return value options
+#' @return a `data.frame` containing the columns
+#' * *time*: time since the start of the simulation
+#' * *epidemic_step*: total number of epidemic events so far
+#' * *network_step*: total number of network events so far
+#' * *kind*: kind of event (*outside_infection*, *infection*, *reset*,
+#'           *neighbour_added*, *neibhour_removed*, *instantenous_contact*)
+#' * *node*: node affected by the event
+#' * *neighbour*: neighbour (for *infection*, *neighbour_added*, *neibhour_removed*)
+#' * *total_infected*: total number of infected nodes since simulations start
+#' * *total_reset*: total number of recovered/reset nodes since simulation start
+#' * *infected*: current number of infected nodes
+#' 
+#' @details 
+#' 
+#' Stopping conditions are specified as a named list of threshold values for
+#' any combination of the following variables:
+#' * *epidemic_steps*: Number of epidemic events (infection, outside_infection,
+#'                     reset) since the simulation was started.
+#' * *network_steps*:  Number of network events (edge added, edge removed,
+#'                     instantaneous contact) since the simulation was started.
+#'                     Only relevant for simulations on dynamic networks. 
+#' * *time*:           time since the simulation was started
+#' * *infected*:       Number of currently infected nodes
+#' * *total_infected*: Total number of infections since the start of the simulation
+#' * *total_reset*:    Total number of recoveries/resets since the start of the simulation
+#'     
+#' Possible return value options are:
+#' * *network_events*: Include network events in the returned `data.frame`. Default *false*
+#' * *epidemic_events*: Include epidemic events in the returned `data.frame`. Default *true*
+#'     
+#' @example basic_simulation.R
+#' 
+#' @md
 #' @export
-simulation_run <- function(sim_, stop, opts=list()) {
-  nextnetR_simulation_run(sim_, as.list(stop), as.list(opts))
+simulation_run <- function(sim, stop, opts=list()) {
+  nextnetR_simulation_run(sim, as.list(stop), as.list(opts))
 }
 
 #' Outdated version of `simulation_run`

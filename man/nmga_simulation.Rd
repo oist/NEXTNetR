@@ -8,7 +8,9 @@ nmga_simulation(nw, psi, rho = NULL, options = list())
 }
 \description{
 Possible options are
-approx_threshold: Threshold for infected nodes at which the approximate algorithm is used
-max_dt: Maximum timestep allowed for the approximate algorithm
-tauprec: Numerical precision used to invert the CDF in the exact algorithm
+\itemize{
+\item \emph{approx_threshold}: Threshold for infected nodes at which the approximate algorithm is used
+\item \emph{max_dt}: Maximum timestep allowed for the approximate algorithm
+\item \emph{tauprec}: Numerical precision used to invert the CDF in the exact algorithm
+}
 }

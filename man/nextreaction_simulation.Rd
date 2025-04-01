@@ -6,8 +6,24 @@
 \usage{
 nextreaction_simulation(nw, psi, rho = NULL, options = list())
 }
-\description{
+\arguments{
+\item{nw}{network to simulate on}
+
+\item{psi}{infection \link[=time_distributions]{time distribution}}
+
+\item{options}{named list of algorithm options, see below
+
 Possible options are
-shuffle_neighbours: Whether to shuffle the neighbours upon infecting a node. Default TRUE.
-edges_concurrent: Whether to activate all outgoing edges simultaenously or sequentially. If set to true, neighbours are implicitly shuffled and \emph{shuffle_neighbours} thus has no effect. Default FALSE.
+\itemize{
+\item \emph{shuffle_neighbours}: Whether to shuffle the neighbours upon infecting a node. Default TRUE.
+\item \emph{edges_concurrent}: Whether to activate all outgoing edges simultaenously or sequentially. If set to true, neighbours are implicitly shuffled and \emph{shuffle_neighbours} thus has no effect. Default FALSE.
+}}
+
+\item{rhi}{reset/recivery \link[=time_distributions]{time distribution}}
+}
+\description{
+Create a simulator using the NextReaction algorithm
+}
+\seealso{
+simulation_properties
 }

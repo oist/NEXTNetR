@@ -4,26 +4,48 @@
 \alias{network_types}
 \title{Creating networks}
 \description{
-NEXTNetR currently supports the following types of static, unweighted networks
+In \emph{NEXTNet}, networks are directed graphs, i.e. fully defined by a set of
+nodes \eqn{V} and edges (or links) \eqn{E \subset V \times V} where self-edges
+i.e. links of the form \eqn{(v,v)} are forbidden. \emph{NEXTNet} provides various
+different types of algorithms for creating synthetic networks, as well as
+networks with are defined by specifying \eqn{V} and \eqn{E}.
+
+In addition to the plain (unweighted and static) networks defined above,
+\emph{NEXTNet} also supports \emph{temporal} and \emph{weighted} networks.
+
+In \emph{temporal} networks, the set of edges/links depends on the time \eqn{t},
+i.e. \eqn{E=E(t)}. On such networks, epidemics can only spread from a node
+\eqn{u} to a node \eqn{v} at times where \eqn{(u,v) \in E(t)}. At other times,
+the infectiousness of \eqn{u} for the particular link \eqn{(u,v)} is effectively
+zero.
+
+In \emph{weighted} networks, each \eqn{e \in E} has an assigned weight
+\eqn{w_e \geq 0}. These weights modulate the infectiousness
+of nodes, see the discussion in \link{time_distributions}. Weighted networks can
+be interpreted as a limit case of temporal networks in which edges fluctuate
+with at a very high frequency. The weight then expresses the fraction of times
+at which the link is present.
+
+\emph{NEXTNetR} supports the following types of static, unweighted networks:
 \itemize{
-\item \link{empirical_network}
-\item \link{erdos_renyi_network}
-\item \link{fully_connected_network}
-\item \link{acyclic_network}
-\item \link{configmodel_network}
-\item \link{configmodel_clustered_network}
+\item \link{empirical_network}: Network defined by an arbitrary adjacency list read from a file.
+\item \link{adjacencylist_network} Network defined by an arbitrary adjacency list.
+\item \link{erdos_renyi_network}: Erdős–Rényi network, i.e. edges are sampled i.i.d from a fully-connected network.
+\item \link{fully_connected_network} Fully connected network, i.e. all possible edges exist.
+\item \link{acyclic_network} Tree-shaped network.
+\item \link{configmodel_network} Network with specified number of nodes of a certain degree.
+\item \link{configmodel_clustered_network} Configuration model with clustering.
 \item \link{wattsstrogatz_network}
-\item \link{barabasialbert_network}
-\item \link{cubiclattice_network}
-\item \link{adjacencylist_network}
+\item \link{barabasialbert_network} Barabási–Albert prefertial attachment network.
+\item \link{cubiclattice_network} Cubic lattice in 2 up to 8 dimensions.
 }
 
 the following static weighted networks
 \itemize{
-\item \link{weighted_adjacencylist_network}
+\item \link{weighted_adjacencylist_network} Network defined by an arbitrary adjacency list with weighted edges.
 }
 
-and following temporal networks
+and the following temporal networks
 \itemize{
 \item \link{empirical_temporalnetwork}
 \item \link{brownian_proximity_temporalnetwork}

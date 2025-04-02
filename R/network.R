@@ -2,24 +2,47 @@
 #' @title Creating networks
 #' 
 #' @description 
-#' NEXTNetR currently supports the following types of static, unweighted networks
 #' 
-#' * [empirical_network]
-#' * [erdos_renyi_network]
-#' * [fully_connected_network]
-#' * [acyclic_network]
-#' * [configmodel_network]
-#' * [configmodel_clustered_network]
-#' * [wattsstrogatz_network]
-#' * [barabasialbert_network]
-#' * [cubiclattice_network]
-#' * [adjacencylist_network]
+#' In *NEXTNet*, networks are directed graphs, i.e. fully defined by a set of
+#' nodes \eqn{V} and edges (or links) \eqn{E \subset V \times V} where self-edges
+#' i.e. links of the form \eqn{(v,v)} are forbidden. *NEXTNet* provides various
+#' different types of algorithms for creating synthetic networks, as well as
+#' networks with are defined by specifying \eqn{V} and \eqn{E}.
+#' 
+#' In addition to the plain (unweighted and static) networks defined above, 
+#' *NEXTNet* also supports *temporal* and *weighted* networks.
+#' 
+#' In *temporal* networks, the set of edges/links depends on the time \eqn{t},
+#' i.e. \eqn{E=E(t)}. On such networks, epidemics can only spread from a node
+#' \eqn{u} to a node \eqn{v} at times where \eqn{(u,v) \in E(t)}. At other times,
+#' the infectiousness of \eqn{u} for the particular link \eqn{(u,v)} is effectively
+#' zero. 
+#' 
+#' In *weighted* networks, each \eqn{e \in E} has an assigned weight
+#' \eqn{w_e \geq 0}. These weights modulate the infectiousness
+#' of nodes, see the discussion in [time_distributions]. Weighted networks can
+#' be interpreted as a limit case of temporal networks in which edges fluctuate
+#' with at a very high frequency. The weight then expresses the fraction of times
+#' at which the link is present.
+#' 
+#' *NEXTNetR* supports the following types of static, unweighted networks:
+#' 
+#' * [empirical_network]: Network defined by an arbitrary adjacency list read from a file.
+#' * [adjacencylist_network] Network defined by an arbitrary adjacency list.
+#' * [erdos_renyi_network]: Erdős–Rényi network, i.e. edges are sampled i.i.d from a fully-connected network.
+#' * [fully_connected_network] Fully connected network, i.e. all possible edges exist.
+#' * [acyclic_network] Tree-shaped network.
+#' * [configmodel_network] Network with specified number of nodes of a certain degree.
+#' * [configmodel_clustered_network] Configuration model with clustering.
+#' * [wattsstrogatz_network] 
+#' * [barabasialbert_network] Barabási–Albert prefertial attachment network.
+#' * [cubiclattice_network] Cubic lattice in 2 up to 8 dimensions.
 #'
 #' the following static weighted networks
 #'
-#' * [weighted_adjacencylist_network]
+#' * [weighted_adjacencylist_network] Network defined by an arbitrary adjacency list with weighted edges.
 #'
-#' and following temporal networks
+#' and the following temporal networks
 #'
 #' * [empirical_temporalnetwork]
 #' * [brownian_proximity_temporalnetwork]

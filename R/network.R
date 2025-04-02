@@ -30,23 +30,25 @@
 #' * [empirical_network]: Network defined by an arbitrary adjacency list read from a file.
 #' * [adjacencylist_network] Network defined by an arbitrary adjacency list.
 #' * [erdos_renyi_network]: Erdős–Rényi network, i.e. edges are sampled i.i.d from a fully-connected network.
-#' * [fully_connected_network] Fully connected network, i.e. all possible edges exist.
-#' * [acyclic_network] Tree-shaped network.
-#' * [configmodel_network] Network with specified number of nodes of a certain degree.
-#' * [configmodel_clustered_network] Configuration model with clustering.
-#' * [wattsstrogatz_network] 
-#' * [barabasialbert_network] Barabási–Albert prefertial attachment network.
-#' * [cubiclattice_network] Cubic lattice in 2 up to 8 dimensions.
+#' * [fully_connected_network]: Fully connected network, i.e. all possible edges exist.
+#' * [acyclic_network]: Tree-shaped network.
+#' * [configmodel_network]: Network with specified number of nodes of a certain degree.
+#' * [configmodel_clustered_network]: Configuration model with clustering.
+#' * [wattsstrogatz_network]: 
+#' * [barabasialbert_network]: Barabási–Albert prefertial attachment network.
+#' * [cubiclattice_network]: Cubic lattice in 2 up to 8 dimensions.
 #'
 #' the following static weighted networks
 #'
-#' * [weighted_adjacencylist_network] Network defined by an arbitrary adjacency list with weighted edges.
+#' * [adjacencylist_weightednetwork]: Network defined by an arbitrary adjacency list with weighted edges.
+#' * [erdos_renyi_weightednetwork]: Erdős–Rényi network with i.i.d edge weights.
 #'
 #' and the following temporal networks
 #'
-#' * [empirical_temporalnetwork]
-#' * [brownian_proximity_temporalnetwork]
-#' * [sirx_temporalnetwork]
+#' * [empirical_contact_temporalnetwork]: Network defined by contacts at pre-defined times read from a file.
+#' * [erdos_renyi_temporalnetwork]: Erdős–Rényi network with temporally evolving edges.
+#' * [brownian_proximity_temporalnetwork]: Proximity network for Brownian particles in two dimensions.
+#' * [sirx_temporalnetwork]: Network version of the SIRX model proposed by Maier & Brockmann, 2020
 NULL
 
 #' @title Create a Erdös-Rényi network 
@@ -276,9 +278,58 @@ adjacencylist_network <- function(adjacencylist, is_undirected = FALSE) {
 #' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
-weighted_adjacencylist_network <- function(adjacencylist, is_undirected = FALSE) {
-  nextnetR_weighted_adjacencylist_network(lapply(adjacencylist, function(e) list(n=as.integer(e$n), w=as.numeric(e$w))),
-                                          as.logical(is_undirected))
+adjacencylist_weightednetwork <- function(adjacencylist, is_undirected = FALSE) {
+  nextnetR_adjacencylist_weightednetwork(lapply(adjacencylist, function(e) list(n=as.integer(e$n), w=as.numeric(e$w))),
+                                         as.logical(is_undirected))
+}
+
+#' @title Create a weighted Erdös-Rényi network
+#' 
+#' @description
+#' Creates a weighted Erdös-Rényi network with the given size and average degree
+#' and i.i.d. edge weights. The weight distribution is specified by a vector
+#' of weights and a vector of corresponding probabilities.
+#' 
+#' @param size number of nodes
+#' @param avg_degree average number of neighbour each node has
+#' @param weights edge weights
+#' @param probabilities edge weight probabilities, must be same length as `weights`
+#' @returns a network object
+#' 
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
+#' 
+#' @export
+erdos_renyi_weightednetwork <- function(size, avg_degree, weights, probabilities) {
+  stopifnot(length(weights) == length(probabilities))
+  nextnetR_erdos_renyi_weightednetwork(as.integer(size), as.numeric(avg_degree),
+                                       as.numeric(weights), as.numeric(probabilities))
+}
+
+#' @title Create a temporal Erdös-Rényi network
+#' 
+#' @description
+#' Creates a temporal Erdös-Rényi network with the given size and average degree.
+#' 
+#' @param size number of nodes (\eqn{n})
+#' @param avg_degree average number of neighbour each node has (\eqn{k})
+#' @param timescale time scale of network evolution (\eqn{\tau})
+#' @returns a network object
+#' 
+#' @details
+#' At any point in time, a temporal Erdös-Rényi network resembles a static
+#' Erdös-Rényi network in that each possible edge exists in the network
+#' with uniform probability \eqn{p_+ = k / (n - 1)} where \eqn{k} as the average
+#' node degree and \eqn{n} the number of nodes. The state of each edge possible
+#' evolves independently over time, appearing with rate \eqn{\lambda_+ = p_+ / \tau}
+#' disappearing with rate \eqn{\lambda_- = p_- / \tau} where \eqn{\tau} is the
+#' time scale.
+#' 
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
+#' 
+#' @export
+erdos_renyi_temporalnetwork <- function(size, avg_degree, timescale) {
+  nextnetR_erdos_renyi_temporalnetwork(as.integer(size), as.numeric(avg_degree),
+                                       as.numeric(timescale))
 }
 
 #' @title Create a Brownian proximity network
@@ -328,8 +379,8 @@ sirx_temporalnetwork <- function(graph, kappa0, kappa) {
 #' TODO
 #' 
 #' @export
-empirical_temporalnetwork <- function(file, finite_duration, dt) {
-  nextnetR_empirical_temporalnetwork(as.character(file), as.logical(finite_duration), as.double(dt))
+empirical_contact_temporalnetwork <- function(file, finite_duration, dt) {
+  nextnetR_empirical_contact_temporalnetwork(as.character(file), as.logical(finite_duration), as.double(dt))
 }
 
 #' @name network_properties

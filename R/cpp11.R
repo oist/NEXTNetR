@@ -104,24 +104,32 @@ nextnetR_cubiclattice8d_network <- function(edge_length) {
   .Call(`_NEXTNetR_nextnetR_cubiclattice8d_network`, edge_length)
 }
 
+nextnetR_adjacencylist_network <- function(input_al, is_undirected) {
+  .Call(`_NEXTNetR_nextnetR_adjacencylist_network`, input_al, is_undirected)
+}
+
+nextnetR_erdos_renyi_temporalnetwork <- function(size, avg_degree, timescale) {
+  .Call(`_NEXTNetR_nextnetR_erdos_renyi_temporalnetwork`, size, avg_degree, timescale)
+}
+
 nextnetR_brownian_proximity_temporalnetwork <- function(size, avg_degree, radius, D0, D1, gamma, dt) {
   .Call(`_NEXTNetR_nextnetR_brownian_proximity_temporalnetwork`, size, avg_degree, radius, D0, D1, gamma, dt)
 }
 
-nextnetR_empirical_temporalnetwork <- function(file, finite_duration, dt) {
-  .Call(`_NEXTNetR_nextnetR_empirical_temporalnetwork`, file, finite_duration, dt)
+nextnetR_empirical_contact_temporalnetwork <- function(file, finite_duration, dt) {
+  .Call(`_NEXTNetR_nextnetR_empirical_contact_temporalnetwork`, file, finite_duration, dt)
 }
 
 nextnetR_sirx_temporalnetwork <- function(nw, kappa0, kappa) {
   .Call(`_NEXTNetR_nextnetR_sirx_temporalnetwork`, nw, kappa0, kappa)
 }
 
-nextnetR_adjacencylist_network <- function(input_al, is_undirected) {
-  .Call(`_NEXTNetR_nextnetR_adjacencylist_network`, input_al, is_undirected)
+nextnetR_erdos_renyi_weightednetwork <- function(size, avg_degree, weights, probabilities) {
+  .Call(`_NEXTNetR_nextnetR_erdos_renyi_weightednetwork`, size, avg_degree, weights, probabilities)
 }
 
-nextnetR_weighted_adjacencylist_network <- function(input_al, is_undirected) {
-  .Call(`_NEXTNetR_nextnetR_weighted_adjacencylist_network`, input_al, is_undirected)
+nextnetR_adjacencylist_weightednetwork <- function(input_al, is_undirected) {
+  .Call(`_NEXTNetR_nextnetR_adjacencylist_weightednetwork`, input_al, is_undirected)
 }
 
 nextnetR_nextreaction_simulation <- function(nw, psi, rho_, opts) {

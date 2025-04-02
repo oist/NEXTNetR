@@ -31,24 +31,26 @@ at which the link is present.
 \item \link{empirical_network}: Network defined by an arbitrary adjacency list read from a file.
 \item \link{adjacencylist_network} Network defined by an arbitrary adjacency list.
 \item \link{erdos_renyi_network}: Erdős–Rényi network, i.e. edges are sampled i.i.d from a fully-connected network.
-\item \link{fully_connected_network} Fully connected network, i.e. all possible edges exist.
-\item \link{acyclic_network} Tree-shaped network.
-\item \link{configmodel_network} Network with specified number of nodes of a certain degree.
-\item \link{configmodel_clustered_network} Configuration model with clustering.
-\item \link{wattsstrogatz_network}
-\item \link{barabasialbert_network} Barabási–Albert prefertial attachment network.
-\item \link{cubiclattice_network} Cubic lattice in 2 up to 8 dimensions.
+\item \link{fully_connected_network}: Fully connected network, i.e. all possible edges exist.
+\item \link{acyclic_network}: Tree-shaped network.
+\item \link{configmodel_network}: Network with specified number of nodes of a certain degree.
+\item \link{configmodel_clustered_network}: Configuration model with clustering.
+\item \link{wattsstrogatz_network}:
+\item \link{barabasialbert_network}: Barabási–Albert prefertial attachment network.
+\item \link{cubiclattice_network}: Cubic lattice in 2 up to 8 dimensions.
 }
 
 the following static weighted networks
 \itemize{
-\item \link{weighted_adjacencylist_network} Network defined by an arbitrary adjacency list with weighted edges.
+\item \link{adjacencylist_weightednetwork}: Network defined by an arbitrary adjacency list with weighted edges.
+\item \link{erdos_renyi_weightednetwork}: Erdős–Rényi network with i.i.d edge weights.
 }
 
 and the following temporal networks
 \itemize{
-\item \link{empirical_temporalnetwork}
-\item \link{brownian_proximity_temporalnetwork}
-\item \link{sirx_temporalnetwork}
+\item \link{empirical_contact_temporalnetwork}: Network defined by contacts at pre-defined times read from a file.
+\item \link{erdos_renyi_temporalnetwork}: Erdős–Rényi network with temporally evolving edges.
+\item \link{brownian_proximity_temporalnetwork}: Proximity network for Brownian particles in two dimensions.
+\item \link{sirx_temporalnetwork}: Network version of the SIRX model proposed by Maier & Brockmann, 2020
 }
 }

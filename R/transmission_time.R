@@ -1,3 +1,6 @@
+#' @name time_distributions
+#' @title Creating time distributions
+
 #' @export
 exponential_time <- function(lambda) {
   nextnetR_exponential_time(as.double(lambda))

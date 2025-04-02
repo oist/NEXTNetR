@@ -344,6 +344,101 @@ network_R nextnetR_cubiclattice8d_network(int edge_length) {
     return new cubic_lattice_8d(edge_length);
 }
 
+/*
+ * nextnetR_adjacencylist_network
+ */
+
+namespace {
+
+class nextnetR_adjacencylist_network_impl : public adjacencylist_network {
+public:
+  nextnetR_adjacencylist_network_impl(std::vector<std::vector<node_t>>&& al, bool undirected_ = false)
+    :undirected(undirected_)
+  {
+    adjacencylist = std::move(al);
+  }
+  
+  virtual bool is_undirected() {
+    return undirected;
+  }
+  
+private:
+  bool undirected;
+};
+  
+}
+
+[[cpp11::register]]
+network_R nextnetR_adjacencylist_network(list input_al, bool is_undirected) {
+  const std::size_t n = input_al.size();
+  if (n > std::numeric_limits<node_t>::max())
+    throw std::runtime_error("too many nodes");
+  
+  /* directed edges whose counterpart hasn't been observed */
+  std::set<std::size_t> directed_edges;
+  
+  std::vector<std::vector<node_t>> adjacencylist;
+  adjacencylist.reserve(n);
+  for(node_t u = 0; u < (node_t)n; ++u) {
+    /* Append adjacency list for node u */
+    adjacencylist.emplace_back();
+    std::vector<node_t> &u_adj = adjacencylist.back();
+    
+    /* Fill adjacencylist for node u */
+    const integers input_u_adj = input_al[u];
+    const std::size_t k = input_u_adj.size();
+    u_adj.reserve(k);
+    std::set<node_t> seen;
+    for(std::size_t i = 0; i < k; ++i) {
+      /* Find target node v */
+      const node_t v = ((integers)input_u_adj)[i];
+      
+      /* Check validity */
+      if ((v < 1) || (v > (node_t)n))
+        throw std::runtime_error("nodes must be labelled consecutively from 1 to n");
+      if (seen.find(v) != seen.end())
+        throw std::runtime_error("multi-edges are not supported (" +
+                                 std::to_string(u) + " -> " + std::to_string(v) +
+                                 "already seen)");
+      seen.insert(v);
+      
+      /* If claimed to be undirected, edge (u,v) exists iff (v,u) exits.
+       * We insert into directed_edges upon seeing {u,v} for the first time,
+       * and delete when second a second time.
+       */
+      if (is_undirected) {
+        const std::size_t e = edge_index_undirected(u, v);
+        const auto i = directed_edges.find(e);
+        if (i == directed_edges.end())
+          directed_edges.insert(e);
+        else
+          directed_edges.erase(i);
+      }
+      
+      /* Add edge */  
+      u_adj.push_back(v - 1);
+    }
+  }
+  
+  /* Check that the network was indeed undirected */
+  if (is_undirected && !directed_edges.empty())
+    throw std::runtime_error(std::to_string(directed_edges.size()) + " directed edges found " +
+                             "in network claimed to be undirected");
+  
+  return new nextnetR_adjacencylist_network_impl(std::move(adjacencylist), is_undirected);
+}
+
+/*
+ * TEMPORAL NETWORKS
+ */
+
+[[cpp11::register]]
+network_R nextnetR_erdos_renyi_temporalnetwork(int size, double avg_degree, double timescale) {
+  RNG_SCOPE_IF_NECESSARY;
+  
+  return new temporal_erdos_renyi(size, avg_degree, timescale, rng_engine());
+}
+
 [[cpp11::register]]
 network_R nextnetR_brownian_proximity_temporalnetwork(int size, double avg_degree, double radius,
                                             double D0, double D1, double gamma, SEXP dt) {
@@ -357,12 +452,12 @@ network_R nextnetR_brownian_proximity_temporalnetwork(int size, double avg_degre
 }
 
 [[cpp11::register]]
-network_R nextnetR_empirical_temporalnetwork(std::string file, bool finite_duration, double dt) {
+network_R nextnetR_empirical_contact_temporalnetwork(std::string file, bool finite_duration, double dt) {
     RNG_SCOPE_IF_NECESSARY;
     if (finite_duration)
-        return new empirical_temporal_network(file, empirical_temporal_network::finite_duration, dt);
+        return new empirical_contact_network(file, empirical_contact_network::finite_duration, dt);
     else
-        return new empirical_temporal_network(file, empirical_temporal_network::infitesimal_duration, dt);
+        return new empirical_contact_network(file, empirical_contact_network::infitesimal_duration, dt);
 }
 
 [[cpp11::register]]
@@ -379,92 +474,29 @@ network_R nextnetR_sirx_temporalnetwork(const network_R& nw, double kappa0, doub
              true, true };
 }
 
-namespace {
 
-class nextnetR_adjacencylist_network_impl : public adjacencylist_network {
-public:
-    nextnetR_adjacencylist_network_impl(std::vector<std::vector<node_t>>&& al, bool undirected_ = false)
-        :undirected(undirected_)
-    {
-        adjacencylist = std::move(al);
-    }
-    
-    virtual bool is_undirected() {
-        return undirected;
-    }
-    
-private:
-    bool undirected;
-};
-  
-}
-
+/*
+ * WEIGHTED NETWORKS
+ */
 
 [[cpp11::register]]
-network_R nextnetR_adjacencylist_network(list input_al, bool is_undirected) {
-    const std::size_t n = input_al.size();
-    if (n > std::numeric_limits<node_t>::max())
-      throw std::runtime_error("too many nodes");
+network_R nextnetR_erdos_renyi_weightednetwork(int size, double avg_degree, doubles weights, doubles probabilities) {
+  RNG_SCOPE_IF_NECESSARY;
 
-    /* directed edges whose counterpart hasn't been observed */
-    std::set<std::size_t> directed_edges;
-    
-    std::vector<std::vector<node_t>> adjacencylist;
-    adjacencylist.reserve(n);
-    for(node_t u = 0; u < (node_t)n; ++u) {
-        /* Append adjacency list for node u */
-        adjacencylist.emplace_back();
-        std::vector<node_t> &u_adj = adjacencylist.back();
-        
-        /* Fill adjacencylist for node u */
-        const integers input_u_adj = input_al[u];
-        const std::size_t k = input_u_adj.size();
-        u_adj.reserve(k);
-        std::set<node_t> seen;
-        for(std::size_t i = 0; i < k; ++i) {
-            /* Find target node v */
-            const node_t v = ((integers)input_u_adj)[i];
-            
-            /* Check validity */
-            if ((v < 1) || (v > (node_t)n))
-                throw std::runtime_error("nodes must be labelled consecutively from 1 to n");
-            if (seen.find(v) != seen.end())
-                throw std::runtime_error("multi-edges are not supported (" +
-                                         std::to_string(u) + " -> " + std::to_string(v) +
-                                         "already seen)");
-            seen.insert(v);
-                
-            /* If claimed to be undirected, edge (u,v) exists iff (v,u) exits.
-             * We insert into directed_edges upon seeing {u,v} for the first time,
-             * and delete when second a second time.
-             */
-            if (is_undirected) {
-                const std::size_t e = edge_index_undirected(u, v);
-                const auto i = directed_edges.find(e);
-                if (i == directed_edges.end())
-                    directed_edges.insert(e);
-                else
-                    directed_edges.erase(i);
-            }
-              
-            /* Add edge */  
-            u_adj.push_back(v - 1);
-        }
-    }
-    
-    /* Check that the network was indeed undirected */
-    if (is_undirected && !directed_edges.empty())
-        throw std::runtime_error(std::to_string(directed_edges.size()) + " directed edges found " +
-                                 "in network claimed to be undirected");
-    
-    return new nextnetR_adjacencylist_network_impl(std::move(adjacencylist), is_undirected);
+  std::vector<double> weights_stdvec(weights.begin(), weights.end());
+  std::vector<double> probabilities_stdvec(probabilities.begin(), probabilities.end());
+  return new weighted_erdos_renyi(size, avg_degree, weights_stdvec, probabilities_stdvec, rng_engine());
 }
+
+/*
+ * nextnetR_adjacencylist_weightednetwork
+ */
 
 namespace {
 
-class nextnetR_weighted_adjacencylist_network_impl : public weighted_adjacencylist_network {
+class nextnetR_adjacencylist_weightednetwork_impl : public weighted_adjacencylist_network {
 public:
-    nextnetR_weighted_adjacencylist_network_impl(std::vector<std::vector<std::pair<node_t, double>>>&& al, bool undirected_ = false)
+    nextnetR_adjacencylist_weightednetwork_impl(std::vector<std::vector<std::pair<node_t, double>>>&& al, bool undirected_ = false)
         :undirected(undirected_)
     {
         adjacencylist = std::move(al);
@@ -481,7 +513,7 @@ private:
 }
 
 [[cpp11::register]]
-network_R nextnetR_weighted_adjacencylist_network(list input_al, bool is_undirected) {
+network_R nextnetR_adjacencylist_weightednetwork(list input_al, bool is_undirected) {
     const std::size_t n = input_al.size();
     if (n > std::numeric_limits<node_t>::max())
       throw std::runtime_error("too many nodes");
@@ -541,5 +573,5 @@ network_R nextnetR_weighted_adjacencylist_network(list input_al, bool is_undirec
         throw std::runtime_error(std::to_string(directed_edges.size()) + " directed edges found " +
                                  "in network claimed to be undirected");
     
-    return new nextnetR_weighted_adjacencylist_network_impl(std::move(adjacencylist), is_undirected);
+    return new nextnetR_adjacencylist_weightednetwork_impl(std::move(adjacencylist), is_undirected);
 }

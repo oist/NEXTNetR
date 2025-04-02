@@ -188,6 +188,20 @@ extern "C" SEXP _NEXTNetR_nextnetR_cubiclattice8d_network(SEXP edge_length) {
   END_CPP11
 }
 // network.cpp
+network_R nextnetR_adjacencylist_network(list input_al, bool is_undirected);
+extern "C" SEXP _NEXTNetR_nextnetR_adjacencylist_network(SEXP input_al, SEXP is_undirected) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nextnetR_adjacencylist_network(cpp11::as_cpp<cpp11::decay_t<list>>(input_al), cpp11::as_cpp<cpp11::decay_t<bool>>(is_undirected)));
+  END_CPP11
+}
+// network.cpp
+network_R nextnetR_erdos_renyi_temporalnetwork(int size, double avg_degree, double timescale);
+extern "C" SEXP _NEXTNetR_nextnetR_erdos_renyi_temporalnetwork(SEXP size, SEXP avg_degree, SEXP timescale) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nextnetR_erdos_renyi_temporalnetwork(cpp11::as_cpp<cpp11::decay_t<int>>(size), cpp11::as_cpp<cpp11::decay_t<double>>(avg_degree), cpp11::as_cpp<cpp11::decay_t<double>>(timescale)));
+  END_CPP11
+}
+// network.cpp
 network_R nextnetR_brownian_proximity_temporalnetwork(int size, double avg_degree, double radius, double D0, double D1, double gamma, SEXP dt);
 extern "C" SEXP _NEXTNetR_nextnetR_brownian_proximity_temporalnetwork(SEXP size, SEXP avg_degree, SEXP radius, SEXP D0, SEXP D1, SEXP gamma, SEXP dt) {
   BEGIN_CPP11
@@ -195,10 +209,10 @@ extern "C" SEXP _NEXTNetR_nextnetR_brownian_proximity_temporalnetwork(SEXP size,
   END_CPP11
 }
 // network.cpp
-network_R nextnetR_empirical_temporalnetwork(std::string file, bool finite_duration, double dt);
-extern "C" SEXP _NEXTNetR_nextnetR_empirical_temporalnetwork(SEXP file, SEXP finite_duration, SEXP dt) {
+network_R nextnetR_empirical_contact_temporalnetwork(std::string file, bool finite_duration, double dt);
+extern "C" SEXP _NEXTNetR_nextnetR_empirical_contact_temporalnetwork(SEXP file, SEXP finite_duration, SEXP dt) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_empirical_temporalnetwork(cpp11::as_cpp<cpp11::decay_t<std::string>>(file), cpp11::as_cpp<cpp11::decay_t<bool>>(finite_duration), cpp11::as_cpp<cpp11::decay_t<double>>(dt)));
+    return cpp11::as_sexp(nextnetR_empirical_contact_temporalnetwork(cpp11::as_cpp<cpp11::decay_t<std::string>>(file), cpp11::as_cpp<cpp11::decay_t<bool>>(finite_duration), cpp11::as_cpp<cpp11::decay_t<double>>(dt)));
   END_CPP11
 }
 // network.cpp
@@ -209,17 +223,17 @@ extern "C" SEXP _NEXTNetR_nextnetR_sirx_temporalnetwork(SEXP nw, SEXP kappa0, SE
   END_CPP11
 }
 // network.cpp
-network_R nextnetR_adjacencylist_network(list input_al, bool is_undirected);
-extern "C" SEXP _NEXTNetR_nextnetR_adjacencylist_network(SEXP input_al, SEXP is_undirected) {
+network_R nextnetR_erdos_renyi_weightednetwork(int size, double avg_degree, doubles weights, doubles probabilities);
+extern "C" SEXP _NEXTNetR_nextnetR_erdos_renyi_weightednetwork(SEXP size, SEXP avg_degree, SEXP weights, SEXP probabilities) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_adjacencylist_network(cpp11::as_cpp<cpp11::decay_t<list>>(input_al), cpp11::as_cpp<cpp11::decay_t<bool>>(is_undirected)));
+    return cpp11::as_sexp(nextnetR_erdos_renyi_weightednetwork(cpp11::as_cpp<cpp11::decay_t<int>>(size), cpp11::as_cpp<cpp11::decay_t<double>>(avg_degree), cpp11::as_cpp<cpp11::decay_t<doubles>>(weights), cpp11::as_cpp<cpp11::decay_t<doubles>>(probabilities)));
   END_CPP11
 }
 // network.cpp
-network_R nextnetR_weighted_adjacencylist_network(list input_al, bool is_undirected);
-extern "C" SEXP _NEXTNetR_nextnetR_weighted_adjacencylist_network(SEXP input_al, SEXP is_undirected) {
+network_R nextnetR_adjacencylist_weightednetwork(list input_al, bool is_undirected);
+extern "C" SEXP _NEXTNetR_nextnetR_adjacencylist_weightednetwork(SEXP input_al, SEXP is_undirected) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_weighted_adjacencylist_network(cpp11::as_cpp<cpp11::decay_t<list>>(input_al), cpp11::as_cpp<cpp11::decay_t<bool>>(is_undirected)));
+    return cpp11::as_sexp(nextnetR_adjacencylist_weightednetwork(cpp11::as_cpp<cpp11::decay_t<list>>(input_al), cpp11::as_cpp<cpp11::decay_t<bool>>(is_undirected)));
   END_CPP11
 }
 // simulation.cpp
@@ -368,6 +382,7 @@ extern "C" {
 static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_acyclic_network",                         (DL_FUNC) &_NEXTNetR_nextnetR_acyclic_network,                         3},
     {"_NEXTNetR_nextnetR_adjacencylist_network",                   (DL_FUNC) &_NEXTNetR_nextnetR_adjacencylist_network,                   2},
+    {"_NEXTNetR_nextnetR_adjacencylist_weightednetwork",           (DL_FUNC) &_NEXTNetR_nextnetR_adjacencylist_weightednetwork,           2},
     {"_NEXTNetR_nextnetR_barabasialbert_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_barabasialbert_network,                  2},
     {"_NEXTNetR_nextnetR_brownian_proximity_temporalnetwork",      (DL_FUNC) &_NEXTNetR_nextnetR_brownian_proximity_temporalnetwork,      7},
     {"_NEXTNetR_nextnetR_configmodel_clustered_alpha_network",     (DL_FUNC) &_NEXTNetR_nextnetR_configmodel_clustered_alpha_network,     3},
@@ -381,9 +396,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_cubiclattice6d_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_cubiclattice6d_network,                  1},
     {"_NEXTNetR_nextnetR_cubiclattice7d_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_cubiclattice7d_network,                  1},
     {"_NEXTNetR_nextnetR_cubiclattice8d_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_cubiclattice8d_network,                  1},
+    {"_NEXTNetR_nextnetR_empirical_contact_temporalnetwork",       (DL_FUNC) &_NEXTNetR_nextnetR_empirical_contact_temporalnetwork,       3},
     {"_NEXTNetR_nextnetR_empirical_network",                       (DL_FUNC) &_NEXTNetR_nextnetR_empirical_network,                       1},
-    {"_NEXTNetR_nextnetR_empirical_temporalnetwork",               (DL_FUNC) &_NEXTNetR_nextnetR_empirical_temporalnetwork,               3},
     {"_NEXTNetR_nextnetR_erdos_renyi_network",                     (DL_FUNC) &_NEXTNetR_nextnetR_erdos_renyi_network,                     2},
+    {"_NEXTNetR_nextnetR_erdos_renyi_temporalnetwork",             (DL_FUNC) &_NEXTNetR_nextnetR_erdos_renyi_temporalnetwork,             3},
+    {"_NEXTNetR_nextnetR_erdos_renyi_weightednetwork",             (DL_FUNC) &_NEXTNetR_nextnetR_erdos_renyi_weightednetwork,             4},
     {"_NEXTNetR_nextnetR_exponential_time",                        (DL_FUNC) &_NEXTNetR_nextnetR_exponential_time,                        1},
     {"_NEXTNetR_nextnetR_fully_connected_network",                 (DL_FUNC) &_NEXTNetR_nextnetR_fully_connected_network,                 1},
     {"_NEXTNetR_nextnetR_gamma_time",                              (DL_FUNC) &_NEXTNetR_nextnetR_gamma_time,                              3},
@@ -415,7 +432,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_time_survivalprobability",                (DL_FUNC) &_NEXTNetR_nextnetR_time_survivalprobability,                4},
     {"_NEXTNetR_nextnetR_time_survivalquantile",                   (DL_FUNC) &_NEXTNetR_nextnetR_time_survivalquantile,                   4},
     {"_NEXTNetR_nextnetR_watts_strogatz_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_watts_strogatz_network,                  3},
-    {"_NEXTNetR_nextnetR_weighted_adjacencylist_network",          (DL_FUNC) &_NEXTNetR_nextnetR_weighted_adjacencylist_network,          2},
     {"_NEXTNetR_nextnetR_weighted_network_adjacencylist",          (DL_FUNC) &_NEXTNetR_nextnetR_weighted_network_adjacencylist,          1},
     {NULL, NULL, 0}
 };

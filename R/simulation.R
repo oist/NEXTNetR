@@ -1,26 +1,45 @@
 #' @name simulation_types
 #' @title Creating simulations
 #'
-#' TODO: Writeme
-#'
-#' [nextreaction_simulation]
-#' [nextreaction_simulation_meanfield]
-#' [nmga_simulation]
+#' @details
+#' 
+#' The main simulation algorithm implemented by *NEXTNetR* is
+#' [nextreaction_simulation], which is based on the next-reaction method and
+#' supports *weighted* as well as *temporal* networks, see [network_types]. This
+#' is the recommended algorihtm for all use-cases.
+#' 
+#' For comparison, *NEXTNetR* also provides [nmga_simulation] which is based
+#' on the nMGA algorithm. This algorithm is limited to static, unweighted networks.
+#' 
+#' @example examples/basic_simulation.R
 NULL
 
-#' Create a simulator using the NextReaction algorithm
+#' @title Create a simulator using the NextReaction algorithm
+#' 
+#' @description This is the recommended simulation algorithm and supports
+#' *weighted* as well as *temporal* networks, see [network_types]. To force
+#' a temporal network to be treated as a static network, set option `SIR` to `TRUE`.
 #'
 #' @param nw network to simulate on
 #' @param psi infection [time distribution][time_distributions]
-#' @param rhi reset/recivery [time distribution][time_distributions]
+#' @param rhi reset/recovery [time distribution][time_distributions]
 #' @param options named list of algorithm options, see below
+#' @return a simulation object. See \code{\link{simulation_run}} for how to
+#' run the simulation and [simulation_functions] for other functions that
+#' operate on [simulations][simulation_types].
+#'
+#' @details
 #'
 #' Possible options are
-#' * *shuffle_neighbours*: Whether to shuffle the neighbours upon infecting a node. Default TRUE.
-#' * *edges_concurrent*: Whether to activate all outgoing edges simultaenously or sequentially. If set to true, neighbours are implicitly shuffled and *shuffle_neighbours* thus has no effect. Default FALSE.
+#' * *SIR*: Do not make recovered nodes susceptible again as in the SIR model. Default FALSE.
+#' * *static_network*: Treat network as static, even if it is a temporal network. Default FALSE.
+#' * *shuffle_neighbours*: Shuffle the neighbours upon infecting a node. Default TRUE.
+#' * *edges_concurrent*: Activate all outgoing edges simultaenously or sequentially. If set to true, neighbours are implicitly shuffled and *shuffle_neighbours* thus has no effect. Default FALSE.
 #'
 #' @seealso \code{\link{simulation_functions}}
-#'
+#' 
+#' @example examples/basic_simulation.R
+#' 
 #' @md
 #' @export
 nextreaction_simulation <- function(nw, psi, rho = NULL, options = list()) {
@@ -32,7 +51,21 @@ nextreaction_simulation_meanfield <- function(N, R0, psi, rho = NULL, options = 
   nextnetR_nextreaction_simulation_meanfield(as.integer(N), as.double(R0), psi, rho, options)
 }
 
-#' Create a simulator using the non-Markovian Gillespie (nMGA) algorithm
+#' @title Create a simulator using the non-Markovian Gillespie (nMGA) algorithm
+#'
+#' @description This is an alternative simulation algorithm that is generally
+#' not recommended except for comparisons with \code{\link{nextreaction_simulation}}.
+#' Only supports static, unweighted networks.
+#'
+#' @param nw network to simulate on
+#' @param psi infection [time distribution][time_distributions]
+#' @param rhi reset/recovery [time distribution][time_distributions]
+#' @param options named list of algorithm options, see below
+#' @return a simulation object. See \code{\link{simulation_run}} for how to
+#' run the simulation and [simulation_functions] for other functions that
+#' operate on [simulations][simulation_types].
+#'
+#' @details
 #'
 #' Possible options are
 #' * *approx_threshold*: Threshold for infected nodes at which the approximate algorithm is used
@@ -52,7 +85,6 @@ nmga_simulation <- function(nw, psi, rho = NULL, options = list()) {
 #' 
 #' @description The functions allow [simulations][simulation_types] to be run and their state
 #'   properties to be queried. See [simulations][simulation_types] for how to create a simulation.
-#' @seealso nextreaction_simulation, nmga_simulation
 #' 
 #' @param sim a simulation object
 #' 
@@ -78,8 +110,10 @@ nmga_simulation <- function(nw, psi, rho = NULL, options = list()) {
 #' * `simulation_addinfections(sim, nodes, times)`
 #'   markes the nodes in `nodes` as infected at the specific times in `times`
 #'   
-#' * `simulation_fun(sim, stop, opts)`
+#' * `simulation_run(sim, stop, opts)`
 #'   runs the simulation, see \code{\link{simulation_run}} for details
+#'   
+#' @seealso \code{\link{nextreaction_simulation}}, \code{\link{nmga_simulation}}
 #'   
 #' @md
 NULL
@@ -102,7 +136,7 @@ simulation_network <- function(sim) {
   nextnetR_simulation_network(sim)
 }
 
-#' @rdname simulation_graph
+#' @rdname simulation_functions
 #' @export
 simulation_graph <- simulation_network
 
@@ -130,11 +164,13 @@ simulation_addinfections <- function(sim, nodes, times) {
   nextnetR_simulation_addinfections(sim, as.integer(nodes), as.double(times))
 }
 
-#' Runs a simulation until a stopping condition occurs
+#' @title Runs a simulation until a stopping condition occurs
 #' 
-#' Runs the specified simulation until a stopping condition occurs and returns
-#' a table listing all events that occurred. `simulation_run` can be called
-#' repeatedly and will continue from the point where the last run stopped.
+#' @description Runs the specified simulation until a stopping condition occurs
+#' and returns a table listing all events that occurred. `simulation_run` can be
+#' called repeatedly and will continue from the point where the last run stopped.
+#' Note that for an epidemic to start, *initially infected* nodes must be defined
+#' with \code{\link{simulation_addinfections}}.
 #' 
 #' @param sim a simulation object 
 #' @param stop a list of stopping conditions
@@ -169,9 +205,10 @@ simulation_addinfections <- function(sim, nodes, times) {
 #' * *network_events*: Include network events in the returned `data.frame`. Default *false*
 #' * *epidemic_events*: Include epidemic events in the returned `data.frame`. Default *true*
 #'     
-#' @example basic_simulation.R
+#' @example examples/basic_simulation.R
 #'
-#' @seealso \code{\link{simulation_functions}}
+#' @seealso \code{\link{simulation_functions}}, \code{\link{nextreaction_simulation}},
+#' \code{\link{nmga_simulation}}
 #'
 #' @md
 #' @export
@@ -179,9 +216,9 @@ simulation_run <- function(sim, stop, opts=list()) {
   nextnetR_simulation_run(sim, as.list(stop), as.list(opts))
 }
 
-#' Outdated version of `simulation_run`
-#
-# @description This is a compatibility wrapper for `simulation_run`.
+#' @title Outdated version of `simulation_run`
+#'
+#' @description This is a compatibility wrapper for `simulation_run`.
 #'
 #' @seealso \code{\link{simulation_run}}, \code{\link{simulation_functions}}
 #'

@@ -7,7 +7,7 @@
 simulation_step(sim_, steps, opts = list())
 }
 \description{
-Outdated version of \code{simulation_run}
+This is a compatibility wrapper for \code{simulation_run}.
 }
 \seealso{
 \code{\link{simulation_run}}, \code{\link{simulation_functions}}

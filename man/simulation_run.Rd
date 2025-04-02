@@ -29,9 +29,11 @@ a \code{data.frame} containing the columns
 }
 }
 \description{
-Runs the specified simulation until a stopping condition occurs and returns
-a table listing all events that occurred. \code{simulation_run} can be called
-repeatedly and will continue from the point where the last run stopped.
+Runs the specified simulation until a stopping condition occurs
+and returns a table listing all events that occurred. \code{simulation_run} can be
+called repeatedly and will continue from the point where the last run stopped.
+Note that for an epidemic to start, \emph{initially infected} nodes must be defined
+with \code{\link{simulation_addinfections}}.
 }
 \details{
 Stopping conditions are specified as a named list of threshold values for
@@ -54,6 +56,19 @@ Possible return value options are:
 \item \emph{epidemic_events}: Include epidemic events in the returned \code{data.frame}. Default \emph{true}
 }
 }
+\examples{
+# Create contact network network
+g <- erdos_reyni_network(1e5, 5)
+# Create transmission and reset time distributions
+psi <- lognormal_time(3, 30)
+rho <- lognormal_time(50, 20)
+# Create simulation and specifiy initial set of infections
+sim <- nextreaction_simulation(g, psi, rho)
+simulation_addinfections(sim, nodes=c(1), times=c(0.0))
+# Run simulation until 1000 individuals are infected, at for at most 1e5 steps
+r <- simulation_run(sim, list(epidemic_steps=1e5, infected=1000))
+}
 \seealso{
-\code{\link{simulation_functions}}
+\code{\link{simulation_functions}}, \code{\link{nextreaction_simulation}},
+\code{\link{nmga_simulation}}
 }

@@ -11,18 +11,40 @@ nextreaction_simulation(nw, psi, rho = NULL, options = list())
 
 \item{psi}{infection \link[=time_distributions]{time distribution}}
 
-\item{options}{named list of algorithm options, see below
+\item{options}{named list of algorithm options, see below}
 
-Possible options are
-\itemize{
-\item \emph{shuffle_neighbours}: Whether to shuffle the neighbours upon infecting a node. Default TRUE.
-\item \emph{edges_concurrent}: Whether to activate all outgoing edges simultaenously or sequentially. If set to true, neighbours are implicitly shuffled and \emph{shuffle_neighbours} thus has no effect. Default FALSE.
-}}
-
-\item{rhi}{reset/recivery \link[=time_distributions]{time distribution}}
+\item{rhi}{reset/recovery \link[=time_distributions]{time distribution}}
+}
+\value{
+a simulation object. See \code{\link{simulation_run}} for how to
+run the simulation and \link{simulation_functions} for other functions that
+operate on \link[=simulation_types]{simulations}.
 }
 \description{
-Create a simulator using the NextReaction algorithm
+This is the recommended simulation algorithm and supports
+\emph{weighted} as well as \emph{temporal} networks, see \link{network_types}. To force
+a temporal network to be treated as a static network, set option \code{SIR} to \code{TRUE}.
+}
+\details{
+Possible options are
+\itemize{
+\item \emph{SIR}: Do not make recovered nodes susceptible again as in the SIR model. Default FALSE.
+\item \emph{static_network}: Treat network as static, even if it is a temporal network. Default FALSE.
+\item \emph{shuffle_neighbours}: Shuffle the neighbours upon infecting a node. Default TRUE.
+\item \emph{edges_concurrent}: Activate all outgoing edges simultaenously or sequentially. If set to true, neighbours are implicitly shuffled and \emph{shuffle_neighbours} thus has no effect. Default FALSE.
+}
+}
+\examples{
+# Create contact network network
+g <- erdos_reyni_network(1e5, 5)
+# Create transmission and reset time distributions
+psi <- lognormal_time(3, 30)
+rho <- lognormal_time(50, 20)
+# Create simulation and specifiy initial set of infections
+sim <- nextreaction_simulation(g, psi, rho)
+simulation_addinfections(sim, nodes=c(1), times=c(0.0))
+# Run simulation until 1000 individuals are infected, at for at most 1e5 steps
+r <- simulation_run(sim, list(epidemic_steps=1e5, infected=1000))
 }
 \seealso{
 \code{\link{simulation_functions}}

@@ -46,11 +46,6 @@ nextreaction_simulation <- function(nw, psi, rho = NULL, options = list()) {
   nextnetR_nextreaction_simulation(nw, psi, rho, options)
 }
 
-#' @export
-nextreaction_simulation_meanfield <- function(N, R0, psi, rho = NULL, options = list()) {
-  nextnetR_nextreaction_simulation_meanfield(as.integer(N), as.double(R0), psi, rho, options)
-}
-
 #' @title Create a simulator using the non-Markovian Gillespie (nMGA) algorithm
 #'
 #' @description This is an alternative simulation algorithm that is generally

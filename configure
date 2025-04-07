@@ -1,0 +1,35 @@
+#!/bin/bash
+echo "Copying package headers to inst/include"
+
+mkdir -p inst/include/nextnet
+cp \
+	ext/nextnet/nextnet/stdafx.h \
+	ext/nextnet/nextnet/types.h \
+	ext/nextnet/nextnet/utility.h \
+	ext/nextnet/nextnet/algorithm.h \
+	ext/nextnet/nextnet/permutation.h \
+	ext/nextnet/nextnet/random.h \
+	ext/nextnet/nextnet/network.h \
+	ext/nextnet/nextnet/weighted_network.h \
+	ext/nextnet/nextnet/temporal_network.h \
+	ext/nextnet/nextnet/brownian_proximity_network.h \
+	ext/nextnet/nextnet/NextReaction.h \
+	ext/nextnet/nextnet/nMGA.h \
+	ext/nextnet/nextnet/REGIR.h \
+	inst/include/nextnet
+
+mkdir -p inst/include/prio_queue
+cp \
+	ext/nextnet/ext/prio_queue/prio_queue.hpp \
+	inst/include/prio_queue
+
+mkdir -p inst/include/dyndist
+cp \
+	ext/nextnet/ext/dyndist/dyndist/macros.h \
+	ext/nextnet/ext/dyndist/dyndist/global.h \
+	ext/nextnet/ext/dyndist/dyndist/utility.h \
+	ext/nextnet/ext/dyndist/dyndist/rangemap.h \
+	ext/nextnet/ext/dyndist/dyndist/rng_stdcxx.h \
+	ext/nextnet/ext/dyndist/dyndist/discrete_distribution.h \
+	ext/nextnet/ext/dyndist/dyndist/vector_distribution.h \
+	inst/include/dyndist

@@ -359,14 +359,15 @@ erdos_renyi_temporalnetwork <- function(size, avg_degree, timescale) {
 #' @seealso \code{\link{network_coordinates}}, \code{\link{network_bounds}}
 #' 
 #' @export
-brownian_proximity_temporalnetwork <- function(size, avg_degree, radius, D0, D1=NULL,
-                                        gamma=0.0, dt=NULL)
+brownian_proximity_temporalnetwork <- function(size, avg_degree, radius, D0,
+                                               D1=NULL, gamma=0.0, dt=NULL)
 {
   if (is.null(D1))
     D1 <- D0  
-  nextnetR_brownian_proximity_temporalnetwork(as.integer(size), as.double(avg_degree), as.double(radius),
-                                              as.double(D0), as.double(D1), as.double(gamma),
-                                              if (!is.null(dt)) dt else NULL)
+  nextnetR_brownian_proximity_temporalnetwork(
+    as.integer(size), as.double(avg_degree), as.double(radius),
+    as.double(D0), as.double(D1), as.double(gamma),
+    if (!is.null(dt)) as.double(dt) else NULL)
 }
 
 #' TODO
@@ -380,7 +381,8 @@ sirx_temporalnetwork <- function(graph, kappa0, kappa) {
 #' 
 #' @export
 empirical_contact_temporalnetwork <- function(file, finite_duration, dt) {
-  nextnetR_empirical_contact_temporalnetwork(as.character(file), as.logical(finite_duration), as.double(dt))
+  nextnetR_empirical_contact_temporalnetwork(
+    as.character(file), as.logical(finite_duration), as.double(dt))
 }
 
 #' TODO

@@ -124,6 +124,10 @@ nextnetR_sirx_temporalnetwork <- function(nw, kappa0, kappa) {
   .Call(`_NEXTNetR_nextnetR_sirx_temporalnetwork`, nw, kappa0, kappa)
 }
 
+nextnetR_activity_driven_temporalnetwork <- function(activities_, m, eta_sus, eta_inf, b_sus, b_inf) {
+  .Call(`_NEXTNetR_nextnetR_activity_driven_temporalnetwork`, activities_, m, eta_sus, eta_inf, b_sus, b_inf)
+}
+
 nextnetR_erdos_renyi_weightednetwork <- function(size, avg_degree, weights, probabilities) {
   .Call(`_NEXTNetR_nextnetR_erdos_renyi_weightednetwork`, size, avg_degree, weights, probabilities)
 }

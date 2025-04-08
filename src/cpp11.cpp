@@ -223,6 +223,13 @@ extern "C" SEXP _NEXTNetR_nextnetR_sirx_temporalnetwork(SEXP nw, SEXP kappa0, SE
   END_CPP11
 }
 // network.cpp
+network_R nextnetR_activity_driven_temporalnetwork(doubles activities_, int m, double eta_sus, double eta_inf, double b_sus, double b_inf);
+extern "C" SEXP _NEXTNetR_nextnetR_activity_driven_temporalnetwork(SEXP activities_, SEXP m, SEXP eta_sus, SEXP eta_inf, SEXP b_sus, SEXP b_inf) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nextnetR_activity_driven_temporalnetwork(cpp11::as_cpp<cpp11::decay_t<doubles>>(activities_), cpp11::as_cpp<cpp11::decay_t<int>>(m), cpp11::as_cpp<cpp11::decay_t<double>>(eta_sus), cpp11::as_cpp<cpp11::decay_t<double>>(eta_inf), cpp11::as_cpp<cpp11::decay_t<double>>(b_sus), cpp11::as_cpp<cpp11::decay_t<double>>(b_inf)));
+  END_CPP11
+}
+// network.cpp
 network_R nextnetR_erdos_renyi_weightednetwork(int size, double avg_degree, doubles weights, doubles probabilities);
 extern "C" SEXP _NEXTNetR_nextnetR_erdos_renyi_weightednetwork(SEXP size, SEXP avg_degree, SEXP weights, SEXP probabilities) {
   BEGIN_CPP11
@@ -380,6 +387,7 @@ extern "C" SEXP _NEXTNetR_nextnetR_generic_time(SEXP density, SEXP survivalproba
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
+    {"_NEXTNetR_nextnetR_activity_driven_temporalnetwork",         (DL_FUNC) &_NEXTNetR_nextnetR_activity_driven_temporalnetwork,         6},
     {"_NEXTNetR_nextnetR_acyclic_network",                         (DL_FUNC) &_NEXTNetR_nextnetR_acyclic_network,                         3},
     {"_NEXTNetR_nextnetR_adjacencylist_network",                   (DL_FUNC) &_NEXTNetR_nextnetR_adjacencylist_network,                   2},
     {"_NEXTNetR_nextnetR_adjacencylist_weightednetwork",           (DL_FUNC) &_NEXTNetR_nextnetR_adjacencylist_weightednetwork,           2},

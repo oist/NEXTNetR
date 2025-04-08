@@ -383,6 +383,18 @@ empirical_contact_temporalnetwork <- function(file, finite_duration, dt) {
   nextnetR_empirical_contact_temporalnetwork(as.character(file), as.logical(finite_duration), as.double(dt))
 }
 
+#' TODO
+#' 
+#' @export
+activity_driven_temporalnetwork <- function(activities, m, eta, b,
+                                            eta_inf = eta, b_inf = b)
+{
+  nextnetR_activity_driven_temporalnetwork(
+    as.numeric(activities), as.integer(m),
+    as.numeric(eta), as.numeric(eta_inf),
+    as.numeric(b), as.numeric(b_inf))
+}
+
 #' @name network_properties
 #' @title Querying properties of networks
 #' 

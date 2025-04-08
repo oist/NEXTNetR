@@ -474,6 +474,18 @@ network_R nextnetR_sirx_temporalnetwork(const network_R& nw, double kappa0, doub
              true, true };
 }
 
+[[cpp11::register]]
+network_R nextnetR_activity_driven_temporalnetwork(
+    doubles activities_, int m,
+    double eta_sus, double eta_inf, double b_sus, double b_inf
+) {
+    RNG_SCOPE_IF_NECESSARY;
+
+    std::vector<double> activities(activities_.begin(), activities_.end());    
+    return new activity_driven_network(
+        std::move(activities), m, eta_sus, eta_inf, b_sus, b_inf, rng_engine());
+}
+
 
 /*
  * WEIGHTED NETWORKS

@@ -204,8 +204,8 @@ nextnetR_time_survivalquantile <- function(ttr, ps, ts, ms) {
   .Call(`_NEXTNetR_nextnetR_time_survivalquantile`, ttr, ps, ts, ms)
 }
 
-nextnetR_exponential_time <- function(lambda) {
-  .Call(`_NEXTNetR_nextnetR_exponential_time`, lambda)
+nextnetR_exponential_time <- function(lambda, pinf) {
+  .Call(`_NEXTNetR_nextnetR_exponential_time`, lambda, pinf)
 }
 
 nextnetR_lognormal_time <- function(mean, var, pinf) {
@@ -216,6 +216,18 @@ nextnetR_gamma_time <- function(mean, var, pinf) {
   .Call(`_NEXTNetR_nextnetR_gamma_time`, mean, var, pinf)
 }
 
-nextnetR_generic_time <- function(density, survivalprobability, probability_is_trinary, survivalquantile, quantile_is_trinary, sample, pinfinity) {
-  .Call(`_NEXTNetR_nextnetR_generic_time`, density, survivalprobability, probability_is_trinary, survivalquantile, quantile_is_trinary, sample, pinfinity)
+nextnetR_weibull_time <- function(shape, scale, pinf) {
+  .Call(`_NEXTNetR_nextnetR_weibull_time`, shape, scale, pinf)
+}
+
+nextnetR_polynomial_rate_time <- function(coeffs) {
+  .Call(`_NEXTNetR_nextnetR_polynomial_rate_time`, coeffs)
+}
+
+nextnetR_deterministic_time <- function(tau, pinf) {
+  .Call(`_NEXTNetR_nextnetR_deterministic_time`, tau, pinf)
+}
+
+nextnetR_userdefined_time <- function(density, survivalprobability, probability_is_trinary, survivalquantile, quantile_is_trinary, sample, pinfinity) {
+  .Call(`_NEXTNetR_nextnetR_userdefined_time`, density, survivalprobability, probability_is_trinary, survivalquantile, quantile_is_trinary, sample, pinfinity)
 }

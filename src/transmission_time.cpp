@@ -103,8 +103,8 @@ doubles nextnetR_time_survivalquantile(const transmission_time_R& ttr, doubles p
 }
 
 [[cpp11::register]]
-transmission_time_R nextnetR_exponential_time(double lambda) {
-    return new transmission_time_exponential(lambda);
+transmission_time_R nextnetR_exponential_time(double lambda, double pinf = 0.0) {
+    return new transmission_time_exponential_pinf(lambda, pinf);
 }
 
 [[cpp11::register]]
@@ -115,6 +115,21 @@ transmission_time_R nextnetR_lognormal_time(double mean, double var, double pinf
 [[cpp11::register]]
 transmission_time_R nextnetR_gamma_time(double mean, double var, double pinf = 0.0) {
     return new transmission_time_gamma(mean, var, pinf);
+}
+
+[[cpp11::register]]
+transmission_time_R nextnetR_weibull_time(double shape, double scale, double pinf = 0.0) {
+  return new transmission_time_weibull(shape, scale, pinf);
+}
+
+[[cpp11::register]]
+transmission_time_R nextnetR_polynomial_rate_time(doubles coeffs) {
+  return new transmission_time_polynomial_rate(coeffs.begin(), coeffs.end());
+}
+
+[[cpp11::register]]
+transmission_time_R nextnetR_deterministic_time(double tau, double pinf = 0.0) {
+  return new transmission_time_deterministic(tau);
 }
 
 struct rfunction_transmission_time : public transmission_time {
@@ -177,7 +192,7 @@ struct rfunction_transmission_time : public transmission_time {
 };
 
 [[cpp11::register]]
-transmission_time_R nextnetR_generic_time(
+transmission_time_R nextnetR_userdefined_time(
     SEXP density,
     SEXP survivalprobability, bool probability_is_trinary,
     SEXP survivalquantile, bool quantile_is_trinary,

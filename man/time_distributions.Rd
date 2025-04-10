@@ -3,10 +3,49 @@
 \name{time_distributions}
 \alias{time_distributions}
 \alias{exponential_time}
+\alias{lognormal_time}
+\alias{gamma_time}
+\alias{weibull_time}
+\alias{polynomial_rate_time}
+\alias{deterministic_time}
 \title{Creating time distributions}
 \usage{
-exponential_time(lambda)
+exponential_time(lambda, p_infinity = 0)
+
+lognormal_time(mean, var, p_infinity = 0)
+
+gamma_time(mean, var, p_infinity)
+
+weibull_time(shape, scale, p_infinity)
+
+polynomial_rate_time(coeffs)
+
+deterministic_time(tau)
+}
+\value{
+\itemize{
+\item \code{exponential_time(lambda, p_infinity)}. Returns a time distribution representing
+an exponential distribution with rate \code{lambda} which in addition to finite
+values produces the value infinity with probability \code{p_infinity}.
+\item \code{lognormal_time(mean, var, p_infinity)}. Returns a time distribution representing
+a Log-normal distribution with the given \code{mean} and \code{variance}, which in addition
+to finite  values produces the value infinity with probability \code{p_infinity}.
+\item \code{gamma_time(mean, var, p_infinity)}. Returns a time distribution representing
+a Gamma distribution with the given \code{mean} and \code{variance}, which in addition
+to finite  values produces the value infinity with probability \code{p_infinity}.
+\item \code{weibull_time(mean, var, p_infinity)}. Returns a time distribution representing
+a Weibull distribution with the given \code{shape} and \code{scale} parameter, which in addition
+to finite  values produces the value infinity with probability \code{p_infinity}.
+The distribution has mean \eqn{b \Gamma(1 + 1/a)} and variance
+\eqn{b^2 \Gamma(1 + 1/a) - \Gamma^2(1 + 1/a)}for shape \eqn{a} and scale \eqn{b}.
+\item \code{polynomial_rate_time(coeffs)}. Distribution with survival function
+\eqn{\Psi(\tau) = e^{-p(\tau)}} for a polynomial hazard rate
+\eqn{p = c[1] + c[2] x + c[3] x^2 + \ldots} with non-negative coefficients.
+\item \code{deterministic_time(tau)}. Deterministic time with fixed value \code{tau}.
+}
 }
 \description{
-Creating time distributions
+NEXTNetR supports a series of pre-defined distributions for transmission and
+recover/reset time, and also allows custom distributions to be defined
+with \link{userdefined_time}.
 }

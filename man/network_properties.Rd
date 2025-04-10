@@ -67,7 +67,7 @@ node \eqn{i}.
 \item \code{weighted_network_adjacencylist(nw)}
 returns a named list which contains two entries, \emph{nodes} and \emph{neighbours}.
 \emph{nodes} contains the indices of all nodes in the network, i.e. \code{1:network_size(nw)}.
-\emph{neighbours} is a list of named two-element lists containing vectores "n" and "w". The vector "n"
+\emph{neighbours} is a list of named two-element lists containing vectors "n" and "w". The vector "n"
 in \emph{neighbours[i]} contains the neighbours of node \eqn{i}, and the vector "w" contains the
 corresponding weights.
 \item \code{network_bounds(nw)}

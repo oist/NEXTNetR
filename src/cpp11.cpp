@@ -364,10 +364,10 @@ extern "C" SEXP _NEXTNetR_nextnetR_time_survivalquantile(SEXP ttr, SEXP ps, SEXP
   END_CPP11
 }
 // transmission_time.cpp
-transmission_time_R nextnetR_exponential_time(double lambda);
-extern "C" SEXP _NEXTNetR_nextnetR_exponential_time(SEXP lambda) {
+transmission_time_R nextnetR_exponential_time(double lambda, double pinf);
+extern "C" SEXP _NEXTNetR_nextnetR_exponential_time(SEXP lambda, SEXP pinf) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_exponential_time(cpp11::as_cpp<cpp11::decay_t<double>>(lambda)));
+    return cpp11::as_sexp(nextnetR_exponential_time(cpp11::as_cpp<cpp11::decay_t<double>>(lambda), cpp11::as_cpp<cpp11::decay_t<double>>(pinf)));
   END_CPP11
 }
 // transmission_time.cpp
@@ -385,10 +385,31 @@ extern "C" SEXP _NEXTNetR_nextnetR_gamma_time(SEXP mean, SEXP var, SEXP pinf) {
   END_CPP11
 }
 // transmission_time.cpp
-transmission_time_R nextnetR_generic_time(SEXP density, SEXP survivalprobability, bool probability_is_trinary, SEXP survivalquantile, bool quantile_is_trinary, SEXP sample, double pinfinity);
-extern "C" SEXP _NEXTNetR_nextnetR_generic_time(SEXP density, SEXP survivalprobability, SEXP probability_is_trinary, SEXP survivalquantile, SEXP quantile_is_trinary, SEXP sample, SEXP pinfinity) {
+transmission_time_R nextnetR_weibull_time(double shape, double scale, double pinf);
+extern "C" SEXP _NEXTNetR_nextnetR_weibull_time(SEXP shape, SEXP scale, SEXP pinf) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_generic_time(cpp11::as_cpp<cpp11::decay_t<SEXP>>(density), cpp11::as_cpp<cpp11::decay_t<SEXP>>(survivalprobability), cpp11::as_cpp<cpp11::decay_t<bool>>(probability_is_trinary), cpp11::as_cpp<cpp11::decay_t<SEXP>>(survivalquantile), cpp11::as_cpp<cpp11::decay_t<bool>>(quantile_is_trinary), cpp11::as_cpp<cpp11::decay_t<SEXP>>(sample), cpp11::as_cpp<cpp11::decay_t<double>>(pinfinity)));
+    return cpp11::as_sexp(nextnetR_weibull_time(cpp11::as_cpp<cpp11::decay_t<double>>(shape), cpp11::as_cpp<cpp11::decay_t<double>>(scale), cpp11::as_cpp<cpp11::decay_t<double>>(pinf)));
+  END_CPP11
+}
+// transmission_time.cpp
+transmission_time_R nextnetR_polynomial_rate_time(doubles coeffs);
+extern "C" SEXP _NEXTNetR_nextnetR_polynomial_rate_time(SEXP coeffs) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nextnetR_polynomial_rate_time(cpp11::as_cpp<cpp11::decay_t<doubles>>(coeffs)));
+  END_CPP11
+}
+// transmission_time.cpp
+transmission_time_R nextnetR_deterministic_time(double tau, double pinf);
+extern "C" SEXP _NEXTNetR_nextnetR_deterministic_time(SEXP tau, SEXP pinf) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nextnetR_deterministic_time(cpp11::as_cpp<cpp11::decay_t<double>>(tau), cpp11::as_cpp<cpp11::decay_t<double>>(pinf)));
+  END_CPP11
+}
+// transmission_time.cpp
+transmission_time_R nextnetR_userdefined_time(SEXP density, SEXP survivalprobability, bool probability_is_trinary, SEXP survivalquantile, bool quantile_is_trinary, SEXP sample, double pinfinity);
+extern "C" SEXP _NEXTNetR_nextnetR_userdefined_time(SEXP density, SEXP survivalprobability, SEXP probability_is_trinary, SEXP survivalquantile, SEXP quantile_is_trinary, SEXP sample, SEXP pinfinity) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nextnetR_userdefined_time(cpp11::as_cpp<cpp11::decay_t<SEXP>>(density), cpp11::as_cpp<cpp11::decay_t<SEXP>>(survivalprobability), cpp11::as_cpp<cpp11::decay_t<bool>>(probability_is_trinary), cpp11::as_cpp<cpp11::decay_t<SEXP>>(survivalquantile), cpp11::as_cpp<cpp11::decay_t<bool>>(quantile_is_trinary), cpp11::as_cpp<cpp11::decay_t<SEXP>>(sample), cpp11::as_cpp<cpp11::decay_t<double>>(pinfinity)));
   END_CPP11
 }
 
@@ -411,15 +432,15 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_cubiclattice6d_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_cubiclattice6d_network,                  1},
     {"_NEXTNetR_nextnetR_cubiclattice7d_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_cubiclattice7d_network,                  1},
     {"_NEXTNetR_nextnetR_cubiclattice8d_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_cubiclattice8d_network,                  1},
+    {"_NEXTNetR_nextnetR_deterministic_time",                      (DL_FUNC) &_NEXTNetR_nextnetR_deterministic_time,                      2},
     {"_NEXTNetR_nextnetR_empirical_contact_temporalnetwork",       (DL_FUNC) &_NEXTNetR_nextnetR_empirical_contact_temporalnetwork,       3},
     {"_NEXTNetR_nextnetR_empirical_network",                       (DL_FUNC) &_NEXTNetR_nextnetR_empirical_network,                       1},
     {"_NEXTNetR_nextnetR_erdos_renyi_network",                     (DL_FUNC) &_NEXTNetR_nextnetR_erdos_renyi_network,                     2},
     {"_NEXTNetR_nextnetR_erdos_renyi_temporalnetwork",             (DL_FUNC) &_NEXTNetR_nextnetR_erdos_renyi_temporalnetwork,             3},
     {"_NEXTNetR_nextnetR_erdos_renyi_weightednetwork",             (DL_FUNC) &_NEXTNetR_nextnetR_erdos_renyi_weightednetwork,             4},
-    {"_NEXTNetR_nextnetR_exponential_time",                        (DL_FUNC) &_NEXTNetR_nextnetR_exponential_time,                        1},
+    {"_NEXTNetR_nextnetR_exponential_time",                        (DL_FUNC) &_NEXTNetR_nextnetR_exponential_time,                        2},
     {"_NEXTNetR_nextnetR_fully_connected_network",                 (DL_FUNC) &_NEXTNetR_nextnetR_fully_connected_network,                 1},
     {"_NEXTNetR_nextnetR_gamma_time",                              (DL_FUNC) &_NEXTNetR_nextnetR_gamma_time,                              3},
-    {"_NEXTNetR_nextnetR_generic_time",                            (DL_FUNC) &_NEXTNetR_nextnetR_generic_time,                            7},
     {"_NEXTNetR_nextnetR_lognormal_time",                          (DL_FUNC) &_NEXTNetR_nextnetR_lognormal_time,                          3},
     {"_NEXTNetR_nextnetR_network_adjacencylist",                   (DL_FUNC) &_NEXTNetR_nextnetR_network_adjacencylist,                   1},
     {"_NEXTNetR_nextnetR_network_bounds",                          (DL_FUNC) &_NEXTNetR_nextnetR_network_bounds,                          1},
@@ -432,6 +453,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_nextreaction_simulation",                 (DL_FUNC) &_NEXTNetR_nextnetR_nextreaction_simulation,                 4},
     {"_NEXTNetR_nextnetR_nextreaction_simulation_meanfield",       (DL_FUNC) &_NEXTNetR_nextnetR_nextreaction_simulation_meanfield,       5},
     {"_NEXTNetR_nextnetR_nmga_simulation",                         (DL_FUNC) &_NEXTNetR_nextnetR_nmga_simulation,                         4},
+    {"_NEXTNetR_nextnetR_polynomial_rate_time",                    (DL_FUNC) &_NEXTNetR_nextnetR_polynomial_rate_time,                    1},
     {"_NEXTNetR_nextnetR_reproduction_matrix",                     (DL_FUNC) &_NEXTNetR_nextnetR_reproduction_matrix,                     1},
     {"_NEXTNetR_nextnetR_simulation_addinfections",                (DL_FUNC) &_NEXTNetR_nextnetR_simulation_addinfections,                3},
     {"_NEXTNetR_nextnetR_simulation_isinfected",                   (DL_FUNC) &_NEXTNetR_nextnetR_simulation_isinfected,                   2},
@@ -447,7 +469,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_time_sample",                             (DL_FUNC) &_NEXTNetR_nextnetR_time_sample,                             4},
     {"_NEXTNetR_nextnetR_time_survivalprobability",                (DL_FUNC) &_NEXTNetR_nextnetR_time_survivalprobability,                4},
     {"_NEXTNetR_nextnetR_time_survivalquantile",                   (DL_FUNC) &_NEXTNetR_nextnetR_time_survivalquantile,                   4},
+    {"_NEXTNetR_nextnetR_userdefined_time",                        (DL_FUNC) &_NEXTNetR_nextnetR_userdefined_time,                        7},
     {"_NEXTNetR_nextnetR_watts_strogatz_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_watts_strogatz_network,                  3},
+    {"_NEXTNetR_nextnetR_weibull_time",                            (DL_FUNC) &_NEXTNetR_nextnetR_weibull_time,                            3},
     {"_NEXTNetR_nextnetR_weighted_network_adjacencylist",          (DL_FUNC) &_NEXTNetR_nextnetR_weighted_network_adjacencylist,          1},
     {NULL, NULL, 0}
 };

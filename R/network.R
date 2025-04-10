@@ -124,28 +124,32 @@ configmodel_network <- function(degrees) {
   nextnetR_configmodel_network(as.integer(degrees))
 }
 
-#' @title Create an network with the specified node degrees and clustering
+#' @title Create an network with the specified node degrees and clustering ()
 #' 
 #' @description
-#' Creates a network in nodes have the degrees specified and numbers of trianges specified
-#' 
-#' TODO: citation
+#' Creates a network in nodes have the degrees specified and numbers of triangles specified
+#' using an implementation of the algorithm suggested by Serrano & Boguñá (2005).
 #' 
 #' @param degrees a vector of length \eqn{N} listing the degrees of all nodes
-#' @param alpha_or_ck_or_triangles TODO
-#' @param beta TODO
+#' @param ck arbitrary function \eqn{c(k)} for the probability that if \eqn{b}, \eqn{c}
+#'           are neighbours of \eqn{a}, then \eqn{b} and \eqn{c} are neighbours.
+#' @param triangles number of triangles overlapping nodes of degree 0, 1, 2, ...,
+#' @param alpha set \eqn{c(k)=0.5*(k-1)^\alpha}
+#' @param beta parameter that defines degree class probabilities \eqn{P(k)}
 #' @returns a network object
 #' 
 #' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
-configmodel_clustered_network <- function(degrees, alpha_or_ck_or_triangles, beta) {
-  if (is.numeric(alpha_or_ck_or_triangles) && (length(alpha_or_ck_or_triangles) == 1))
-    nextnetR_configmodel_clustered_alpha_network(degrees, nextnetR_configmodel_clustered_alpha_network, beta)
-  else if (is.function(alpha_or_ck_or_triangles))
-    nextnetR_configmodel_clustered_ck_network(degrees, alpha_or_ck_or_triangles, beta)
+configmodel_clustered_network <- function(degrees, beta, alpha=NULL, ck=NULL, triangles=NULL, ) {
+  if (!is.null(alpha))
+    nextnetR_configmodel_clustered_alpha_network(as.integers(degrees), as.numeric(alpha), as.numeric(beta))
+  else if (!is.null(ck))
+    nextnetR_configmodel_clustered_ck_network(as.integers(degrees), as.function(ck), as.numeric(beta))
+  else if (!is.null(triangles))
+    nextnetR_configmodel_clustered_triangles_network(as.integers(degrees), as.integers(triangles), as.numeric(beta))
   else
-    nextnetR_configmodel_clustered_triangles_network(degrees, as.integers(alpha_or_ck_or_triangles), beta)
+    stop("either alpha, ck or triangles must be specified")
 }
 
 #' @title Create an Watts-Strogatz network

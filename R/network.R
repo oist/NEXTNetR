@@ -389,7 +389,18 @@ sirx_temporalnetwork <- function(network, kappa0, kappa) {
   nextnetR_sirx_temporalnetwork(network, as.numeric(kappa0), as.numeric(kappa))
 }
 
-#' TODO
+#' @title Empirical temporal network comprising short contacts between nodes
+#' 
+#' Each line of the file must list a single contact in the form
+#' "<src> <dst> <time>" where <src> and <dst> are integers specifying the nodes
+#' and <time> is a floating-point value. The highest node index appearing within
+#' <src> and <dst> defines the size of the network. Finite-duration contacts
+#' extend by dt/2 around the time specified in the file.
+#' 
+#' @param file to read network from
+#' @param finite_duration whether to treat contacts as having finite duration `dt`
+#'                        or to be instantaneous with weight `dt`
+#' @param dt duration or weight of contact
 #' 
 #' @export
 empirical_contact_temporalnetwork <- function(file, finite_duration, dt) {
@@ -397,7 +408,21 @@ empirical_contact_temporalnetwork <- function(file, finite_duration, dt) {
     as.character(file), as.logical(finite_duration), as.double(dt))
 }
 
-#' TODO
+#' @title Activity-driven network model of Cai, Nie & Holme (2024).
+#' 
+#' Here, nodes are initially inactive and have degree zero. Node \eqn{i} activates with
+#' rate \eqn{a[i] * \eta} and upon activation connects to \eqn{m} other uniformly chosen nodes
+#' (which are not necessarily active). Active nodes inactivate with constant rate
+#' \eqn{b}. Here, we implement a generalized version of the model in which the
+#' activation and deacivation rates of infected nodes can differ from those of
+#' non-infected node.
+#' 
+#' @param activities node-specific activities \eqn{a_1,a_2,\ldots}
+#' @param m number of nodes an activated node connects to
+#' @param eta activation rate 
+#' @param b deactivation rate
+#' @param eta_inf activation rate for infected nodes
+#' @param b_inf deactivation rate of infected nodes
 #' 
 #' @export
 activity_driven_temporalnetwork <- function(activities, m, eta, b,

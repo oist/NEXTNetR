@@ -518,8 +518,9 @@ namespace {
 
 class nextnetR_adjacencylist_weightednetwork_impl : public weighted_adjacencylist_network {
 public:
-    nextnetR_adjacencylist_weightednetwork_impl(std::vector<std::vector<std::pair<node_t, double>>>&& al, bool undirected_ = false)
-        :undirected(undirected_)
+    nextnetR_adjacencylist_weightednetwork_impl(std::vector<std::vector<std::pair<node_t, double>>>&& al,
+                                                bool undirected_ = false, bool simple_ = false)
+        :weighted_adjacencylist_network(undirected_, simple_)
     {
         adjacencylist = std::move(al);
     }
@@ -527,9 +528,6 @@ public:
     virtual bool is_undirected() {
         return undirected;
     }
-    
-private:
-    bool undirected;
 };
   
 }
@@ -545,38 +543,39 @@ network_R nextnetR_adjacencylist_weightednetwork(list input_al, bool is_undirect
     
     std::vector<std::vector<std::pair<node_t, double>>> adjacencylist;
     adjacencylist.reserve(n);
+    std::unordered_set<node_t> seen;
+    bool is_simple = true;
     for(node_t u = 0; u < (node_t)n; ++u) {
         /* Append adjacency list for node u */
         adjacencylist.emplace_back();
         std::vector<std::pair<node_t, double>> &u_adj = adjacencylist.back();
         
-        /* Fill adjacencylist for node u */
+        /* Fill adjacency list for node u */
         const integers input_u_adj = ((list)input_al[u])["n"];
         const doubles input_u_weights = ((list)input_al[u])["w"];
         if (input_u_adj.size() != input_u_weights.size())
             throw std::runtime_error("sizes of m (neighbours) and w (weights) vectors must agree");
         const std::size_t k = input_u_adj.size();
         u_adj.reserve(k);
-        std::set<node_t> seen;
+        seen.clear();
         for(std::size_t i = 0; i < k; ++i) {
             /* Find target node v */
             const node_t v = ((integers)input_u_adj)[i];
             const double w = ((doubles)input_u_weights)[i];
             
-            /* Check validity */
+            /* Check validity, track whether the network is simple */
             if ((v < 1) || (v > (node_t)n))
                 throw std::runtime_error("nodes must be labelled consecutively from 1 to n");
-            if (seen.find(v) != seen.end())
-                throw std::runtime_error("multi-edges are not supported (" +
-                                         std::to_string(u) + " -> " + std::to_string(v) +
-                                         "already seen)");
+            const bool is_selfedge = (u == v);
+            const bool is_multiedge = (seen.find(v) != seen.end());
             seen.insert(v);
+            is_simple = is_simple && !is_selfedge && !is_multiedge;
                 
             /* If claimed to be undirected, edge (u,v) exists iff (v,u) exits.
              * We insert into directed_edges upon seeing {u,v} for the first time,
-             * and delete when second a second time.
+             * and delete when seeing it a second time (ignoring multi-edges).
              */
-            if (is_undirected) {
+            if (is_undirected && !is_multiedge) {
                 const std::size_t e = edge_index_undirected(u, v);
                 const auto i = directed_edges.find(e);
                 if (i == directed_edges.end())
@@ -595,5 +594,6 @@ network_R nextnetR_adjacencylist_weightednetwork(list input_al, bool is_undirect
         throw std::runtime_error(std::to_string(directed_edges.size()) + " directed edges found " +
                                  "in network claimed to be undirected");
     
-    return new nextnetR_adjacencylist_weightednetwork_impl(std::move(adjacencylist), is_undirected);
+    return new nextnetR_adjacencylist_weightednetwork_impl(std::move(adjacencylist),
+                                                           is_undirected, is_simple);
 }

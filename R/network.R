@@ -142,7 +142,7 @@ configmodel_network <- function(degrees) {
 #' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
-configmodel_clustered_network <- function(degrees, beta, alpha=NULL, ck=NULL, triangles=NULL, ) {
+configmodel_clustered_network <- function(degrees, beta, alpha=NULL, ck=NULL, triangles=NULL) {
   if (!is.null(alpha))
     nextnetR_configmodel_clustered_alpha_network(as.integers(degrees), as.numeric(alpha), as.numeric(beta))
   else if (!is.null(ck))

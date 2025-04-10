@@ -3,6 +3,7 @@
 \name{network_properties}
 \alias{network_properties}
 \alias{network_is_undirected}
+\alias{network_is_simple}
 \alias{network_size}
 \alias{network_outdegree}
 \alias{network_neighbour}
@@ -13,6 +14,8 @@
 \title{Querying properties of networks}
 \usage{
 network_is_undirected(nw)
+
+network_is_simple(nw)
 
 network_size(nw)
 
@@ -37,9 +40,17 @@ network_coordinates(nw, nodes)
 }
 \value{
 \itemize{
+\item \code{network_is_simple(nw)}
+returns true if the network is simple, i.e. if it neither contains
+self-edges nor multi-edges. Note that \code{false} does not imply that the
+network necessarily contains self- or multi-edges, only that is is not
+guaranteed to be simple by construction.
 \item \code{network_is_undirected(nw)}
 returns true if the network is not directed, i.e. if there is a link from node \eqn{i}
-to \eqn{j} exactly if there is a link from node \eqn{j} to \eqn{i}.
+to \eqn{j} exactly if there is a link from node \eqn{j} to \eqn{i}. Note that
+similar to \code{network_is_simple}, a return value of \code{true} guarantees that the
+network is undirected, but \code{false} does not imply the existence of an edge
+without a reversed counterpart.
 \item \code{network_size(nw)}
 returns the number of nodes in the network
 \item \code{network_outdegree(nw, node)}

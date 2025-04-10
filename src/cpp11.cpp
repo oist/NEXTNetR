@@ -20,6 +20,13 @@ extern "C" SEXP _NEXTNetR_nextnetR_network_is_undirected(SEXP nw) {
   END_CPP11
 }
 // network.cpp
+bool nextnetR_network_is_simple(const network_R& nw);
+extern "C" SEXP _NEXTNetR_nextnetR_network_is_simple(SEXP nw) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nextnetR_network_is_simple(cpp11::as_cpp<cpp11::decay_t<const network_R&>>(nw)));
+  END_CPP11
+}
+// network.cpp
 integers nextnetR_network_outdegree(const network_R& nw, integers nodes);
 extern "C" SEXP _NEXTNetR_nextnetR_network_outdegree(SEXP nw, SEXP nodes) {
   BEGIN_CPP11
@@ -417,6 +424,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_network_adjacencylist",                   (DL_FUNC) &_NEXTNetR_nextnetR_network_adjacencylist,                   1},
     {"_NEXTNetR_nextnetR_network_bounds",                          (DL_FUNC) &_NEXTNetR_nextnetR_network_bounds,                          1},
     {"_NEXTNetR_nextnetR_network_coordinates",                     (DL_FUNC) &_NEXTNetR_nextnetR_network_coordinates,                     2},
+    {"_NEXTNetR_nextnetR_network_is_simple",                       (DL_FUNC) &_NEXTNetR_nextnetR_network_is_simple,                       1},
     {"_NEXTNetR_nextnetR_network_is_undirected",                   (DL_FUNC) &_NEXTNetR_nextnetR_network_is_undirected,                   1},
     {"_NEXTNetR_nextnetR_network_neighbour",                       (DL_FUNC) &_NEXTNetR_nextnetR_network_neighbour,                       3},
     {"_NEXTNetR_nextnetR_network_outdegree",                       (DL_FUNC) &_NEXTNetR_nextnetR_network_outdegree,                       2},

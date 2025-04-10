@@ -374,11 +374,19 @@ brownian_proximity_temporalnetwork <- function(size, avg_degree, radius, D0,
     if (!is.null(dt)) as.double(dt) else NULL)
 }
 
-#' TODO
+#' @title Network version of the SIRX model introduced by Maier & Brockmann (2020)
+#' 
+#' Starting from an arbitrary network, nodes are removed with baseline rate
+#' \eqn{\kappa0} and infected nodes are removed with elevated rate
+#' \eqn{\kappa_0 + \kappa}.
+#' 
+#' @param network base network. must be simple (i.e. no self-edges or multi-edges).
+#' @param kappa0 \eqn{\kappa_0}
+#' @param kappa \eqn{\kappa}
 #' 
 #' @export
-sirx_temporalnetwork <- function(graph, kappa0, kappa) {
-  nextnetR_sirx_temporalnetwork(graph, as.numeric(kappa0), as.numeric(kappa))
+sirx_temporalnetwork <- function(network, kappa0, kappa) {
+  nextnetR_sirx_temporalnetwork(network, as.numeric(kappa0), as.numeric(kappa))
 }
 
 #' TODO

@@ -469,7 +469,7 @@ network_R nextnetR_sirx_temporalnetwork(const network_R& nw, double kappa0, doub
     /* temporal_sirx_network stores the underlying network by reference, so
      * add it to the externalptr metadata to extend its lifetime
     */
-    return { new temporal_sirx_network(*nw.get(), kappa0, kappa),
+    return { new temporal_sirx_network(*nw.get(), kappa0, kappa, rng_engine()),
              writable::list({"nw"_nm = nw}),
              true, true };
 }

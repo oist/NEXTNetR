@@ -40,6 +40,16 @@ bool nextnetR_network_is_undirected(const network_R& nw) {
 }
 
 [[cpp11::register]]
+bool nextnetR_network_is_simple(const network_R& nw) {
+  if (!nw) throw std::runtime_error("network cannot be NULL"); 
+  
+  /* Must enter RNG scope since networks may generate their topology on the fly */
+  RNG_SCOPE_IF_NECESSARY;
+  
+  return nw->is_simple();
+}
+
+[[cpp11::register]]
 integers nextnetR_network_outdegree(const network_R& nw, integers nodes) {
     if (!nw) throw std::runtime_error("network cannot be NULL"); 
     

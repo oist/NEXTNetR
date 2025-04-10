@@ -421,9 +421,18 @@ activity_driven_temporalnetwork <- function(activities, m, eta, b,
 #' @param indices vector of neighbour indices
 #' 
 #' @returns
+#' * `network_is_simple(nw)`
+#'   returns true if the network is simple, i.e. if it neither contains
+#'   self-edges nor multi-edges. Note that `false` does not imply that the
+#'   network necessarily contains self- or multi-edges, only that is is not
+#'   guaranteed to be simple by construction.
+#'   
 #' * `network_is_undirected(nw)`
 #'   returns true if the network is not directed, i.e. if there is a link from node \eqn{i}
-#'   to \eqn{j} exactly if there is a link from node \eqn{j} to \eqn{i}.
+#'   to \eqn{j} exactly if there is a link from node \eqn{j} to \eqn{i}. Note that
+#'   similar to `network_is_simple`, a return value of `true` guarantees that the
+#'   network is undirected, but `false` does not imply the existence of an edge
+#'   without a reversed counterpart.
 #'   
 #' * `network_size(nw)`
 #'   returns the number of nodes in the network
@@ -463,6 +472,12 @@ NULL
 #' @export
 network_is_undirected <- function(nw) {
   nextnetR_network_is_undirected(nw)
+}
+
+#' @rdname network_properties
+#' @export
+network_is_simple <- function(nw) {
+  nextnetR_network_is_simple(nw)
 }
 
 #' @rdname network_properties

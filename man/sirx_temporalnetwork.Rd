@@ -2,10 +2,25 @@
 % Please edit documentation in R/network.R
 \name{sirx_temporalnetwork}
 \alias{sirx_temporalnetwork}
-\title{TODO}
+\title{Network SIRX model}
 \usage{
-sirx_temporalnetwork(graph, kappa0, kappa)
+sirx_temporalnetwork(network, kappa0, kappa)
+}
+\arguments{
+\item{network}{base network. must be simple (i.e. no self-edges or multi-edges).}
+
+\item{kappa0}{\eqn{\kappa_0}}
+
+\item{kappa}{\eqn{\kappa}}
 }
 \description{
-TODO
+This temporal network implements a network version of the SIRX model which
+was introduced for well-mixed populations by Maier & Brockmann.
+Starting from an arbitrary network, nodes are removed with baseline rate
+\eqn{\kappa_0} and infected nodes are removed with elevated rate
+\eqn{\kappa_0 + \kappa}, see Maier & Brockmann 2020, Science 368 (6492), 742-74
+for detais.
+}
+\seealso{
+\code{\link{network_properties}}, \code{\link{network_types}}
 }

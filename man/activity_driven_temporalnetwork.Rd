@@ -2,7 +2,7 @@
 % Please edit documentation in R/network.R
 \name{activity_driven_temporalnetwork}
 \alias{activity_driven_temporalnetwork}
-\title{TODO}
+\title{Activity-driven network model of Cai, Nie & Holme (2024).}
 \usage{
 activity_driven_temporalnetwork(
   activities,
@@ -13,6 +13,28 @@ activity_driven_temporalnetwork(
   b_inf = b
 )
 }
+\arguments{
+\item{activities}{node-specific activities \eqn{a_1,a_2,\ldots}}
+
+\item{m}{number of nodes an activated node connects to}
+
+\item{eta}{activation rate}
+
+\item{b}{deactivation rate}
+
+\item{eta_inf}{activation rate for infected nodes}
+
+\item{b_inf}{deactivation rate of infected nodes}
+}
 \description{
-TODO
+Here, nodes are initially inactive and have degree zero. Node \eqn{i} activates with
+rate \eqn{a[i] * \eta} and upon activation connects to \eqn{m} other uniformly chosen nodes
+(which are not necessarily active). Active nodes inactivate with constant rate
+\eqn{b}. See Cai, Nie & Holme 2024, Phys. Rev. Research 6, L022017 for details.
+Here, we implement a generalized version of the model in which the
+activation and deacivation rates of infected nodes can differ from those of
+non-infected node.
+}
+\seealso{
+\code{\link{network_properties}}, \code{\link{network_types}}
 }

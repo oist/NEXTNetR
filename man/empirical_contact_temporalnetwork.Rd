@@ -2,10 +2,25 @@
 % Please edit documentation in R/network.R
 \name{empirical_contact_temporalnetwork}
 \alias{empirical_contact_temporalnetwork}
-\title{TODO}
+\title{Empirical temporal network comprising short contacts between nodes}
 \usage{
 empirical_contact_temporalnetwork(file, finite_duration, dt)
 }
+\arguments{
+\item{file}{to read network from}
+
+\item{finite_duration}{whether to treat contacts as having finite duration \code{dt}
+or to be instantaneous with weight \code{dt}}
+
+\item{dt}{duration or weight of contact}
+}
 \description{
-TODO
+Each line of the file must list a single contact in the form
+"\if{html}{\out{<src>}} \if{html}{\out{<dst>}} \if{html}{\out{<time>}}" where \if{html}{\out{<src>}} and \if{html}{\out{<dst>}} are integers specifying the nodes
+and \if{html}{\out{<time>}} is a floating-point value. The highest node index appearing within
+\if{html}{\out{<src>}} and \if{html}{\out{<dst>}} defines the size of the network. Finite-duration contacts
+extend by dt/2 around the time specified in the file.
+}
+\seealso{
+\code{\link{network_properties}}, \code{\link{network_types}}
 }

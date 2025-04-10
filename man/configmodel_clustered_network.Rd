@@ -4,22 +4,33 @@
 \alias{configmodel_clustered_network}
 \title{Create an network with the specified node degrees and clustering}
 \usage{
-configmodel_clustered_network(degrees, alpha_or_ck_or_triangles, beta)
+configmodel_clustered_network(
+  degrees,
+  beta,
+  alpha = NULL,
+  ck = NULL,
+  triangles = NULL
+)
 }
 \arguments{
 \item{degrees}{a vector of length \eqn{N} listing the degrees of all nodes}
 
-\item{alpha_or_ck_or_triangles}{TODO}
+\item{beta}{parameter that defines degree class probabilities \eqn{P(k)}}
 
-\item{beta}{TODO}
+\item{alpha}{set \eqn{c(k)=0.5*(k-1)^\alpha}}
+
+\item{ck}{arbitrary function \eqn{c(k)} for the probability that if \eqn{b}, \eqn{c}
+are neighbours of \eqn{a}, then \eqn{b} and \eqn{c} are neighbours.}
+
+\item{triangles}{number of triangles overlapping nodes of degree 0, 1, 2, ...,}
 }
 \value{
 a network object
 }
 \description{
-Creates a network in nodes have the degrees specified and numbers of trianges specified
-
-TODO: citation
+Creates a network in which nodes have the degrees specified and numbers of triangles
+specified using an implementation of the algorithm by Serrano & Boguñá,
+2005, Phys. Rev. E 72, 036133.
 }
 \seealso{
 \code{\link{network_properties}}, \code{\link{network_types}}

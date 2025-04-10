@@ -124,11 +124,12 @@ configmodel_network <- function(degrees) {
   nextnetR_configmodel_network(as.integer(degrees))
 }
 
-#' @title Create an network with the specified node degrees and clustering ()
+#' @title Create an network with the specified node degrees and clustering 
 #' 
 #' @description
-#' Creates a network in nodes have the degrees specified and numbers of triangles specified
-#' using an implementation of the algorithm suggested by Serrano & Boguñá (2005).
+#' Creates a network in which nodes have the degrees specified and numbers of triangles
+#' specified using an implementation of the algorithm by Serrano & Boguñá,
+#' 2005, Phys. Rev. E 72, 036133.
 #' 
 #' @param degrees a vector of length \eqn{N} listing the degrees of all nodes
 #' @param ck arbitrary function \eqn{c(k)} for the probability that if \eqn{b}, \eqn{c}
@@ -374,15 +375,21 @@ brownian_proximity_temporalnetwork <- function(size, avg_degree, radius, D0,
     if (!is.null(dt)) as.double(dt) else NULL)
 }
 
-#' @title Network version of the SIRX model introduced by Maier & Brockmann (2020)
+#' @title Network SIRX model
 #' 
+#' @description
+#' This temporal network implements a network version of the SIRX model which
+#' was introduced for well-mixed populations by Maier & Brockmann.
 #' Starting from an arbitrary network, nodes are removed with baseline rate
-#' \eqn{\kappa0} and infected nodes are removed with elevated rate
-#' \eqn{\kappa_0 + \kappa}.
+#' \eqn{\kappa_0} and infected nodes are removed with elevated rate
+#' \eqn{\kappa_0 + \kappa}, see Maier & Brockmann 2020, Science 368 (6492), 742-74
+#' for detais.
 #' 
 #' @param network base network. must be simple (i.e. no self-edges or multi-edges).
 #' @param kappa0 \eqn{\kappa_0}
 #' @param kappa \eqn{\kappa}
+#' 
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
 sirx_temporalnetwork <- function(network, kappa0, kappa) {
@@ -391,6 +398,7 @@ sirx_temporalnetwork <- function(network, kappa0, kappa) {
 
 #' @title Empirical temporal network comprising short contacts between nodes
 #' 
+#' @description
 #' Each line of the file must list a single contact in the form
 #' "<src> <dst> <time>" where <src> and <dst> are integers specifying the nodes
 #' and <time> is a floating-point value. The highest node index appearing within
@@ -402,6 +410,8 @@ sirx_temporalnetwork <- function(network, kappa0, kappa) {
 #'                        or to be instantaneous with weight `dt`
 #' @param dt duration or weight of contact
 #' 
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
+#' 
 #' @export
 empirical_contact_temporalnetwork <- function(file, finite_duration, dt) {
   nextnetR_empirical_contact_temporalnetwork(
@@ -410,10 +420,12 @@ empirical_contact_temporalnetwork <- function(file, finite_duration, dt) {
 
 #' @title Activity-driven network model of Cai, Nie & Holme (2024).
 #' 
+#' @description
 #' Here, nodes are initially inactive and have degree zero. Node \eqn{i} activates with
 #' rate \eqn{a[i] * \eta} and upon activation connects to \eqn{m} other uniformly chosen nodes
 #' (which are not necessarily active). Active nodes inactivate with constant rate
-#' \eqn{b}. Here, we implement a generalized version of the model in which the
+#' \eqn{b}. See Cai, Nie & Holme 2024, Phys. Rev. Research 6, L022017 for details.
+#' Here, we implement a generalized version of the model in which the
 #' activation and deacivation rates of infected nodes can differ from those of
 #' non-infected node.
 #' 
@@ -423,6 +435,8 @@ empirical_contact_temporalnetwork <- function(file, finite_duration, dt) {
 #' @param b deactivation rate
 #' @param eta_inf activation rate for infected nodes
 #' @param b_inf deactivation rate of infected nodes
+#' 
+#' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
 activity_driven_temporalnetwork <- function(activities, m, eta, b,
@@ -479,7 +493,7 @@ activity_driven_temporalnetwork <- function(activities, m, eta, b,
 #' * `weighted_network_adjacencylist(nw)`
 #'   returns a named list which contains two entries, *nodes* and *neighbours*.
 #'   *nodes* contains the indices of all nodes in the network, i.e. `1:network_size(nw)`.
-#'   *neighbours* is a list of named two-element lists containing vectores "n" and "w". The vector "n"
+#'   *neighbours* is a list of named two-element lists containing vectors "n" and "w". The vector "n"
 #'   in *neighbours\[i\]* contains the neighbours of node \eqn{i}, and the vector "w" contains the
 #'   corresponding weights.
 #'   

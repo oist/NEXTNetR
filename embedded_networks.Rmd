@@ -11,12 +11,12 @@ library(ggplot2)
 
 ```{r}
 nw <- brownian_proximity_dyngraph(size=500, avg_degree=6, radius=1, D=0.0)
-#nw <- cubiclattice2d_graph(10)
+#nw <- cubiclattice2d_network(10)
 ```
 
 ```{r}
-al <- graph_adjacencylist(nw)
-points <- graph_coordinates(nw, al$nodes)
+al <- network_adjacencylist(nw)
+points <- network_coordinates(nw, al$nodes)
 edges <- rbindlist(lapply(al$nodes, function(n) {
   nn <- al$neighbours[[n]]
   data.table(n1=n, n2=nn,

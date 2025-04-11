@@ -20,7 +20,7 @@
 #'   a Weibull distribution with the given `shape` and `scale` parameter, which in addition
 #'   to finite  values produces the value infinity with probability `p_infinity`.
 #'   The distribution has mean \eqn{b \Gamma(1 + 1/a)} and variance 
-#'   \eqn{b^2 \Gamma(1 + 1/a) - \Gamma^2(1 + 1/a)}for shape \eqn{a} and scale \eqn{b}.
+#'   \eqn{b^2(\Gamma(1 + 2/a) - \Gamma^2(1 + 1/a))}for shape \eqn{a} and scale \eqn{b}.
 #' * `polynomial_rate_time(coeffs)`. Distribution with survival function
 #'   \eqn{\Psi(\tau) = e^{-p(\tau)}} for a polynomial hazard rate
 #'   \eqn{p = c[1] + c[2] x + c[3] x^2 + \ldots} with non-negative coefficients.

@@ -1,0 +1,9 @@
+bibentry(
+  "Article",
+  title = "Fast and exact simulations of stochastic epidemics on static and temporal networks",
+  author = "Samuel Cure, Florian G. Pflug, Simone Pigolotti"
+  year = 2024,
+  journal = "arXiv",
+  pages = 2412.07095v1,
+  doi = "https://arxiv.org/abs/2412.07095",
+)

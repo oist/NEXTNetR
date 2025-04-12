@@ -1,0 +1,5 @@
+url: https://oist.github.io/NEXTNetR/
+template:
+  bootstrap: 5
+  bootswatch: simplex
+  math-rendering: mathjax

@@ -2,6 +2,8 @@
 
 *NEXTNetR* (*N*ext-reaction-based *E*pidemics e*X*tended to *T*emporal *Net*works) is an R package for the efficient simulation of epidemics on complex networks (including weighted and temporal networks) with arbitrary transmission and recovery time distributions. *NEXTNetR* is an R wrapper around the C++ library NEXTNet <https://github.com/oist/NEXTNet>.
 
+See <https://oist.github.io/NEXTNetR/> for details.
+
 # Installation
 
 The latest version of *NEXTNetR* can be installed directly from Github by executing the following in R:
@@ -28,6 +30,6 @@ The following R script sets up and runs a simulation on an Erdős–Rényi netwo
 
 *NEXTNetR* offers a range of common types of artifical networks such as Erdős–Rényi, Barabási–Albert and Watts–Strogatz, and can run simulations on arbitrary empirical weighted networks defined by an adjacency list. *NEXTNetR* also allows simulations on *temporal* networks, i.e. networks which change over time, possibly in response to epidemic events. Amongst the temporal networks currently supported by *NEXTNetR* are empirical networks defined by contact times between nodes, activity-driven networks, and networks defined by the proximity of diffusing particles.
 
-# Manual
+# Reference
 
-*NEXTNetR* comes with a full set of R manual pages. All supported network types are listed in `help(network_types)`. `help(time_distributions)` offers a list of supported transmission and reset/recovery time distributions. Functions that configure, run and inspect simulations found in `help(simulation_functions)`. 
+See <https://oist.github.io/NEXTNetR/>.

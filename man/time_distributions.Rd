@@ -37,15 +37,22 @@ to finite  values produces the value infinity with probability \code{p_infinity}
 a Weibull distribution with the given \code{shape} and \code{scale} parameter, which in addition
 to finite  values produces the value infinity with probability \code{p_infinity}.
 The distribution has mean \eqn{b \Gamma(1 + 1/a)} and variance
-\eqn{b^2 \Gamma(1 + 1/a) - \Gamma^2(1 + 1/a)}for shape \eqn{a} and scale \eqn{b}.
+\eqn{b^2(\Gamma(1 + 2/a) - \Gamma^2(1 + 1/a))}for shape \eqn{a} and scale \eqn{b}.
 \item \code{polynomial_rate_time(coeffs)}. Distribution with survival function
 \eqn{\Psi(\tau) = e^{-p(\tau)}} for a polynomial hazard rate
 \eqn{p = c[1] + c[2] x + c[3] x^2 + \ldots} with non-negative coefficients.
-\item \code{deterministic_time(tau)}. Deterministic time with fixed value \code{tau}.
+\item \code{deterministic_time(tau)}. Deterministic time with fixed value \code{tau}
 }
 }
 \description{
 NEXTNetR supports a series of pre-defined distributions for transmission and
 recover/reset time, and also allows custom distributions to be defined
 with \link{userdefined_time}.
+
+Each \code{time_distribution} object actually represents a two-parameer family
+of distributions, see \link{time_functions} for a full discussion and for functions
+that operate on time distribution objects.
+}
+\seealso{
+\code{\link{time_functions}}
 }

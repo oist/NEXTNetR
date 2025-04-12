@@ -24,9 +24,9 @@ time_survivalquantile(timedistribution, p, t = 0, m = 1)
 
 \item{timedistribution}{a \link[=time_distributions]{time_distribution}.}
 
-\item{t}{the conditioning time}
+\item{t}{the conditioning time, see details}
 
-\item{m}{multiplicity}
+\item{m}{multiplicity, see details}
 
 \item{tau}{non-negative time}
 }
@@ -38,7 +38,7 @@ distribution \eqn{\Psi_{t,m}}.
 \code{tau} of distribution \eqn{\Psi_{t,m}}.
 \item \code{time_hazardrate(timedistribution, tau)}. Evaluates the hazardrate
 \eqn{\lambda(\tau)} of the \emph{base} distribution \eqn{\Psi}. The hazard
-rate of \eqn{\Psi_{t,m}} is simply \eqn{m \times \lambda(\tau)}.
+rate of \eqn{\Psi_{t,m}} is simply \eqn{m\lambda(\tau)}, see Details.
 \item \code{time_survivalprobability(timedistribution, tau, t, m)}. Evaluates the
 survivalfunction \eqn{\Psi_{t,m}} at points \code{tau}.
 \item \code{time_survivalquantile(timedistribution, p, t, m)}. Computes the
@@ -46,13 +46,44 @@ survivalfunction \eqn{\Psi_{t,m}} at points \code{tau}.
 }
 }
 \description{
-A time distributions represents a family of distributions parametrized by
-a conditioning time \eqn{t \geq 0}, a multiplicity \eqn{m > 0} over
-a base distribution with survival function
-\eqn{\Psi(\tau) = e^{-\lambda(\tau)}}. The parameters represent (i)
-conditioning of the base distribution on values \eqn{\geq t} and (ii)
-taking the \emph{minimum} over \eqn{m} i.i.d. samples of \eqn{\Psi}. The survival
-function of \eqn{\Psi_{t,m}} is therefore \eqn{(\Psi(\tau)/\Psi(t))^m}.
+Time distribution objects are used to specify the distribution of transmission
+and recovery/reset times. In principle, time distribution can represent any
+distribution on \eqn{[0,\infty]}, where the value \eqn{\infty} indicates that no
+transmission respectively recovery/reset takes place. See \link{time_distributions}
+for functions to create objects representing common time distributions such
+as lognormal, gamma, etc. Each time distribution object actually represents
+a two-parameter family of distributions with parameters \eqn{t} and \eqn{m},
+see Details for a full discussion.
+}
+\details{
+Each time distribution object actually represents a two-parameter family of
+distributions with parameters \eqn{t} and \eqn{m}. This family is defined in
+terms of a base distribution with some survival function
+\eqn{\Psi(\tau) = \exp\big(-\int_0^\tau \lambda(t) dt\big)}.
+Note that assuming this form of the survival function does not restrict the choice
+of base distributions; any distribution on \eqn{[0,\infty]} takes this form
+for \eqn{\lambda(\tau) := -\Psi'(\tau) / \Psi(\tau)}. \eqn{\lambda(\tau)} is
+called the \emph{hazard rate} at time \eqn{\tau}.
+
+In terms of hazard rate \eqn{\lambda(\tau)}, the distribution \eqn{\Psi(\tau)}
+is naturally interpreted as the time until the first event fired by an
+inhomogeneous Poisson process with rate function \eqn{\lambda(\tau)}. If
+\eqn{\int_0^\tau \lambda(t) dt = \Lambda < \infty} for all \eqn{\tau},
+then the process does not necessarily fire and the distribution takes
+value \eqn{\infty} with positive probability \eqn{p_\infty = e^{-\Lambda}}.
+
+Parameter \eqn{m} modulates the rate function \eqn{\lambda(\tau)}, and
+parameter \eqn{t} conditions the process to fire after time \eqn{t}. Note
+that for conditioned distributions, \eqn{\tau} is expressed \emph{relative}
+to \eqn{t}, i.e. the domain of \eqn{\tau} is always \eqn{[0,\infty]}. The
+survival function of the modulates and conditioned distribution is
+\eqn{\Psi_{t,m}(\tau) = \exp\big(-\int_t^{t+\tau} m \lambda(t) dt\big)}.
+
+For integral \eqn{m}, modulation can be interpreted as taking the minimum
+of \eqn{m} i.i.d. copies of the unmodulated distribution. This is used by
+some simulation algorithms to efficiently handle nodes with large numbers
+of edges. Parameter \eqn{m} is also used when simulating on \emph{weighted}
+networks, where it represents the weight of an edge.
 }
 \seealso{
 \code{\link{time_distributions}}

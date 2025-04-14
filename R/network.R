@@ -534,7 +534,15 @@ network_outdegree <- function(nw, nodes) {
 #' @rdname network_properties
 #' @export
 network_neighbour <- function(nw, nodes, indices) {
-  nextnetR_network_neighbour(nw, as.integer(nodes), as.integer(indices))
+  nodes <- as.integer(nodes)
+  indices <- as.integer(indices)
+  if (length(nodes) == 1)
+    nodes <- rep(nodes, length(indices))
+  else if (length(indices) == 1)
+    indices <- rep(indices, length(nodes))
+  else if (length(nodes) != length(indices))
+    stop("length of either nodes or indices must be one or both lengths must agree")
+  nextnetR_network_neighbour(nw, nodes, indices)
 }
 
 #' @rdname network_properties

@@ -23,7 +23,7 @@ operate on \link[=simulation_types]{simulations}.
 \description{
 This is the recommended simulation algorithm and supports
 \emph{weighted} as well as \emph{temporal} networks, see \link{network_types}. To force
-a temporal network to be treated as a static network, set option \code{SIR} to \code{TRUE}.
+a temporal network to be treated as a static network, set option \code{static_network} to \code{TRUE}.
 }
 \details{
 Possible options are

@@ -18,7 +18,7 @@ NULL
 #' 
 #' @description This is the recommended simulation algorithm and supports
 #' *weighted* as well as *temporal* networks, see [network_types]. To force
-#' a temporal network to be treated as a static network, set option `SIR` to `TRUE`.
+#' a temporal network to be treated as a static network, set option `static_network` to `TRUE`.
 #'
 #' @param nw network to simulate on
 #' @param psi infection [time distribution][time_distributions]

@@ -59,9 +59,11 @@ integers nextnetR_network_outdegree(const network_R& nw, integers nodes) {
     const std::size_t l = nodes.size();
     writable::integers r;
     r.reserve(l);
+    
+    const node_t N = nw->nodes();
     for(std::size_t j = 0; j < l; ++j) {
         const int n = nodes[j];
-        r.push_back(((n >= 1) && (n <= (node_t)l)) ? nw->outdegree(n - 1) : NA_INTEGER);
+        r.push_back(((n >= 1) && (n <= (node_t)N)) ? nw->outdegree(n - 1) : NA_INTEGER);
     }
     return r;
 }
@@ -82,9 +84,10 @@ integers nextnetR_network_neighbour(const network_R& nw, integers nodes, integer
     r.reserve(l);
     
     /* Fill */
+    const node_t N = nw->nodes();
     for(std::size_t j = 0; j < l; ++j) {
         const node_t n = nodes[j];
-        if ((n < 1) || (n > (node_t)l)) {
+        if ((n < 1) || (n > (node_t)N)) {
             r.push_back(NA_INTEGER);
             continue;
         }

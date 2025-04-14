@@ -14,9 +14,9 @@ exponential_time(lambda, p_infinity = 0)
 
 lognormal_time(mean, var, p_infinity = 0)
 
-gamma_time(mean, var, p_infinity)
+gamma_time(mean, var, p_infinity = 0)
 
-weibull_time(shape, scale, p_infinity)
+weibull_time(shape, scale, p_infinity = 0)
 
 polynomial_rate_time(coeffs)
 

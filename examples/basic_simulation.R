@@ -1,7 +1,7 @@
 # Create contact network network
 g <- erdos_renyi_network(1e5, 5)
 # Create transmission and reset time distributions
-psi <- lognormal_time(3, 30)
+psi <- lognormal_time(6, 30, 0.1)
 rho <- weibull_time(shape=5, scale=50)
 # Create simulation and specifiy initial set of infections
 sim <- nextreaction_simulation(g, psi, rho)

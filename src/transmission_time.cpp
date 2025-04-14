@@ -18,7 +18,7 @@ using namespace cpp11;
 namespace writable = cpp11::writable;
 
 [[cpp11::register]]
-doubles nextnetR_time_sample(int n, const transmission_time_R& ttr, interval_t t, int m) {
+doubles nextnetR_time_sample(int n, const transmission_time_R& ttr, double t, double m) {
     if (!ttr) throw std::runtime_error("time distribution cannot be NULL"); 
 
     RNG_SCOPE_IF_NECESSARY;

@@ -329,10 +329,10 @@ extern "C" SEXP _NEXTNetR_nextnetR_simulation_run(SEXP sim_, SEXP stop, SEXP opt
   END_CPP11
 }
 // transmission_time.cpp
-doubles nextnetR_time_sample(int n, const transmission_time_R& ttr, interval_t t, int m);
+doubles nextnetR_time_sample(int n, const transmission_time_R& ttr, double t, double m);
 extern "C" SEXP _NEXTNetR_nextnetR_time_sample(SEXP n, SEXP ttr, SEXP t, SEXP m) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_time_sample(cpp11::as_cpp<cpp11::decay_t<int>>(n), cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<interval_t>>(t), cpp11::as_cpp<cpp11::decay_t<int>>(m)));
+    return cpp11::as_sexp(nextnetR_time_sample(cpp11::as_cpp<cpp11::decay_t<int>>(n), cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<double>>(t), cpp11::as_cpp<cpp11::decay_t<double>>(m)));
   END_CPP11
 }
 // transmission_time.cpp

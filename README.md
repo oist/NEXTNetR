@@ -13,7 +13,7 @@ The latest version of *NEXTNetR* can be installed directly from Github by execut
 
 # Synopsis
 
-The following R script sets up and runs a simulation on an Erdős–Rényi network with lognormally distributed transmission time (i.e. the generation time between subsequent infections) and lognormally distribured reset time (the time until an infected node becomes susecptible again). See [Basic Simulations of Simulations with NEXTNetR](https://oist.github.io/NEXTNetR/docs/articles/basic_simulation.html) for a step-by step walk-through of this code.
+The following R script sets up and runs a simulation on an Erdős–Rényi network with lognormally distributed transmission time (i.e. the generation time between subsequent infections) and lognormally distribured reset time (the time until an infected node becomes susecptible again). See [Basic Simulations of Simulations with NEXTNetR](https://oist.github.io/NEXTNetR/articles/basic_simulation.html) for a step-by step walk-through of this code.
 
 	# Create contact network network
 	g <- erdos_renyi_network(1e5, 5)

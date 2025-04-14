@@ -3,3 +3,4 @@ src/*.so
 src/*.dylib
 inst/include
 docs
+inst/doc

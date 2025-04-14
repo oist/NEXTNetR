@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-We start with loading the *NEXTNetR* package. If the package is not already installed, see the [website](https://oist.github.com/nextnetr) for installation instructions.
+We start with loading the *NEXTNetR* package. If the package is not already installed, see the [website](https://oist.github.io/NEXTNetR/) for installation instructions.
 
 ```{r setup}
 library(NEXTNetR)

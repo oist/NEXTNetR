@@ -43,7 +43,7 @@ exponential_time <- function(lambda, p_infinity = 0.0) {
 #' @rdname time_distributions
 #' @export
 lognormal_time <- function(mean, var, p_infinity = 0.0) {
-  nextnetR_gamma_time(as.double(mean), as.double(var), as.double(p_infinity))
+  nextnetR_lognormal_time(as.double(mean), as.double(var), as.double(p_infinity))
 }
 
 #' @rdname time_distributions

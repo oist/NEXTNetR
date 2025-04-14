@@ -159,7 +159,7 @@ NULL
 #' @rdname time_functions
 #' @export
 time_sample <- function(n, timedistribution, t=0, m=1) {
-  nextnetR_time_sample(as.integer(n), timedistribution, as.double(t), as.integer(m))
+  nextnetR_time_sample(as.integer(n), timedistribution, as.double(t), as.double(m))
 }
 
 #' @rdname time_functions

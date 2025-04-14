@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-We start with loading the *NEXTNetR* package. If the package is not already installed, see the [website](https:://oist.github.com/nextnetr) for installation instructions.
+We start with loading the *NEXTNetR* package. If the package is not already installed, see the [website](https://oist.github.com/nextnetr) for installation instructions.
 
 ```{r setup}
 library(NEXTNetR)
@@ -29,7 +29,7 @@ Next we create a network object. To see the full list of network types supported
 nw <- erdos_renyi_network(size=1e5, avg_degree=5)
 ```
 
-The object `nw` now represents a specific network. We can inspect the network using the functions listed in `help(network_functions)`. For example, we can query the number of neighbours of node 371 with
+The object `nw` now represents a specific network. We can inspect the network using the functions listed in `help(network_properties)`. For example, we can query the number of neighbours of node 371 with
 
 ```{r}
 degree <- network_outdegree(nw, 371)
@@ -83,7 +83,7 @@ Finally, we add an initial infection to get the epidemic going
 simulation_addinfections(sim, nodes=c(1), times=c(0.0))
 ```
 
-and start the simulation, telling it to run until either time 100 or until 90,000 nodes have been infected.
+and start the simulation, telling it to run until either time 100 or until 50,000 nodes have been infected.
 
 ```{r}
 events <- simulation_run(sim, stop=list(time=100, total_infected=50e3))

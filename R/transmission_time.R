@@ -48,13 +48,13 @@ lognormal_time <- function(mean, var, p_infinity = 0.0) {
 
 #' @rdname time_distributions
 #' @export
-gamma_time <- function(mean, var, p_infinity) {
+gamma_time <- function(mean, var, p_infinity = 0.0) {
   nextnetR_gamma_time(as.double(mean), as.double(var), as.double(p_infinity))
 }
 
 #' @rdname time_distributions
 #' @export
-weibull_time <- function(shape, scale, p_infinity) {
+weibull_time <- function(shape, scale, p_infinity = 0.0) {
   nextnetR_gamma_time(as.double(shape), as.double(scale), as.double(p_infinity))
 }
 

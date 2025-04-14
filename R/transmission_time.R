@@ -55,7 +55,7 @@ gamma_time <- function(mean, var, p_infinity = 0.0) {
 #' @rdname time_distributions
 #' @export
 weibull_time <- function(shape, scale, p_infinity = 0.0) {
-  nextnetR_gamma_time(as.double(shape), as.double(scale), as.double(p_infinity))
+  nextnetR_weibull_time(as.double(shape), as.double(scale), as.double(p_infinity))
 }
 
 #' @rdname time_distributions

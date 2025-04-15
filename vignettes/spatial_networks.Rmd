@@ -1,0 +1,218 @@
+---
+title: "Simulations on Spatial Networks"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Simulations on Spatial Networks}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Loading the NEXTNetR package
+
+We start with loading the *NEXTNetR* package. If the package is not already installed, see the [website](https://oist.github.io/NEXTNetR/) for installation instructions. We also load the *ggplot2* package for plotting.
+
+```{r setup}
+library(NEXTNetR)
+library(ggplot2)
+```
+
+# Creating a 2-d cubic lattice
+
+Next we create a network representing a cubic lattice of size $50\times 50$, i.e. a network of nodes positioned at integral coordinates $(i,j)$ connected to their left, right, upper and lower neighbour. 
+
+```{r}
+L <- 50
+nw <- cubiclattice2d_network(L);
+```
+
+We can now query the positions of nodes using `network_coordinates`. This works only for networks embedded into $d$-dimensiona physical space, such as the one produced by `cubiclattice2d_network`. `network_coordinates` returns a $N \times d$ matrix, where $N$ is the number of nodes and $d$ the dimension of the space they are embedded in. For our convenience, we assign names to the coordinates, here 'x' and 'y'.
+
+```{r}
+N <- network_size(nw)
+coords <- network_coordinates(nw, 1:N)
+colnames(coords) <- c('x', 'y')
+```
+
+The coordinate matrix looks like this
+
+```{r}
+head(coords)
+```
+Using `network_neighbour` and the coordinate matrix we just produced, we can create a matrix representing links between nodes:
+
+```{r}
+nodes_degrees <- network_outdegree(nw, 1:N)
+links_nodes <- rep(1:N, times=nodes_degrees)
+links_indices <- unlist(mapply(seq, from=1, to=nodes_degrees))
+links <- cbind(links_nodes, network_neighbour(nw, links_nodes, links_indices))
+```
+
+Each row of `links` represents a link and shows the coordinate of the two involved nodes:
+
+```{r}
+head(links)
+```
+
+The two matrices `coords` and `links` make it easy to plot the network with `ggplot2`. 
+
+```{r}
+ggplot() +
+  geom_point(data=coords, aes(x=x, y=y),
+             size=0.5) +
+  geom_segment(data=cbind(a=as.data.frame(coords[links[, 1],]),
+                          b=as.data.frame(coords[links[, 2],])),
+               aes(x=a.x, y=a.y, xend=b.x, yend=b.y),
+               linewidth=0.1) +
+  theme_void()
+```
+
+# Epidemics on a lattice
+
+We now create an epidemic simulation on this network, starting from a single initial infection at the center of our lattice, and run the simulation up to time $t=20$.
+
+```{r}
+infection_time <- gamma_time(mean=6, var=4)
+sim <- simulation(nw=nw, psi=infection_time)
+simulation_addinfections(sim, nodes=L*floor(L/2) - L/2, times=c(0.0))
+events <- simulation_run(sim, stop=list(time=20))
+```
+
+To visualize the state of the epidemic, we use `simulation_isinfected` to query the infected state of each node, and show non-infected and infected nodes in different colors. We also encapsulate our plotting code into a function `plot_network` so that we can easily plot the current state later on, and use `network_bounds` to query to bounds of our network in space.
+
+```{r}
+plot_network <- function(nw, sim=NULL) {
+  # Node coordinates
+  N <- network_size(nw)
+  coords <- network_coordinates(nw, 1:N)
+  colnames(coords) <- c('x', 'y')
+  
+  # Link coordinates
+  nodes_degrees <- network_outdegree(nw, 1:N)
+  links_nodes <- rep(1:N, times=nodes_degrees)
+  links_indices <- unlist(mapply(seq, from=1, to=nodes_degrees))
+  links <- cbind(links_nodes, network_neighbour(nw, links_nodes, links_indices))
+  
+  # Boundaries
+  bounds <- network_bounds(nw)
+  
+  # Plot network
+  infected <- if (!is.null(sim))
+    as.factor(simulation_isinfected(sim, 1:N))
+  else
+    as.factor(rep(FALSE, N))
+  data_nodes <- cbind(as.data.frame(coords),
+                      infected=infected)
+  data_links <- cbind(a=as.data.frame(coords[links[, 1],]),
+                      b=as.data.frame(coords[links[, 2],]))
+  ggplot() +
+    geom_point(data=data_nodes, aes(x=x, y=y, color=infected, size=infected)) +
+    geom_segment(data=data_links, aes(x=a.x, y=a.y, xend=b.x, yend=b.y),
+                 linewidth=0.1) +
+    scale_color_manual(breaks=c(FALSE,TRUE), values=c('cornflowerblue','orange')) +
+    scale_size_manual(breaks=c(FALSE,TRUE), values=c(0.5, 2.0)) +
+    labs(color="infected", size="infected") +
+    lims(x=c(bounds[[1]][1], bounds[[2]][1]),
+         y=c(bounds[[1]][2], bounds[[2]][2])) +
+    theme_void()
+}
+plot_network(nw, sim)
+```
+
+To see how the epidemic develops further, we continue the simulation up to time $t=60$. To have the full list of events available later on, we combine the events reported by the previous call to `simulation_run` with the events reported here. `plot_network()` now shows a considerably bigger epidemic.
+
+```{r}
+events <- rbind(events, simulation_run(sim, stop=list(time=60)))
+plot_network(nw, sim)
+```
+
+Finally, we let the epidemic run until all nodes (of which there are $L*L$) are infected
+
+```{r}
+events <- rbind(events, simulation_run(sim, stop=list(infected=L*L)))
+```
+
+and plot the number of infected nodes a function of time. In a log-plot, we see that the epidemic does not show a clear exponential regime
+
+```{r warning=FALSE}
+ggplot(events) +
+  geom_line(aes(x=time, y=infected)) +
+  scale_y_log10()
+```
+
+and when we instead plot the trajectory in a log-log plot we clearly see the effect of the rather dense 2-dimensional embedding of the nodes -- instead of growing exponentially, the epidemic grows quadratically.
+
+```{r warning=FALSE}
+ggplot(events) +
+  geom_line(aes(x=time, y=infected)) +
+  scale_x_log10() +
+  scale_y_log10() +
+  geom_abline(slope=2, intercept=-1, linetype='dashed', color='blue')
+```
+
+# Brownian proximity networks
+
+Instead of the static spatial network defined by `cubiclattice2d_network`, we now consider a temporal spatial network. A `brownian_proximity_temporalnetwork` comprises nodes which move randomly with a particular diffusion constant `D_0`, and are at any instant connected to all nodes within a certain radius. The density of points is chosen so that at any instant in time, each node has on average a prescribed number of neighbours `avg_degree`. 
+
+```{r}
+N2 <- 2500
+nw2 <- brownian_proximity_temporalnetwork(N2, avg_degree=4, D0=2, radius=1, dt=0.1)
+```
+
+The resulting network initially looks like this
+
+```{r}
+plot_network(nw2)
+```
+
+# The effect of diffusion on epidemic growth
+
+We would like to start our epidemic in the center again, so we locate the node closest to the center
+
+```{r}
+bounds2 <- network_bounds(nw2)
+center2 <- 0.5*bounds2[[1]] + 0.5*bounds2[[2]]
+coords2 <- network_coordinates(nw2, 1:N2)
+d2 <- apply(coords2, MARGIN=1, function(x) sum((x - center2)**2))
+CENTERNODE2 <- which.min(d2)
+```
+
+and setup the simulation object as usual.
+
+```{r}
+infection_time2 <- gamma_time(mean=6, var=4)
+sim2 <- simulation(nw=nw2, psi=infection_time2)
+simulation_addinfections(sim2, nodes=CENTERNODE2, times=c(0.0))
+events2 <- simulation_run(sim2, stop=list(time=20))
+```
+
+At time $t=20$ the epidemic looks like this
+
+```{r}
+plot_network(nw2, sim2)
+```
+
+and at time $t=60$ the epidemic has spread through the whole population
+
+```{r}
+events2 <- rbind(events2, simulation_run(sim2, stop=list(time=60, infected=N2)))
+plot_network(nw2, sim2)
+```
+
+A log-plot of the number of infected node shows that contrary to the case of an epidemic on a lattice, the number of infected nodes initially grows exponentially again on the Brownian proximity network.
+
+```{r warning=FALSE}
+ggplot(events2) +
+  geom_line(aes(x=time, y=infected, color='Brownian proximity')) +
+  geom_line(data=events, aes(x=time, y=infected, color='lattice')) +
+  scale_y_log10() +
+  lims(x=range(events2$time))
+```
+
+

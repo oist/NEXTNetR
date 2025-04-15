@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Loading the NEXTNetR package
+## Loading the NEXTNetR package
 
 We start with loading the *NEXTNetR* package. If the package is not already installed, see the [website](https://oist.github.io/NEXTNetR/) for installation instructions. We also load the *ggplot2* package for plotting.
 
@@ -23,7 +23,7 @@ library(NEXTNetR)
 library(ggplot2)
 ```
 
-# Creating a 2-d cubic lattice
+## Creating a 2-d cubic lattice
 
 Next we create a network representing a cubic lattice of size $50\times 50$, i.e. a network of nodes positioned at integral coordinates $(i,j)$ connected to their left, right, upper and lower neighbour. 
 
@@ -73,7 +73,7 @@ ggplot() +
   theme_void()
 ```
 
-# Epidemics on a lattice
+## Epidemics on a lattice
 
 Before we simulate the epidemic, we create a convenience function `plot_network` to visualize the state of the epidemic. The function uses `simulation_isinfected` to query the infected state of each node and show non-infected and infected nodes in different colors. To make sure the plot encompasses the whole network, we use `network_bounds` to query to bounds of our network in space and set the plotting limits 
 
@@ -153,7 +153,7 @@ ggplot(events) +
   geom_abline(slope=2, intercept=-1, linetype='dashed', color='blue')
 ```
 
-# Brownian proximity networks
+## Brownian proximity networks
 
 Instead of the static spatial network defined by `cubiclattice2d_network`, we now consider a temporal spatial network. A `brownian_proximity_temporalnetwork` comprises nodes which move randomly with a particular diffusion constant `D_0`, and are at any instant connected to all nodes within a certain radius. The density of points is chosen so that at any instant in time, each node has on average a prescribed number of neighbours `avg_degree`. 
 
@@ -168,7 +168,7 @@ The resulting network initially looks like this
 plot_network(nw2)
 ```
 
-# The effect of diffusion on epidemic growth
+## The effect of diffusion on epidemic growth
 
 We would like to start our epidemic in the center again, so we locate the node closest to the center
 

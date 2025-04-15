@@ -16,16 +16,18 @@ knitr::opts_chunk$set(
 
 ## Loading the NEXTNetR package
 
-We start with loading the *NEXTNetR* package. If the package is not already installed, see the [website](https://oist.github.io/NEXTNetR/) for installation instructions. We alos load the *ggplot2* package for plotting.
+We start with loading the `{NEXTNetR}` package. If the package is not already installed, see the [website](https://oist.github.io/NEXTNetR/) for installation instructions. We also load the `{ggplot2}` and `{ggpubr}` packages for plotting and set a nice theme.
 
 ```{r setup}
 library(NEXTNetR)
 library(ggplot2)
+library(ggpubr)
+theme_set(theme_pubr())
 ```
 
 ## Creating and inspecting networks
 
-Next we create a network object. To see the full list of network types supported by *NEXTNet*, type `help(network_types)`. Here, we create a random Erdős–Rényi network of a given `size`, i.e. with a given number of nodes. On Erdős–Rényi networks, each possible link has an probability to exist independent of all other links. This probability is computed such that nodes have the specified average degree (i.e. number of neighbours). 
+Next we create a network object. To see the full list of network types supported by `{NEXTNetR}`, type `help(network_types)`. Here, we create a random Erdős–Rényi network of a given `size`, i.e. with a given number of nodes. On Erdős–Rényi networks, each possible link has an probability to exist independent of all other links. This probability is computed such that nodes have the specified average degree (i.e. number of neighbours). 
 
 ```{r}
 nw <- erdos_renyi_network(size=1e5, avg_degree=5)
@@ -49,7 +51,8 @@ Most inspection functions are vectorized and can query multiple nodes at once. F
 ```{r}
 N <- network_size(nw)
 ggplot(data.frame(degree=network_outdegree(nw, 1:N))) +
-  geom_histogram(aes(x=degree), binwidth=1, fill='darkgrey', color=NA) +
+  geom_histogram(aes(x=degree, y=after_stat(count)),
+                 binwidth=1, fill='darkgrey', color=NA) +
   geom_function(fun=function(n) N * dpois(round(n), 5),
                 n=1000, color='blue', linetype="dashed", linewidth=0.5)
 ```
@@ -62,13 +65,20 @@ Before we can start a simulation, we next have to create time distributions whic
 infection_time <- lognormal_time(mean=6, var=30, p_infinity = 0.1)
 ```
 
-While time distribution objects are mainly useful for epidemic simulations, they can also be used similed to R's built-in random distributions, see `help(time_functions)`. We can, for example, plot the distribution's density.
+While time distribution objects are mainly useful for epidemic simulations, they can also be used similed to R's built-in random distributions, see `help(time_functions)`. We can, for example, plot the distribution's density and survival function.
 
 ```{r}
-ggplot() +
-  lims(x=c(0, 100)) + labs(x='time', y='density') +
-  geom_function(fun=time_density,
-                args=list(timedistribution=infection_time))
+ggarrange(
+  ggplot() +
+    lims(x=c(0, 25)) + labs(x='time', y='density') +
+    geom_function(fun=time_density, n=1000,
+                  args=list(timedistribution=infection_time)),
+  ggplot() +
+    lims(x=c(0, 25), y=c(0,1)) + labs(x='time', y='survival') +
+    geom_function(fun=time_survivalprobability, n=1000,
+                  args=list(timedistribution=infection_time)),
+  ncol=1
+)
 ```
 
 ## Creating and running simulations

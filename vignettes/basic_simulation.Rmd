@@ -1,8 +1,8 @@
 ---
-title: "Basic Simulations of Epidemics with NEXTNetR"
+title: "Basic Simulations of Epidemics"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{basic_simulation}
+  %\VignetteIndexEntry{Basic Simulations of Epidemics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-We start with loading the *NEXTNetR* package. If the package is not already installed, see the [website](https://oist.github.io/NEXTNetR/) for installation instructions.
+We start with loading the *NEXTNetR* package. If the package is not already installed, see the [website](https://oist.github.io/NEXTNetR/) for installation instructions. We alos load the *ggplot2* package for plotting.
 
 ```{r setup}
 library(NEXTNetR)

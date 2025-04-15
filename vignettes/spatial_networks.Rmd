@@ -75,16 +75,7 @@ ggplot() +
 
 # Epidemics on a lattice
 
-We now create an epidemic simulation on this network, starting from a single initial infection at the center of our lattice, and run the simulation up to time $t=20$.
-
-```{r}
-infection_time <- gamma_time(mean=6, var=4)
-sim <- simulation(nw=nw, psi=infection_time)
-simulation_addinfections(sim, nodes=L*floor(L/2) - L/2, times=c(0.0))
-events <- simulation_run(sim, stop=list(time=20))
-```
-
-To visualize the state of the epidemic, we use `simulation_isinfected` to query the infected state of each node, and show non-infected and infected nodes in different colors. We also encapsulate our plotting code into a function `plot_network` so that we can easily plot the current state later on, and use `network_bounds` to query to bounds of our network in space.
+Before we simulate the epidemic, we create a convenience function `plot_network` to visualize the state of the epidemic. The function uses `simulation_isinfected` to query the infected state of each node and show non-infected and infected nodes in different colors. To make sure the plot encompasses the whole network, we use `network_bounds` to query to bounds of our network in space and set the plotting limits 
 
 ```{r}
 plot_network <- function(nw, sim=NULL) {
@@ -102,7 +93,7 @@ plot_network <- function(nw, sim=NULL) {
   # Boundaries
   bounds <- network_bounds(nw)
   
-  # Plot network
+  # Get data
   infected <- if (!is.null(sim))
     as.factor(simulation_isinfected(sim, 1:N))
   else
@@ -111,6 +102,8 @@ plot_network <- function(nw, sim=NULL) {
                       infected=infected)
   data_links <- cbind(a=as.data.frame(coords[links[, 1],]),
                       b=as.data.frame(coords[links[, 2],]))
+  
+  # Plot network
   ggplot() +
     geom_point(data=data_nodes, aes(x=x, y=y, color=infected, size=infected)) +
     geom_segment(data=data_links, aes(x=a.x, y=a.y, xend=b.x, yend=b.y),
@@ -120,25 +113,29 @@ plot_network <- function(nw, sim=NULL) {
     labs(color="infected", size="infected") +
     lims(x=c(bounds[[1]][1], bounds[[2]][1]),
          y=c(bounds[[1]][2], bounds[[2]][2])) +
-    theme_void()
+    theme_void() +
+    theme(legend.position = 'none')
 }
-plot_network(nw, sim)
 ```
 
-To see how the epidemic develops further, we continue the simulation up to time $t=60$. To have the full list of events available later on, we combine the events reported by the previous call to `simulation_run` with the events reported here. `plot_network()` now shows a considerably bigger epidemic.
+We now create an animation depicting the spread of an epidemic on the lattice, starting from a single initial infection at the center of our lattice. During each iteration of the loop, the simulation is run until stopping time `t1` and the current epidemic state is plotted. To have the full list of events available later on, we combine the events reported by the calls to `simulation_run` and merge them into a large table at the end.
 
-```{r}
-events <- rbind(events, simulation_run(sim, stop=list(time=60)))
-plot_network(nw, sim)
+```{r, animation.hook='gifski', interval=0.1}
+infection_time <- gamma_time(mean=6, var=4)
+sim <- simulation(nw=nw, psi=infection_time)
+simulation_addinfections(sim, nodes=L*floor(L/2) - L/2, times=c(0.0))
+
+events <- list()
+i <- 0
+for(t1 in seq(from=0, to=250, by=5)) {
+  i <- i + 1
+  events[[i]] <- simulation_run(sim, stop=list(time=t1))
+  print(plot_network(nw, sim))
+}
+events <- do.call(rbind, events)
 ```
 
-Finally, we let the epidemic run until all nodes (of which there are $L*L$) are infected
-
-```{r}
-events <- rbind(events, simulation_run(sim, stop=list(infected=L*L)))
-```
-
-and plot the number of infected nodes a function of time. In a log-plot, we see that the epidemic does not show a clear exponential regime
+Finally, we plot the number of infected nodes a function of time. In a log-plot, we see that the epidemic does not show a clear exponential regime
 
 ```{r warning=FALSE}
 ggplot(events) +
@@ -146,7 +143,7 @@ ggplot(events) +
   scale_y_log10()
 ```
 
-and when we instead plot the trajectory in a log-log plot we clearly see the effect of the rather dense 2-dimensional embedding of the nodes -- instead of growing exponentially, the epidemic grows quadratically.
+When we instead plot the trajectory in a log-log plot we clearly see the effect of the rather dense 2-dimensional embedding of the nodes -- instead of growing exponentially, the epidemic grows quadratically.
 
 ```{r warning=FALSE}
 ggplot(events) +
@@ -183,26 +180,21 @@ d2 <- apply(coords2, MARGIN=1, function(x) sum((x - center2)**2))
 CENTERNODE2 <- which.min(d2)
 ```
 
-and setup the simulation object as usual.
+We then proceed as for the lattice and to create an animation depicting the spread of the network.
 
-```{r}
+```{r, animation.hook='gifski', interval=0.1}
 infection_time2 <- gamma_time(mean=6, var=4)
 sim2 <- simulation(nw=nw2, psi=infection_time2)
 simulation_addinfections(sim2, nodes=CENTERNODE2, times=c(0.0))
-events2 <- simulation_run(sim2, stop=list(time=20))
-```
 
-At time $t=20$ the epidemic looks like this
-
-```{r}
-plot_network(nw2, sim2)
-```
-
-and at time $t=60$ the epidemic has spread through the whole population
-
-```{r}
-events2 <- rbind(events2, simulation_run(sim2, stop=list(time=60, infected=N2)))
-plot_network(nw2, sim2)
+events2 <- list()
+i <- 0
+for(t1 in seq(from=0, to=60, by=1)) {
+  i <- i + 1
+  events2[[i]] <- simulation_run(sim2, stop=list(time=t1, infected=N2))
+  print(plot_network(nw2, sim2))
+}
+events2 <- do.call(rbind, events2)
 ```
 
 A log-plot of the number of infected node shows that contrary to the case of an epidemic on a lattice, the number of infected nodes initially grows exponentially again on the Brownian proximity network.

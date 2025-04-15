@@ -159,7 +159,7 @@ Instead of the static spatial network defined by `cubiclattice2d_network`, we no
 
 ```{r}
 N2 <- 2500
-nw2 <- brownian_proximity_temporalnetwork(N2, avg_degree=4, D0=2, radius=1, dt=0.05)
+nw2 <- brownian_proximity_temporalnetwork(N2, avg_degree=4, D0=1, radius=1, dt=0.05)
 ```
 
 The resulting network initially looks like this
@@ -189,7 +189,7 @@ simulation_addinfections(sim2, nodes=CENTERNODE2, times=c(0.0))
 
 events2 <- list()
 i <- 0
-for(t1 in seq(from=0, to=60, by=0.5)) {
+for(t1 in seq(from=0, to=60, by=0.2)) {
   i <- i + 1
   events2[[i]] <- simulation_run(sim2, stop=list(time=t1, infected=N2))
   print(plot_network(nw2, sim2))

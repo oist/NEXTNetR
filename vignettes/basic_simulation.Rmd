@@ -14,6 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Loading the NEXTNetR package
+
 We start with loading the *NEXTNetR* package. If the package is not already installed, see the [website](https://oist.github.io/NEXTNetR/) for installation instructions. We alos load the *ggplot2* package for plotting.
 
 ```{r setup}
@@ -109,9 +111,9 @@ ggplot(rbind(events, events2)) +
   geom_line(aes(x=time, y=infected))
 ```
 
-## Adding recovery
+## Adding a recovery (or reset) time
 
-In our previous simulation, nodes who were infected stayed infected indefinitely. We now add a recovery time so that nodes eventually return to their original state. Note that *recovery* here also implies that nodes become susceptible to reinfection. For the recovery time distribution, we pick a weibull distribution
+In our previous simulation, nodes who were infected stayed infected indefinitely. We now add a recovery time so that nodes eventually return to their original state. Note that *recovery* here also implies that nodes become susceptible to reinfection; a better term may therefore be *reset*. For the recovery time distribution, we pick a weibull distribution
 
 ```{r}
 recovery_time <- weibull_time(shape=5, scale=50)

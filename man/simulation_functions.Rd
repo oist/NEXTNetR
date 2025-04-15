@@ -52,9 +52,9 @@ runs the simulation, see \code{\link{simulation_run}} for details
 }
 }
 \description{
-The functions allow \link[=simulation_types]{simulations} to be run and their state
-properties to be queried. See \link[=simulation_types]{simulations} for how to create a simulation.
+The functions allow simulations created with \code{\link{simulation}}
+to be run and their state to be queried.
 }
 \seealso{
-\code{\link{nextreaction_simulation}}, \code{\link{nmga_simulation}}
+\code{\link{simulation}}
 }

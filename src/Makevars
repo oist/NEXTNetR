@@ -16,8 +16,6 @@ SOURCES = \
 	../ext/nextnet/nextnet/weighted_network.cpp \
 	../ext/nextnet/nextnet/brownian_proximity_network.cpp \
 	../ext/nextnet/nextnet/NextReaction.cpp \
-	../ext/nextnet/nextnet/NextReactionMeanField.cpp \
-	../ext/nextnet/nextnet/nMGA.cpp \
 	../ext/nextnet/nextnet/algorithm.cpp \
 	../ext/nextnet/nextnet/random.cpp \
 	../ext/nextnet/nextnet/utility.cpp \

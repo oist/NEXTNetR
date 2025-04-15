@@ -19,8 +19,6 @@ WARNINGS_ENABLE
 #include "nextnet/types.h"
 #include "nextnet/algorithm.h"
 #include "nextnet/NextReaction.h"
-#include "nextnet/NextReactionMeanField.h"
-#include "nextnet/nMGA.h"
 
 using namespace std::literals;
 using namespace nextnetR;
@@ -59,64 +57,6 @@ simulation_R nextnetR_nextreaction_simulation(
     return { sim,
              writable::list({"nw"_nm = nw, "psi"_nm = psi, "rho"_nm = rho_,
                              "sotn"_nm = use_sotn ? (sexp)sotn_R(sotn) : (sexp)R_NilValue,
-                             "opts"_nm = opts_out,
-                             "step"_nm = writable::integers { 0 },
-                             "nwst"_nm = writable::integers { 0 },
-                             "cinf"_nm = writable::doubles { 0 },
-                             "tinf"_nm = writable::doubles { 0 },
-                             "trst"_nm = writable::doubles { 0 }}),
-             true, true };
-}
-
-[[cpp11::register]]
-simulation_R nextnetR_nextreaction_simulation_meanfield(
-    int N, double R0, transmission_time_R psi, sexp rho_, list opts
-) {
-    if (!psi) throw std::runtime_error("transmission time distribution cannot be NULL");
-
-    // Reset time rho is optional, translate R_NilValue to nullptr
-    transmission_time* rho = nullptr;
-    if (rho_ != R_NilValue)
-        rho = transmission_time_R(rho_).get();
-
-    // Decoded options
-    const list opts_out = process_options(opts);
-
-    return { new simulate_next_reaction_mean_field(N, R0, *psi.get(), rho),
-             writable::list({"nw"_nm = R_NilValue, "psi"_nm = psi, "rho"_nm = rho_,
-                             "sotn"_nm = R_NilValue,
-                             "opts"_nm = opts_out,
-                             "step"_nm = writable::integers { 0 },
-                             "nwst"_nm = writable::integers { 0 },
-                             "cinf"_nm = writable::doubles { 0 },
-                             "tinf"_nm = writable::doubles { 0 },
-                             "trst"_nm = writable::doubles { 0 }}),
-             true, true };
-}
-
-[[cpp11::register]]
-simulation_R nextnetR_nmga_simulation(
-    network_R nw, transmission_time_R psi, sexp rho_, list opts
-) {
-    if (!nw) throw std::runtime_error("network cannot be NULL"); 
-    if (!psi) throw std::runtime_error("transmission time distribution cannot be NULL");
-
-    // Reset time rho is optional, translate R_NilValue to nullptr
-    transmission_time* rho = nullptr;
-    if (rho_ != R_NilValue)
-        rho = transmission_time_R(rho_).get();
-
-    // Decoded options
-    simulate_nmga::params params;
-    const list opts_out = process_options(opts,
-        option("approx_threshold", params.approximation_threshold),
-        option("max_dt", params.maximal_dt),
-        option("tauprec", params.tau_precision),
-        option("SIR", params.SIR));
-        
-    return { new simulate_nmga(*nw.get(), *psi.get(), rho, params),
-             writable::list({"nw"_nm = nw, "psi"_nm = psi, "rho"_nm = rho_,
-                             "sotn"_nm = R_NilValue,
                              "opts"_nm = opts_out,
                              "step"_nm = writable::integers { 0 },
                              "nwst"_nm = writable::integers { 0 },

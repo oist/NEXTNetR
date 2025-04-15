@@ -144,14 +144,6 @@ nextnetR_nextreaction_simulation <- function(nw, psi, rho_, opts) {
   .Call(`_NEXTNetR_nextnetR_nextreaction_simulation`, nw, psi, rho_, opts)
 }
 
-nextnetR_nextreaction_simulation_meanfield <- function(N, R0, psi, rho_, opts) {
-  .Call(`_NEXTNetR_nextnetR_nextreaction_simulation_meanfield`, N, R0, psi, rho_, opts)
-}
-
-nextnetR_nmga_simulation <- function(nw, psi, rho_, opts) {
-  .Call(`_NEXTNetR_nextnetR_nmga_simulation`, nw, psi, rho_, opts)
-}
-
 nextnetR_simulation_transmissiontime <- function(sim) {
   .Call(`_NEXTNetR_nextnetR_simulation_transmissiontime`, sim)
 }

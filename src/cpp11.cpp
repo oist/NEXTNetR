@@ -258,20 +258,6 @@ extern "C" SEXP _NEXTNetR_nextnetR_nextreaction_simulation(SEXP nw, SEXP psi, SE
   END_CPP11
 }
 // simulation.cpp
-simulation_R nextnetR_nextreaction_simulation_meanfield(int N, double R0, transmission_time_R psi, sexp rho_, list opts);
-extern "C" SEXP _NEXTNetR_nextnetR_nextreaction_simulation_meanfield(SEXP N, SEXP R0, SEXP psi, SEXP rho_, SEXP opts) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_nextreaction_simulation_meanfield(cpp11::as_cpp<cpp11::decay_t<int>>(N), cpp11::as_cpp<cpp11::decay_t<double>>(R0), cpp11::as_cpp<cpp11::decay_t<transmission_time_R>>(psi), cpp11::as_cpp<cpp11::decay_t<sexp>>(rho_), cpp11::as_cpp<cpp11::decay_t<list>>(opts)));
-  END_CPP11
-}
-// simulation.cpp
-simulation_R nextnetR_nmga_simulation(network_R nw, transmission_time_R psi, sexp rho_, list opts);
-extern "C" SEXP _NEXTNetR_nextnetR_nmga_simulation(SEXP nw, SEXP psi, SEXP rho_, SEXP opts) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_nmga_simulation(cpp11::as_cpp<cpp11::decay_t<network_R>>(nw), cpp11::as_cpp<cpp11::decay_t<transmission_time_R>>(psi), cpp11::as_cpp<cpp11::decay_t<sexp>>(rho_), cpp11::as_cpp<cpp11::decay_t<list>>(opts)));
-  END_CPP11
-}
-// simulation.cpp
 transmission_time_R nextnetR_simulation_transmissiontime(const simulation_R& sim);
 extern "C" SEXP _NEXTNetR_nextnetR_simulation_transmissiontime(SEXP sim) {
   BEGIN_CPP11
@@ -451,8 +437,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_network_outdegree",                       (DL_FUNC) &_NEXTNetR_nextnetR_network_outdegree,                       2},
     {"_NEXTNetR_nextnetR_network_size",                            (DL_FUNC) &_NEXTNetR_nextnetR_network_size,                            1},
     {"_NEXTNetR_nextnetR_nextreaction_simulation",                 (DL_FUNC) &_NEXTNetR_nextnetR_nextreaction_simulation,                 4},
-    {"_NEXTNetR_nextnetR_nextreaction_simulation_meanfield",       (DL_FUNC) &_NEXTNetR_nextnetR_nextreaction_simulation_meanfield,       5},
-    {"_NEXTNetR_nextnetR_nmga_simulation",                         (DL_FUNC) &_NEXTNetR_nextnetR_nmga_simulation,                         4},
     {"_NEXTNetR_nextnetR_polynomial_rate_time",                    (DL_FUNC) &_NEXTNetR_nextnetR_polynomial_rate_time,                    1},
     {"_NEXTNetR_nextnetR_reproduction_matrix",                     (DL_FUNC) &_NEXTNetR_nextnetR_reproduction_matrix,                     1},
     {"_NEXTNetR_nextnetR_simulation_addinfections",                (DL_FUNC) &_NEXTNetR_nextnetR_simulation_addinfections,                3},

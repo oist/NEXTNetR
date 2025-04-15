@@ -1,32 +1,19 @@
-#' @name simulation_types
-#' @title Creating simulations
-#'
-#' @details
+#' @title Create a simulation
 #' 
-#' The main simulation algorithm implemented by *NEXTNetR* is
-#' [nextreaction_simulation], which is based on the next-reaction method and
-#' supports *weighted* as well as *temporal* networks, see [network_types]. This
-#' is the recommended algorihtm for all use-cases.
-#' 
-#' For comparison, *NEXTNetR* also provides [nmga_simulation] which is based
-#' on the nMGA algorithm. This algorithm is limited to static, unweighted networks.
-#' 
-#' @example examples/basic_simulation.R
-NULL
-
-#' @title Create a simulator using the NextReaction algorithm
-#' 
-#' @description This is the recommended simulation algorithm and supports
-#' *weighted* as well as *temporal* networks, see [network_types]. To force
-#' a temporal network to be treated as a static network, set option `static_network` to `TRUE`.
+#' @description Simulatiojn objects represent a single simulation on a
+#' specific network and using specific tranmission and reset/recovery times.
+#' The network can be *weighted* and/or *temporal*, see [network_types]. To
+#' force a temporal network to be treated as a static network, set option
+#' `static_network` to `TRUE`.
 #'
 #' @param nw network to simulate on
 #' @param psi infection [time distribution][time_distributions]
 #' @param rhi reset/recovery [time distribution][time_distributions]
 #' @param options named list of algorithm options, see below
+#' @param method the simulation method to use, currently only 'nextreaction'
 #' @return a simulation object. See \code{\link{simulation_run}} for how to
 #' run the simulation and [simulation_functions] for other functions that
-#' operate on [simulations][simulation_types].
+#' operate on simulations.
 #'
 #' @details
 #'
@@ -42,44 +29,15 @@ NULL
 #' 
 #' @md
 #' @export
-nextreaction_simulation <- function(nw, psi, rho = NULL, options = list()) {
+simulation <- function(nw, psi, rho = NULL, options = list(), method='nextreaction') {
   nextnetR_nextreaction_simulation(nw, psi, rho, options)
-}
-
-#' @title Create a simulator using the non-Markovian Gillespie (nMGA) algorithm
-#'
-#' @description This is an alternative simulation algorithm that is generally
-#' not recommended except for comparisons with \code{\link{nextreaction_simulation}}.
-#' Only supports static, unweighted networks.
-#'
-#' @param nw network to simulate on
-#' @param psi infection [time distribution][time_distributions]
-#' @param rhi reset/recovery [time distribution][time_distributions]
-#' @param options named list of algorithm options, see below
-#' @return a simulation object. See \code{\link{simulation_run}} for how to
-#' run the simulation and [simulation_functions] for other functions that
-#' operate on [simulations][simulation_types].
-#'
-#' @details
-#'
-#' Possible options are
-#' * *approx_threshold*: Threshold for infected nodes at which the approximate algorithm is used
-#' * *max_dt*: Maximum timestep allowed for the approximate algorithm
-#' * *tauprec*: Numerical precision used to invert the CDF in the exact algorithm
-#'
-#' @seealso \code{\link{simulation_functions}}
-#'
-#' @md
-#' @export
-nmga_simulation <- function(nw, psi, rho = NULL, options = list()) {
-  nextnetR_nmga_simulation(nw, psi, rho, options)
 }
 
 #' @name simulation_functions
 #' @title Running simulations and querying their state and properties
 #' 
-#' @description The functions allow [simulations][simulation_types] to be run and their state
-#'   properties to be queried. See [simulations][simulation_types] for how to create a simulation.
+#' @description The functions allow simulations created with \code{\link{simulation}}
+#' to be run and their state to be queried.
 #' 
 #' @param sim a simulation object
 #' 
@@ -108,7 +66,7 @@ nmga_simulation <- function(nw, psi, rho = NULL, options = list()) {
 #' * `simulation_run(sim, stop, opts)`
 #'   runs the simulation, see \code{\link{simulation_run}} for details
 #'   
-#' @seealso \code{\link{nextreaction_simulation}}, \code{\link{nmga_simulation}}
+#' @seealso \code{\link{simulation}}
 #'   
 #' @md
 NULL
@@ -202,8 +160,7 @@ simulation_addinfections <- function(sim, nodes, times) {
 #'     
 #' @example examples/basic_simulation.R
 #'
-#' @seealso \code{\link{simulation_functions}}, \code{\link{nextreaction_simulation}},
-#' \code{\link{nmga_simulation}}
+#' @seealso \code{\link{simulation_functions}}, \code{\link{simulation}},
 #'
 #' @md
 #' @export

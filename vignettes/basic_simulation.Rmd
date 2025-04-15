@@ -74,7 +74,7 @@ ggplot() +
 To run a simulation, we now create a simulation object which binds together the network and the infection time distribution we created above
 
 ```{r}
-sim <- nextreaction_simulation(nw=nw, psi=infection_time)
+sim <- simulation(nw=nw, psi=infection_time)
 ```
 
 Finally, we add an initial infection to get the epidemic going
@@ -124,7 +124,7 @@ ggplot() +
 To run the simulation, we again create a simulation object, this time specifying the recovery time through the `rho` parameter. The trajectory now shows a wave-like pattern
 
 ```{r}
-sim <- nextreaction_simulation(nw=nw, psi=infection_time, rho=recovery_time)
+sim <- simulation(nw=nw, psi=infection_time, rho=recovery_time)
 simulation_addinfections(sim, nodes=c(1), times=c(0.0))
 events <- simulation_run(sim, stop=list(time=300, total_infected=300e3))
 ggplot(events) +

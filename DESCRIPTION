@@ -9,7 +9,7 @@ Description: Simulates epidemics with non-markovian transmission times on arbitr
 License: LGPL (>= 3)
 Encoding: UTF-8
 LinkingTo: BH, cpp11
-SystemRequirements: C++11
+SystemRequirements: C++17
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 URL: https://oist.github.io/NEXTNetR/

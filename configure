@@ -33,3 +33,9 @@ cp \
 	ext/nextnet/ext/dyndist/dyndist/discrete_distribution.h \
 	ext/nextnet/ext/dyndist/dyndist/vector_distribution.h \
 	inst/include/dyndist
+	
+mkdir -p inst/include/NEXTNetR
+cp \
+	src/*.h src/*.hpp \
+	inst/include/NEXTNetR
+

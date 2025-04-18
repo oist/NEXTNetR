@@ -14,6 +14,10 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Introduction
+
+`{NEXTNetR}` provides a set of built-in time distributions that can be used as transmission and recovery times in simulations, see `help(time_distributions)`. Additional distributions can be defined by users through either R or C++ code. Here we discuss the C++ solution, which is significantly (orders of magnitudes!) faster, but more complex. For the slower but simpler pure R solution, see `help(custom_time_distributions_r)`.
+
 ## Loading the NEXTNetR package
 
 We start with loading all required packages. If `{NEXTNetR}`is not already installed, see the [website](https://oist.github.io/NEXTNetR/) for installation instructions. To conveniently mix C++ and R code, we use the `{cpp11}` package together with `{decor}`. To implement a new distribution, our C++ code must be able to see global symbols related to the `transmission_time` class defined by the `{NEXTNetR}` package. Unfortunately, R packages are usually loaded in a way that prevents this. To work around this, we therefore have to load NEXTNetR's shared library manually *before* importing the package. That way, we can specify `local=TRUE` when we load the library to make symbols globally visible. Note that this may not be required on all platforms. Finally, we also load the `{ggplot2}` and `{ggpubr}` packages for plotting and set a nice theme.

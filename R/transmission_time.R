@@ -187,10 +187,10 @@ time_hazardrate <- function(ttimedistributiontr, tau) {
 
 #' @rdname time_functions
 #' @export
-time_survivalprobability <- function(timedistribution, tau, t = 0, m = 1) {
+time_survivalprobability <- function(timedistribution, tau, t=0.0, m=1.0) {
   tau <- as.double(tau)
   t <- as.double(t)
-  m <- as.integer(m)
+  m <- as.double(m)
   if (length(t) == 1)
     t <- rep(t, length(tau))
   if (length(m) == 1)
@@ -200,10 +200,10 @@ time_survivalprobability <- function(timedistribution, tau, t = 0, m = 1) {
 
 #' @rdname time_functions
 #' @export
-time_survivalquantile <- function(timedistribution, p, t = 0, m = 1) {
+time_survivalquantile <- function(timedistribution, p, t=0.0, m=1.0) {
   p <- as.double(p)
   t <- as.double(t)
-  m <- as.integer(m)
+  m <- as.double(m)
   if (length(t) == 1)
     t <- rep(t, length(p))
   if (length(m) == 1)

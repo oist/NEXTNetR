@@ -64,7 +64,7 @@ doubles nextnetR_time_hazardrate(const transmission_time_R& ttr, doubles taus) {
 }
 
 [[cpp11::register]]
-doubles nextnetR_time_survivalprobability(const transmission_time_R& ttr, doubles taus, doubles ts, integers ms) {
+doubles nextnetR_time_survivalprobability(const transmission_time_R& ttr, doubles taus, doubles ts, doubles ms) {
     if (!ttr)
       throw std::runtime_error("time distribution cannot be NULL"); 
     if ((taus.size() != ts.size()) || (taus.size() != ms.size()))
@@ -77,7 +77,7 @@ doubles nextnetR_time_survivalprobability(const transmission_time_R& ttr, double
     for(std::size_t i=0; i < n; ++i) {
       const double tau = taus[i];
       const double t = ts[i];
-      const int m = ms[i];
+      const double m = ms[i];
       if ((t == 0.0) && (m == 1))
         r.push_back(tt.survivalprobability(tau));
       else
@@ -87,7 +87,7 @@ doubles nextnetR_time_survivalprobability(const transmission_time_R& ttr, double
 }
 
 [[cpp11::register]]
-doubles nextnetR_time_survivalquantile(const transmission_time_R& ttr, doubles ps, doubles ts, integers ms) {
+doubles nextnetR_time_survivalquantile(const transmission_time_R& ttr, doubles ps, doubles ts, doubles ms) {
   if (!ttr)
     throw std::runtime_error("time distribution cannot be NULL"); 
   if ((ps.size() != ts.size()) || (ps.size() != ms.size()))
@@ -100,7 +100,7 @@ doubles nextnetR_time_survivalquantile(const transmission_time_R& ttr, doubles p
   for(std::size_t i=0; i < n; ++i) {
     const double p = ps[i];
     const double t = ts[i];
-    const int m = ms[i];
+    const double m = ms[i];
     if ((t == 0.0) && (m == 1))
       r.push_back(tt.survivalquantile(p));
     else

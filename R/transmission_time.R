@@ -181,7 +181,7 @@ time_density <- function(timedistribution, tau, t=0.0, m=1.0) {
 
 #' @rdname time_functions
 #' @export
-time_hazardrate <- function(ttimedistributiontr, tau) {
+time_hazardrate <- function(timedistribution, tau) {
   nextnetR_time_hazardrate(timedistribution, as.double(tau))
 }
 

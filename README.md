@@ -8,8 +8,8 @@ See <https://oist.github.io/NEXTNetR/> for a reference and usage examples.
 
 The latest version of *NEXTNetR* can be installed directly from Github by executing the following in R:
 
-    install.packages(c("devtools", "git2r"))
-    devtools::install_git("git@github.com:oist/NEXTNetR")
+    install.packages("remotes")
+    remotes::install_github("oist/NEXTNetR")
 
 # Synopsis
 

@@ -90,16 +90,16 @@ We could now compile this function externally and load the resulting shared libr
 cpp_source('mixture_time.cpp', cxx_std="CXX17")
 ```
 
-We can now use `mixture_time` as we would use any of the other distributions provided by NEXTNetR. For example, to create a mixture of an exponential distribution with mean 5 and a log-normal distribution with mean 200 and variance 500, weighted so that 20% of samples come from the exponential distribution, we can do
+We can now use `mixture_time` as we would use any of the other distributions provided by NEXTNetR. For example, to create a mixture of an exponential distribution with mean 5 and a log-normal distribution with mean 200 and variance 500, weighted so that 30% of samples come from the exponential distribution, we can do
 
 ```{r}
-psi <- mixture_time(times=list(exponential_time(1/5), lognormal_time(200, 500)), weights=c(0.2, 0.8))
+psi <- mixture_time(times=list(exponential_time(1/10), lognormal_time(200, 500)), weights=c(0.3, 0.7))
 ```
 
 To test this we sample from the newly created distribution using `time_sample`
 
 ```{r}
-samples <- time_sample(1e5, psi)
+samples <- time_sample(1e5, psi, t=10, m=2)
 ```
 
 and use `time_density` and `time_survivalprobability` to compare the distribution of our samples (in blue) to the theoretical distribution (in black) to check that everything works correctly
@@ -112,12 +112,12 @@ ggarrange(
     geom_histogram(data=data.frame(time=samples), aes(x=time, y=after_stat(density)),
                    binwidth=2, fill="cornflowerblue") +
     geom_function(fun=time_density, n=1000,
-                  args=list(timedistribution=psi)),
+                  args=list(timedistribution=psi, t=10, m=2)),
   ggplot() +
     lims(x=c(0, 300), y=c(0,1)) + labs(x='time', y='survival') +
     geom_function(fun=function(x) 1 - samples.ecdf(x), color="cornflowerblue", linewidth=2) +
     geom_function(fun=time_survivalprobability, n=1000,
-                  args=list(timedistribution=psi)),
+                  args=list(timedistribution=psi, t=10, m=2)),
   ncol=1
 )
 ```

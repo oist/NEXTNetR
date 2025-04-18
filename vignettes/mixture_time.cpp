@@ -1,6 +1,7 @@
 /* mixture_time.cpp */
 
 #include <random>
+#include <numeric>
 #include <cpp11.hpp>
 #include <cpp11/function.hpp>
 
@@ -21,22 +22,16 @@ struct mixture_time_impl : public virtual transmission_time {
   
   virtual double survivalprobability(interval_t tau) const override {
     double p = 0.0;
-    double s = 0.0;
-    for(std::size_t i=0; i < times.size(); ++i) {
+    for(std::size_t i=0; i < times.size(); ++i)
       p += weights.at(i) * times.at(i).get()->survivalprobability(tau);
-      s += weights[i];
-    }
-    return p/s;
+    return p;
   }
 
   virtual double density(interval_t tau) const override {
     double p = 0.0;
-    double s = 0.0;
-    for(std::size_t i=0; i < times.size(); ++i) {
+    for(std::size_t i=0; i < times.size(); ++i)
       p += weights.at(i) * times.at(i).get()->density(tau);
-      s += weights[i];
-    }
-    return p/s;
+    return p;
   }
   std::vector<transmission_time_R> times;
   std::vector<double> weights;
@@ -54,9 +49,12 @@ SEXP mixture_time(list times, doubles weights) {
   
   // Set individual distributions and weights
   r->times.reserve(times.size());
-  for(R_xlen_t i=0; i < times.size(); ++i)
+  r->weights.reserve(times.size());
+  const double ws = std::reduce(weights.begin(), weights.end());
+  for(R_xlen_t i=0; i < times.size(); ++i) {
     r->times.push_back((transmission_time_R)times[i]);
-  r->weights = std::vector<double>(weights.begin(), weights.end());
+    r->weights.push_back(weights[i] / ws);
+  }
   r->pick = std::discrete_distribution<std::size_t>(weights.begin(), weights.end());
 
   // Return created object

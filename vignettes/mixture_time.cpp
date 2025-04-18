@@ -8,9 +8,6 @@
 #include "NEXTNetR/NEXTNetR_types.h"
 #include "nextnet/random.h"
 
-[[cpp11::linking_to("BH")]]
-[[cpp11::linking_to("NEXTNetR")]]
-
 using namespace cpp11;
 
 struct mixture_time_impl : public virtual transmission_time {
@@ -38,6 +35,8 @@ struct mixture_time_impl : public virtual transmission_time {
   mutable std::discrete_distribution<std::size_t> pick;
 };
 
+[[cpp11::linking_to("BH")]]
+[[cpp11::linking_to("NEXTNetR")]]
 [[cpp11::register]]
 SEXP mixture_time(list times, doubles weights) {
   // Validate parameters

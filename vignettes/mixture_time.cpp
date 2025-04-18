@@ -1,7 +1,6 @@
 /* mixture_time.cpp */
 
 #include <random>
-#include <numeric>
 #include <cpp11.hpp>
 #include <cpp11/function.hpp>
 
@@ -49,7 +48,9 @@ SEXP mixture_time(list times, doubles weights) {
   // Set individual distributions and weights
   r->times.reserve(times.size());
   r->weights.reserve(times.size());
-  const double ws = std::reduce(weights.begin(), weights.end());
+  double ws = 0.0
+  for(R_xlen_t i=0; i < times.size(); ++i) {
+      ws += weights[i];
   for(R_xlen_t i=0; i < times.size(); ++i) {
     r->times.push_back((transmission_time_R)times[i]);
     r->weights.push_back(weights[i] / ws);

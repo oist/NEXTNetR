@@ -77,15 +77,18 @@ deterministic_time <- function(tau) {
 #' @seealso \code{\link{time_distributions}}, \code{\link{time_functions}}
 #' 
 #' @export
-userdefined_time <- function(sample, sample_is_trinary, survival, survival_is_trinary,
-                             density, survivalquantile, quantile_is_trinary,
-                             p_infinity)
+userdefined_time <- function(sample=NULL, sample_is_trinary, survival, survival_is_trinary,
+                             density=NULL, survivalquantile=NULL, quantile_is_trinary,
+                             pinfinity=0.0)
 {
-  nextnetR_userdefined_time(as.function(sample), as.logical(sample_is_trinary),
-                            as.function(survival), as.logical(survival_is_trinary),
-                            as.function(density),
-                            as.function(survivalquantile), as.logical(quantile_is_trinary),
-                            as.double(p_infinity))
+  nextnetR_userdefined_time(
+    if (!is.null(sample)) as.function(sample) else NULL,
+    if (!is.null(sample)) as.logical(sample_is_trinary) else FALSE,
+    as.function(survival), as.logical(survival_is_trinary),
+    if (!is.null(density)) as.function(density) else NULL,
+    if (!is.null(survivalquantile)) as.function(survivalquantile) else NULL,
+    if (!is.null(survivalquantile)) as.logical(quantile_is_trinary) else FALSE,
+    pinfinity=pinfinity)
 }
 
 #' @name time_functions

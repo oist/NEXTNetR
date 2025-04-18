@@ -138,11 +138,10 @@ struct rfunction_transmission_time : public transmission_time {
     {}
 
     virtual interval_t sample(rng_t& e, interval_t t, double m) const {
-        if (sample_rf) {
+        if (sample_rf && (sample_is_trinary || ((t == 0.0) && (m == 1.0)))) {
             // Since the sample() R code will likely use the RNG relinquish before calling
             R_rng_relinquish rngrel;
-            const interval_t r = as_cpp<double>((*sample_rf)(t, m));
-            return r;
+            return as_cpp<double>(sample_is_trinary ? (*sample_rf)(t, m) : (*sample_rf)());
         }
         else {
             return transmission_time::sample(e, t, m);
@@ -154,60 +153,63 @@ struct rfunction_transmission_time : public transmission_time {
     }
     
     virtual double survivalprobability(interval_t tau) const {
-        if (survivalprobability_is_trinary)
-            return as_cpp<double>(survivalprobability_rf(tau, 0, 1));
+        if (survival_is_trinary)
+            return as_cpp<double>(survival_rf(tau, 0.0, 1.0));
         else
-            return as_cpp<double>(survivalprobability_rf(tau));
+            return as_cpp<double>(survival_rf(tau));
     }
     
     virtual double survivalprobability(interval_t tau, interval_t t, double m) const {
-        if (survivalprobability_is_trinary)
-            return as_cpp<double>(survivalprobability_rf(tau, t, m));
+        if (survival_is_trinary)
+            return as_cpp<double>(survival_rf(tau, t, m));
         else
             return transmission_time::survivalprobability(tau, t, m);
     }
     
     virtual double survivalquantile(double u) const {
-        if (survivalquantile_rf && survivalquantile_is_trinary)
-            return as_cpp<double>((*survivalquantile_rf)(u, 0, 1));
-        else if (survivalquantile_rf && !survivalquantile_is_trinary)
+        if (survivalquantile_rf && quantile_is_trinary)
+            return as_cpp<double>((*survivalquantile_rf)(u, 0.0, 1.0));
+        else if (survivalquantile_rf && !quantile_is_trinary)
             return as_cpp<double>((*survivalquantile_rf)(u));
         else
             return transmission_time::survivalquantile(u);
     }
     
     virtual double survivalquantile(double u, interval_t t, double m) const {
-        if (survivalquantile_rf && survivalquantile_is_trinary)
+        if (survivalquantile_rf && quantile_is_trinary)
             return as_cpp<double>((*survivalquantile_rf)(u, t, m));
         else
             return transmission_time::survivalquantile(u, t, m);
     }
 
     std::optional<function> sample_rf;
+    bool sample_is_trinary = false;
     function density_rf = R_NilValue;
-    function survivalprobability_rf = R_NilValue;
-    bool survivalprobability_is_trinary = false;
+    function survival_rf = R_NilValue;
+    bool survival_is_trinary = false;
     std::optional<function> survivalquantile_rf;
-    bool survivalquantile_is_trinary = false;
+    bool quantile_is_trinary = false;
 };
 
 [[cpp11::register]]
 transmission_time_R nextnetR_userdefined_time(
+    SEXP sample, bool sample_is_trinary,
+    SEXP survival, bool survival_is_trinary,
     SEXP density,
-    SEXP survivalprobability, bool probability_is_trinary,
     SEXP survivalquantile, bool quantile_is_trinary,
-    SEXP sample, double pinfinity = 0.0)
+    double pinfinity = 0.0)
 {
     std::unique_ptr<rfunction_transmission_time> r(new rfunction_transmission_time(pinfinity));
     
+    if (sample != R_NilValue)
+      r->sample_rf = sample;
+    r->sample_is_trinary = sample_is_trinary;
+    r->survival_rf = survival;
+    r->survival_is_trinary = survival_is_trinary;
     r->density_rf = density;
-    r->survivalprobability_rf = survivalprobability;
-    r->survivalprobability_is_trinary = probability_is_trinary;
     if (survivalquantile != R_NilValue)
         r->survivalquantile_rf = survivalquantile;
-    r->survivalquantile_is_trinary = quantile_is_trinary;
-    if (sample != R_NilValue)
-        r->sample_rf = sample;
+    r->quantile_is_trinary = quantile_is_trinary;
         
     return r.release();
 }

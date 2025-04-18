@@ -392,10 +392,10 @@ extern "C" SEXP _NEXTNetR_nextnetR_deterministic_time(SEXP tau, SEXP pinf) {
   END_CPP11
 }
 // transmission_time.cpp
-transmission_time_R nextnetR_userdefined_time(SEXP density, SEXP survivalprobability, bool probability_is_trinary, SEXP survivalquantile, bool quantile_is_trinary, SEXP sample, double pinfinity);
-extern "C" SEXP _NEXTNetR_nextnetR_userdefined_time(SEXP density, SEXP survivalprobability, SEXP probability_is_trinary, SEXP survivalquantile, SEXP quantile_is_trinary, SEXP sample, SEXP pinfinity) {
+transmission_time_R nextnetR_userdefined_time(SEXP sample, bool sample_is_trinary, SEXP survival, bool survival_is_trinary, SEXP density, SEXP survivalquantile, bool quantile_is_trinary, double pinfinity);
+extern "C" SEXP _NEXTNetR_nextnetR_userdefined_time(SEXP sample, SEXP sample_is_trinary, SEXP survival, SEXP survival_is_trinary, SEXP density, SEXP survivalquantile, SEXP quantile_is_trinary, SEXP pinfinity) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_userdefined_time(cpp11::as_cpp<cpp11::decay_t<SEXP>>(density), cpp11::as_cpp<cpp11::decay_t<SEXP>>(survivalprobability), cpp11::as_cpp<cpp11::decay_t<bool>>(probability_is_trinary), cpp11::as_cpp<cpp11::decay_t<SEXP>>(survivalquantile), cpp11::as_cpp<cpp11::decay_t<bool>>(quantile_is_trinary), cpp11::as_cpp<cpp11::decay_t<SEXP>>(sample), cpp11::as_cpp<cpp11::decay_t<double>>(pinfinity)));
+    return cpp11::as_sexp(nextnetR_userdefined_time(cpp11::as_cpp<cpp11::decay_t<SEXP>>(sample), cpp11::as_cpp<cpp11::decay_t<bool>>(sample_is_trinary), cpp11::as_cpp<cpp11::decay_t<SEXP>>(survival), cpp11::as_cpp<cpp11::decay_t<bool>>(survival_is_trinary), cpp11::as_cpp<cpp11::decay_t<SEXP>>(density), cpp11::as_cpp<cpp11::decay_t<SEXP>>(survivalquantile), cpp11::as_cpp<cpp11::decay_t<bool>>(quantile_is_trinary), cpp11::as_cpp<cpp11::decay_t<double>>(pinfinity)));
   END_CPP11
 }
 
@@ -453,7 +453,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_time_sample",                             (DL_FUNC) &_NEXTNetR_nextnetR_time_sample,                             4},
     {"_NEXTNetR_nextnetR_time_survivalprobability",                (DL_FUNC) &_NEXTNetR_nextnetR_time_survivalprobability,                4},
     {"_NEXTNetR_nextnetR_time_survivalquantile",                   (DL_FUNC) &_NEXTNetR_nextnetR_time_survivalquantile,                   4},
-    {"_NEXTNetR_nextnetR_userdefined_time",                        (DL_FUNC) &_NEXTNetR_nextnetR_userdefined_time,                        7},
+    {"_NEXTNetR_nextnetR_userdefined_time",                        (DL_FUNC) &_NEXTNetR_nextnetR_userdefined_time,                        8},
     {"_NEXTNetR_nextnetR_watts_strogatz_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_watts_strogatz_network,                  3},
     {"_NEXTNetR_nextnetR_weibull_time",                            (DL_FUNC) &_NEXTNetR_nextnetR_weibull_time,                            3},
     {"_NEXTNetR_nextnetR_weighted_network_adjacencylist",          (DL_FUNC) &_NEXTNetR_nextnetR_weighted_network_adjacencylist,          1},

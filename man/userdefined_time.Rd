@@ -5,12 +5,13 @@
 \title{User-defined time distributions}
 \usage{
 userdefined_time(
+  sample,
+  sample_is_trinary,
+  survival,
+  survival_is_trinary,
   density,
-  survivalprobability,
-  probability_is_trinary,
   survivalquantile,
   quantile_is_trinary,
-  sample,
   p_infinity
 )
 }

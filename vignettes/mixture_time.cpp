@@ -48,8 +48,8 @@ SEXP mixture_time(list times, doubles weights) {
   // Set individual distributions and weights
   r->times.reserve(times.size());
   r->weights.reserve(times.size());
-  double ws = 0.0
-  for(R_xlen_t i=0; i < times.size(); ++i) {
+  double ws = 0.0;
+  for(R_xlen_t i=0; i < times.size(); ++i)
       ws += weights[i];
   for(R_xlen_t i=0; i < times.size(); ++i) {
     r->times.push_back((transmission_time_R)times[i]);
@@ -60,4 +60,3 @@ SEXP mixture_time(list times, doubles weights) {
   // Return created object
   return transmission_time_R(r.release());
 }
-

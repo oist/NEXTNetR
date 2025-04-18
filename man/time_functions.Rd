@@ -11,7 +11,7 @@
 \usage{
 time_sample(n, timedistribution, t = 0, m = 1)
 
-time_density(timedistribution, tau)
+time_density(timedistribution, tau, t = 0, m = 1)
 
 time_hazardrate(ttimedistributiontr, tau)
 
@@ -34,7 +34,7 @@ time_survivalquantile(timedistribution, p, t = 0, m = 1)
 \itemize{
 \item \code{time_sample(n, timedistribution, t, m)}. Samples \code{n} values from
 distribution \eqn{\Psi_{t,m}}.
-\item \code{time_density(timedistribution, tau)}. Evaluates the density at points
+\item \code{time_density(timedistribution, tau, t, m)}. Evaluates the density at points
 \code{tau} of distribution \eqn{\Psi_{t,m}}.
 \item \code{time_hazardrate(timedistribution, tau)}. Evaluates the hazardrate
 \eqn{\lambda(\tau)} of the \emph{base} distribution \eqn{\Psi}. The hazard

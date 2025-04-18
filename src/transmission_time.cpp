@@ -31,15 +31,22 @@ doubles nextnetR_time_sample(int n, const transmission_time_R& ttr, double t, do
 }
 
 [[cpp11::register]]
-doubles nextnetR_time_density(const transmission_time_R& ttr, doubles taus) {
-    if (!ttr) throw std::runtime_error("time distribution cannot be NULL"); 
-
+doubles nextnetR_time_density(const transmission_time_R& ttr, doubles taus, doubles ts, doubles ms) {
+    if (!ttr)
+      throw std::runtime_error("time distribution cannot be NULL");
+    if ((taus.size() != ts.size()) || (taus.size() != ms.size()))
+      throw std::runtime_error("taus, ts and ms vectors must have the same length");
+    
     transmission_time& tt = *(ttr.get());
     const std::size_t n = taus.size();
     writable::doubles r;
     r.reserve(n);
-    for(std::size_t i=0; i < n; ++i)
-        r.push_back(tt.density(taus[i]));
+    for(std::size_t i=0; i < n; ++i) {
+        r.push_back(taus[i] >= 0
+                      ? tt.density(ts[i] + taus[i], ms[i]) /
+                        tt.survivalprobability(ts[i], 0.0, ms[i])
+                      : 0);
+    }
     return r;
 }
 

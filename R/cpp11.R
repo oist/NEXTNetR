@@ -180,8 +180,8 @@ nextnetR_time_sample <- function(n, ttr, t, m) {
   .Call(`_NEXTNetR_nextnetR_time_sample`, n, ttr, t, m)
 }
 
-nextnetR_time_density <- function(ttr, taus) {
-  .Call(`_NEXTNetR_nextnetR_time_density`, ttr, taus)
+nextnetR_time_density <- function(ttr, taus, ts, ms) {
+  .Call(`_NEXTNetR_nextnetR_time_density`, ttr, taus, ts, ms)
 }
 
 nextnetR_time_hazardrate <- function(ttr, taus) {
@@ -220,6 +220,6 @@ nextnetR_deterministic_time <- function(tau, pinf) {
   .Call(`_NEXTNetR_nextnetR_deterministic_time`, tau, pinf)
 }
 
-nextnetR_userdefined_time <- function(density, survivalprobability, probability_is_trinary, survivalquantile, quantile_is_trinary, sample, pinfinity) {
-  .Call(`_NEXTNetR_nextnetR_userdefined_time`, density, survivalprobability, probability_is_trinary, survivalquantile, quantile_is_trinary, sample, pinfinity)
+nextnetR_userdefined_time <- function(sample, sample_is_trinary, survival, survival_is_trinary, density, survivalquantile, quantile_is_trinary, pinfinity) {
+  .Call(`_NEXTNetR_nextnetR_userdefined_time`, sample, sample_is_trinary, survival, survival_is_trinary, density, survivalquantile, quantile_is_trinary, pinfinity)
 }

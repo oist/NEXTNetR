@@ -322,10 +322,10 @@ extern "C" SEXP _NEXTNetR_nextnetR_time_sample(SEXP n, SEXP ttr, SEXP t, SEXP m)
   END_CPP11
 }
 // transmission_time.cpp
-doubles nextnetR_time_density(const transmission_time_R& ttr, doubles taus);
-extern "C" SEXP _NEXTNetR_nextnetR_time_density(SEXP ttr, SEXP taus) {
+doubles nextnetR_time_density(const transmission_time_R& ttr, doubles taus, doubles ts, doubles ms);
+extern "C" SEXP _NEXTNetR_nextnetR_time_density(SEXP ttr, SEXP taus, SEXP ts, SEXP ms) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_time_density(cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<doubles>>(taus)));
+    return cpp11::as_sexp(nextnetR_time_density(cpp11::as_cpp<cpp11::decay_t<const transmission_time_R&>>(ttr), cpp11::as_cpp<cpp11::decay_t<doubles>>(taus), cpp11::as_cpp<cpp11::decay_t<doubles>>(ts), cpp11::as_cpp<cpp11::decay_t<doubles>>(ms)));
   END_CPP11
 }
 // transmission_time.cpp
@@ -448,7 +448,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_simulation_run",                          (DL_FUNC) &_NEXTNetR_nextnetR_simulation_run,                          3},
     {"_NEXTNetR_nextnetR_simulation_transmissiontime",             (DL_FUNC) &_NEXTNetR_nextnetR_simulation_transmissiontime,             1},
     {"_NEXTNetR_nextnetR_sirx_temporalnetwork",                    (DL_FUNC) &_NEXTNetR_nextnetR_sirx_temporalnetwork,                    3},
-    {"_NEXTNetR_nextnetR_time_density",                            (DL_FUNC) &_NEXTNetR_nextnetR_time_density,                            2},
+    {"_NEXTNetR_nextnetR_time_density",                            (DL_FUNC) &_NEXTNetR_nextnetR_time_density,                            4},
     {"_NEXTNetR_nextnetR_time_hazardrate",                         (DL_FUNC) &_NEXTNetR_nextnetR_time_hazardrate,                         2},
     {"_NEXTNetR_nextnetR_time_sample",                             (DL_FUNC) &_NEXTNetR_nextnetR_time_sample,                             4},
     {"_NEXTNetR_nextnetR_time_survivalprobability",                (DL_FUNC) &_NEXTNetR_nextnetR_time_survivalprobability,                4},

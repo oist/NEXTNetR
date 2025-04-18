@@ -146,7 +146,7 @@ userdefined_time <- function(sample=NULL, sample_is_trinary, survival, survival_
 #' * `time_sample(n, timedistribution, t, m)`. Samples `n` values from
 #'    distribution \eqn{\Psi_{t,m}}.
 #'   
-#' * `time_density(timedistribution, tau)`. Evaluates the density at points
+#' * `time_density(timedistribution, tau, t, m)`. Evaluates the density at points
 #'    `tau` of distribution \eqn{\Psi_{t,m}}.
 #'   
 #' * `time_hazardrate(timedistribution, tau)`. Evaluates the hazardrate
@@ -162,14 +162,21 @@ NULL
 
 #' @rdname time_functions
 #' @export
-time_sample <- function(n, timedistribution, t=0, m=1) {
+time_sample <- function(n, timedistribution, t=0.0, m=1.0) {
   nextnetR_time_sample(as.integer(n), timedistribution, as.double(t), as.double(m))
 }
 
 #' @rdname time_functions
 #' @export
-time_density <- function(timedistribution, tau) {
-  nextnetR_time_density(timedistribution, as.double(tau))
+time_density <- function(timedistribution, tau, t=0.0, m=1.0) {
+  tau <- as.double(tau)
+  t <- as.double(t)
+  m <- as.double(m)
+  if (length(t) == 1)
+    t <- rep(t, length(tau))
+  if (length(m) == 1)
+    m <- rep(m, length(tau))
+  nextnetR_time_density(timedistribution, tau, t, m)
 }
 
 #' @rdname time_functions

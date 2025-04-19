@@ -161,7 +161,7 @@ Instead of the static spatial network defined by `cubiclattice2d_network()`, we 
 
 ```{r}
 N2 <- 2500
-nw2 <- brownian_proximity_temporalnetwork(N2, avg_degree=4, D0=0.8, radius=1, dt=0.05)
+nw2 <- brownian_proximity_temporalnetwork(N2, avg_degree=4, D0=1.0, radius=1, dt=0.05)
 ```
 
 The resulting network initially looks like this

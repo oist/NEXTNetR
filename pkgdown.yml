@@ -1,0 +1,11 @@
+pandoc: 3.1.11
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  custom_time_distributions_cpp: custom_time_distributions_cpp.html
+  NEXTNetR: NEXTNetR.html
+  spatial_networks: spatial_networks.html
+last_built: 2025-04-19T02:10Z
+urls:
+  reference: https://oist.github.io/NEXTNetR/reference
+  article: https://oist.github.io/NEXTNetR/articles

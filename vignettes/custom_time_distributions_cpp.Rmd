@@ -27,9 +27,11 @@ We start with loading all required packages. If `{NEXTNetR}`is not already insta
 # This has to be done *before* library(NEXTNetR)
 nnR.dir <- find.package("NEXTNetR")
 nnR.lib <- if (nzchar(.Platform$r_arch)) {
-  file.path(nnR.dir, "libs", .Platform$r_arch, paste0("NEXTNetR", .Platform$dynlib.ext))
+  file.path(nnR.dir, "libs", .Platform$r_arch,
+            paste0("NEXTNetR", .Platform$dynlib.ext))
 } else {
-  file.path(nnR.dir, "libs", paste0("NEXTNetR", .Platform$dynlib.ext))
+  file.path(nnR.dir, "libs",
+            paste0("NEXTNetR", .Platform$dynlib.ext))
 }
 dyn.load(nnR.lib, local=FALSE, now=TRUE)
 
@@ -91,13 +93,14 @@ The following file `mixture_time.cpp` implements a *mixture* of $n$ arbitrary ti
 We could now compile this function externally and load the resulting shared library into R. However, `{cpp11}` provides as simpler way in the form of the `cpp_source()` function. This function takes care of compiling, linking and loading the code, and makes all functions marked with `[[cpp11::register]]` available to R.
 
 ```{r}
-cpp_source('mixture_time.cpp', cxx_std="CXX17")
+cpp_source('mixture_time.cpp', dir="/tmp/test", clean=FALSE, cxx_std="CXX17")
 ```
 
 We can now use `mixture_time` as we would use any of the other distributions provided by NEXTNetR. For example, to create a mixture of an exponential distribution with mean 5 and a log-normal distribution with mean 200 and variance 500, weighted so that 30% of samples come from the exponential distribution, we can do
 
 ```{r}
-psi <- mixture_time(times=list(exponential_time(1/10), lognormal_time(200, 500)), weights=c(0.3, 0.7))
+psi <- mixture_time(times=list(exponential_time(1/10),
+                    lognormal_time(200, 500)), weights=c(0.3, 0.7))
 ```
 
 To test this we sample from the newly created distribution using `time_sample`
@@ -113,13 +116,15 @@ samples.ecdf <- ecdf(samples)
 ggarrange(
   ggplot() +
     lims(x=c(0, 300)) +
-    geom_histogram(data=data.frame(time=samples), aes(x=time, y=after_stat(density)),
+    geom_histogram(data=data.frame(time=samples),
+	               aes(x=time, y=after_stat(density)),
                    binwidth=2, fill="cornflowerblue") +
     geom_function(fun=time_density, n=1000,
                   args=list(timedistribution=psi, t=10, m=2)),
   ggplot() +
     lims(x=c(0, 300), y=c(0,1)) + labs(x='time', y='survival') +
-    geom_function(fun=function(x) 1 - samples.ecdf(x), color="cornflowerblue", linewidth=2) +
+    geom_function(fun=function(x) 1 - samples.ecdf(x),
+	              color="cornflowerblue", linewidth=2) +
     geom_function(fun=time_survivalprobability, n=1000,
                   args=list(timedistribution=psi, t=10, m=2)),
   ncol=1

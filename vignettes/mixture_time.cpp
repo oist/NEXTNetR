@@ -55,7 +55,8 @@ SEXP mixture_time(list times, doubles weights) {
     r->times.push_back((transmission_time_R)times[i]);
     r->weights.push_back(weights[i] / ws);
   }
-  r->pick = std::discrete_distribution<std::size_t>(weights.begin(), weights.end());
+  r->pick = std::discrete_distribution<std::size_t>(
+      weights.begin(), weights.end());
 
   // Return created object
   return transmission_time_R(r.release());

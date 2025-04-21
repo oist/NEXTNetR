@@ -13,7 +13,7 @@ time_sample(n, timedistribution, t = 0, m = 1)
 
 time_density(timedistribution, tau, t = 0, m = 1)
 
-time_hazardrate(ttimedistributiontr, tau)
+time_hazardrate(timedistribution, tau)
 
 time_survivalprobability(timedistribution, tau, t = 0, m = 1)
 

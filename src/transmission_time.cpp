@@ -200,23 +200,21 @@ struct rfunction_transmission_time : public transmission_time {
 
 [[cpp11::register]]
 transmission_time_R nextnetR_userdefined_time(
-    SEXP sample, bool sample_is_trinary,
-    SEXP survival, bool survival_is_trinary,
-    SEXP density,
-    SEXP survivalquantile, bool quantile_is_trinary,
-    double pinfinity = 0.0)
+    SEXP survival, SEXP density, SEXP sample, SEXP quantile,
+    bool survival_trinary, bool sample_trinary, bool quantile_trinary,
+    double p_infinity)
 {
-    std::unique_ptr<rfunction_transmission_time> r(new rfunction_transmission_time(pinfinity));
+    std::unique_ptr<rfunction_transmission_time> r(new rfunction_transmission_time(p_infinity));
     
+    r->survival_rf = survival;
+    r->survival_is_trinary = survival_trinary;
+    r->density_rf = density;
     if (sample != R_NilValue)
       r->sample_rf = sample;
-    r->sample_is_trinary = sample_is_trinary;
-    r->survival_rf = survival;
-    r->survival_is_trinary = survival_is_trinary;
-    r->density_rf = density;
-    if (survivalquantile != R_NilValue)
-        r->survivalquantile_rf = survivalquantile;
-    r->quantile_is_trinary = quantile_is_trinary;
+    r->sample_is_trinary = sample_trinary;
+    if (quantile != R_NilValue)
+      r->survivalquantile_rf = quantile;
+    r->quantile_is_trinary = quantile_trinary;
         
     return r.release();
 }

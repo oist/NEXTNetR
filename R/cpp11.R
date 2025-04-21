@@ -220,6 +220,6 @@ nextnetR_deterministic_time <- function(tau, pinf) {
   .Call(`_NEXTNetR_nextnetR_deterministic_time`, tau, pinf)
 }
 
-nextnetR_userdefined_time <- function(sample, sample_is_trinary, survival, survival_is_trinary, density, survivalquantile, quantile_is_trinary, pinfinity) {
-  .Call(`_NEXTNetR_nextnetR_userdefined_time`, sample, sample_is_trinary, survival, survival_is_trinary, density, survivalquantile, quantile_is_trinary, pinfinity)
+nextnetR_userdefined_time <- function(survival, density, sample, quantile, survival_trinary, sample_trinary, quantile_trinary, p_infinity) {
+  .Call(`_NEXTNetR_nextnetR_userdefined_time`, survival, density, sample, quantile, survival_trinary, sample_trinary, quantile_trinary, p_infinity)
 }

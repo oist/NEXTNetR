@@ -392,10 +392,10 @@ extern "C" SEXP _NEXTNetR_nextnetR_deterministic_time(SEXP tau, SEXP pinf) {
   END_CPP11
 }
 // transmission_time.cpp
-transmission_time_R nextnetR_userdefined_time(SEXP sample, bool sample_is_trinary, SEXP survival, bool survival_is_trinary, SEXP density, SEXP survivalquantile, bool quantile_is_trinary, double pinfinity);
-extern "C" SEXP _NEXTNetR_nextnetR_userdefined_time(SEXP sample, SEXP sample_is_trinary, SEXP survival, SEXP survival_is_trinary, SEXP density, SEXP survivalquantile, SEXP quantile_is_trinary, SEXP pinfinity) {
+transmission_time_R nextnetR_userdefined_time(SEXP survival, SEXP density, SEXP sample, SEXP quantile, bool survival_trinary, bool sample_trinary, bool quantile_trinary, double p_infinity);
+extern "C" SEXP _NEXTNetR_nextnetR_userdefined_time(SEXP survival, SEXP density, SEXP sample, SEXP quantile, SEXP survival_trinary, SEXP sample_trinary, SEXP quantile_trinary, SEXP p_infinity) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_userdefined_time(cpp11::as_cpp<cpp11::decay_t<SEXP>>(sample), cpp11::as_cpp<cpp11::decay_t<bool>>(sample_is_trinary), cpp11::as_cpp<cpp11::decay_t<SEXP>>(survival), cpp11::as_cpp<cpp11::decay_t<bool>>(survival_is_trinary), cpp11::as_cpp<cpp11::decay_t<SEXP>>(density), cpp11::as_cpp<cpp11::decay_t<SEXP>>(survivalquantile), cpp11::as_cpp<cpp11::decay_t<bool>>(quantile_is_trinary), cpp11::as_cpp<cpp11::decay_t<double>>(pinfinity)));
+    return cpp11::as_sexp(nextnetR_userdefined_time(cpp11::as_cpp<cpp11::decay_t<SEXP>>(survival), cpp11::as_cpp<cpp11::decay_t<SEXP>>(density), cpp11::as_cpp<cpp11::decay_t<SEXP>>(sample), cpp11::as_cpp<cpp11::decay_t<SEXP>>(quantile), cpp11::as_cpp<cpp11::decay_t<bool>>(survival_trinary), cpp11::as_cpp<cpp11::decay_t<bool>>(sample_trinary), cpp11::as_cpp<cpp11::decay_t<bool>>(quantile_trinary), cpp11::as_cpp<cpp11::decay_t<double>>(p_infinity)));
   END_CPP11
 }
 

@@ -77,18 +77,41 @@ deterministic_time <- function(tau) {
 #' @seealso \code{\link{time_distributions}}, \code{\link{time_functions}}
 #' 
 #' @export
-userdefined_time <- function(sample=NULL, sample_is_trinary, survival, survival_is_trinary,
-                             density=NULL, survivalquantile=NULL, quantile_is_trinary,
-                             pinfinity=0.0)
+userdefined_time <- function(survival, density, sample=NULL, quantile=NULL,
+                             survival_nargs, sample_nargs=NULL, quantile_nargs=NULL,
+                             p_infinity)
 {
+  survival <- as.function(survival)
+  density <- as.function(density)
+  sample <- if (!missing(sample)) as.function(sample) else NULL
+  quantile <- if (!missing(quantile)) as.function(quantile) else NULL
+  survival_nargs <- 
+    if (!missing(survival_nargs)) as.integer(survival_nargs)
+    else length(formals(survival))
+  sample_nargs <- 
+    if (!missing(sample_nargs)) as.integer(sample_nargs)
+    else if (is.null(sample)) 1L
+    else length(formals(sample))
+  quantile_nargs <- 
+    if (!missing(quantile_nargs)) as.integer(quantile_nargs)
+    else if (is.null(quantile)) 1L
+    else length(formals(quantile))
+  p_infinity <-
+    if (!missing(p_infinity)) as.double(p_infinity)
+    else if (survival_nargs == 3) survival(Inf, 0.0, 1.0)
+    else survival(Inf)
+  
+  if (!(survival_nargs %in% c(1,3)))
+    stop("survival_nargs must be 1 or 3")
+  if (!(sample_nargs %in% c(1,3)))
+    stop("sample_nargs must be 1 or 3")
+  if (!(quantile_nargs %in% c(1,3)))
+    stop("quantile_nargs must be 1 or 3")
+  
   nextnetR_userdefined_time(
-    if (!is.null(sample)) as.function(sample) else NULL,
-    if (!is.null(sample)) as.logical(sample_is_trinary) else FALSE,
-    as.function(survival), as.logical(survival_is_trinary),
-    if (!is.null(density)) as.function(density) else NULL,
-    if (!is.null(survivalquantile)) as.function(survivalquantile) else NULL,
-    if (!is.null(survivalquantile)) as.logical(quantile_is_trinary) else FALSE,
-    pinfinity=pinfinity)
+    survival, density, sample, quantile,
+    survival_nargs == 3, sample_nargs == 3, quantile_nargs == 3,
+    p_infinity)
 }
 
 #' @name time_functions

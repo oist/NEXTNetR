@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-`{NEXTNetR}` provides a set of built-in time distributions that can be used as transmission and recovery times in simulations, see `help(time_distributions)`. Additional distributions can be defined by users through either R or C++ code. Here we discuss the C++ solution, which is significantly (orders of magnitudes!) faster, but more complex. For the slower but simpler pure R solution, see `vignette(custom_time_distributions_r)`.
+`{NEXTNetR}` provides a set of built-in time distributions that can be used as transmission and recovery times in simulations, see `help(time_distributions)`. Additional distributions can be defined by users through either R or C++ code. Here we discuss the C++ solution, which is significantly (orders of magnitudes!) faster, but more complex. For the slower but simpler pure R solution, see `vignette("custom_time_distributions_r")`.
 
 ## Loading the NEXTNetR package
 

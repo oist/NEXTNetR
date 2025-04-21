@@ -1,8 +1,8 @@
 ---
-title: "Simulations on Spatial Networks"
+title: "Spatial and Temporal Networks"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Simulations on Spatial Networks}
+  %\VignetteIndexEntry{Spatial and Temporal Networks}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -25,16 +25,16 @@ library(ggpubr)
 theme_set(theme_pubr())
 ```
 
-## Creating a 2-d cubic lattice
+## Spatial Networks
 
-Next we create a network representing a cubic lattice of size $50\times 50$, i.e. a network of nodes positioned at integral coordinates $(i,j)$ connected to their left, right, upper and lower neighbour. 
+Next we create a spatially embedded network representing a cubic lattice of size $50\times 50$, i.e. a network of nodes positioned at integral coordinates $(i,j)$ connected to their left, right, upper and lower neighbour. 
 
 ```{r}
 L <- 50
 nw <- cubiclattice2d_network(L);
 ```
 
-We can now query the positions of nodes using `network_coordinates()`. This works only for networks embedded into $d$-dimensiona physical space, such as the one produced by `cubiclattice2d_network()`. `network_coordinates()` returns a $N \times d$ matrix, where $N$ is the number of nodes and $d$ the dimension of the space they are embedded in. For our convenience, we assign names to the coordinates, here 'x' and 'y'.
+For spatially embedded networks such as lattices, we can query the positions of nodes using `network_coordinates()`.`network_coordinates()` returns a $N \times d$ matrix, where $N$ is the number of nodes and $d$ the dimension of the embedding space, in our case 2. For convenience, we assign names to the coordinates, here 'x' and 'y'.
 
 ```{r}
 N <- network_size(nw)
@@ -75,7 +75,7 @@ ggplot() +
   theme_void()
 ```
 
-## Epidemics on a lattice
+### A `plot_network` function
 
 Before we simulate the epidemic, we create a convenience function `plot_network` to visualize the state of the epidemic. The function uses `simulation_isinfected()` to query the infected state of each node and show non-infected and infected nodes in different colors. To make sure the plot encompasses the whole network, we use `network_bounds()` to query to bounds of our network in space and set the plotting limits 
 
@@ -120,6 +120,8 @@ plot_network <- function(nw, sim=NULL) {
 }
 ```
 
+### Epidemics on spatial netwoks
+
 We now create an animation depicting the spread of an epidemic on the lattice, starting from a single initial infection at the center of our lattice. During each iteration of the loop, the simulation is run until stopping time `t1` and the current epidemic state is plotted. To have the full list of events available later on, we combine the events reported by the calls to `simulation_run` and merge them into a large table at the end.
 
 ```{r, animation.hook='gifski', interval=0.1}
@@ -155,13 +157,14 @@ ggplot(events) +
   geom_abline(slope=2, intercept=-1, linetype='dashed', color='blue')
 ```
 
-## Brownian proximity networks
+## Temporal networks
 
-Instead of the static spatial network defined by `cubiclattice2d_network()`, we now consider a temporal spatial network. A `brownian_proximity_temporalnetwork()` comprises nodes which move randomly with a particular diffusion constant `D_0`, and are at any instant connected to all nodes within a certain radius. The density of points is chosen so that at any instant in time, each node has on average a prescribed number of neighbours `avg_degree`. 
+Instead of the static network defined by `cubiclattice2d_network()`, we now consider a *temporal network*. On temporal networks, the set of links between nodes is a function of time, i.e. links appear and disappear, see `help(network_types)`. An example of a temporal network is `brownian_proximity_temporalnetwork()` where nodes diffuse randomly in two dimensions and are at any instant connected to all nodes within a certain radius. The density of points is chosen so that at any instant in time, each node has on average a prescribed number of neighbours `avg_degree`. Speed of movement is governed by two diffusion constants `D0` for susceptible nodes and `D1` for infected nodes which describe  the average squared distance per unit time that a node moves. 
 
 ```{r}
 N2 <- 2500
-nw2 <- brownian_proximity_temporalnetwork(N2, avg_degree=4, D0=1.0, radius=1, dt=0.05)
+nw2 <- brownian_proximity_temporalnetwork(
+  N2, avg_degree=4, D0=1.0, D1=1.0, radius=1, dt=0.05)
 ```
 
 The resulting network initially looks like this
@@ -170,9 +173,7 @@ The resulting network initially looks like this
 plot_network(nw2)
 ```
 
-## The effect of diffusion on epidemic growth
-
-We would like to start our epidemic in the center again, so we locate the node closest to the center
+Since the network is random, node indices do not correspond to the position of nodes in the plane. However, we can use `network_coordinates` to find the node closest to the center of the plane.
 
 ```{r}
 bounds2 <- network_bounds(nw2)
@@ -182,7 +183,11 @@ d2 <- apply(coords2, MARGIN=1, function(x) sum((x - center2)**2))
 CENTERNODE2 <- which.min(d2)
 ```
 
-We then proceed as for the lattice and create an animation depicting the spread of the network.
+### Epidemics on temporal networks
+
+Epidemics on temporal networks are the same way as on static networks, by creating a simulator object with `simulation()` and calling `simulation_run()`. However, `simulation_run()` will not not only change the epidemic state of nodes, but also evolve the network. Contrary to the situation on a static network, temporal networks are thus *modified* when `simulation_run()` is called. 
+
+We now proceed as for the lattice and create an animation depicting the spread of an epidemic on a Brownian proximity network
 
 ```{r, animation.hook='gifski', interval=0.1}
 infection_time2 <- gamma_time(mean=6, var=4)
@@ -199,7 +204,9 @@ for(t1 in seq(from=0, to=60, by=0.2)) {
 events2 <- do.call(rbind, events2)
 ```
 
-A log-plot of the number of infected node shows that contrary to the case of a lattice, the number of infected nodes initially grows exponentially again on the Brownian proximity network.
+### The effect of diffusion on epidemic growth
+
+A log-plot of the number of infected node shows that contrary to the case of a lattice, the number of infected nodes initially grows exponentially again on the Brownian proximity network, despite the fact that the average degree of nodes is 4 for both networks.
 
 ```{r warning=FALSE}
 ggplot(events2) +

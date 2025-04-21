@@ -67,7 +67,7 @@ polynomial_rate_time <- function(coeffs) {
 #' @rdname time_distributions
 #' @export
 deterministic_time <- function(tau) {
-  nextnetR_deterministic_time(as.doubl(tau))
+  nextnetR_deterministic_time(as.double(tau))
 }
 
 #' @title User-defined time distributions

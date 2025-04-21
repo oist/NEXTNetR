@@ -135,7 +135,7 @@ transmission_time_R nextnetR_polynomial_rate_time(doubles coeffs) {
 }
 
 [[cpp11::register]]
-transmission_time_R nextnetR_deterministic_time(double tau, double pinf = 0.0) {
+transmission_time_R nextnetR_deterministic_time(double tau) {
   return new transmission_time_deterministic(tau);
 }
 

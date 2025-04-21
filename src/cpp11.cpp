@@ -385,10 +385,10 @@ extern "C" SEXP _NEXTNetR_nextnetR_polynomial_rate_time(SEXP coeffs) {
   END_CPP11
 }
 // transmission_time.cpp
-transmission_time_R nextnetR_deterministic_time(double tau, double pinf);
-extern "C" SEXP _NEXTNetR_nextnetR_deterministic_time(SEXP tau, SEXP pinf) {
+transmission_time_R nextnetR_deterministic_time(double tau);
+extern "C" SEXP _NEXTNetR_nextnetR_deterministic_time(SEXP tau) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_deterministic_time(cpp11::as_cpp<cpp11::decay_t<double>>(tau), cpp11::as_cpp<cpp11::decay_t<double>>(pinf)));
+    return cpp11::as_sexp(nextnetR_deterministic_time(cpp11::as_cpp<cpp11::decay_t<double>>(tau)));
   END_CPP11
 }
 // transmission_time.cpp
@@ -418,7 +418,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_cubiclattice6d_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_cubiclattice6d_network,                  1},
     {"_NEXTNetR_nextnetR_cubiclattice7d_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_cubiclattice7d_network,                  1},
     {"_NEXTNetR_nextnetR_cubiclattice8d_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_cubiclattice8d_network,                  1},
-    {"_NEXTNetR_nextnetR_deterministic_time",                      (DL_FUNC) &_NEXTNetR_nextnetR_deterministic_time,                      2},
+    {"_NEXTNetR_nextnetR_deterministic_time",                      (DL_FUNC) &_NEXTNetR_nextnetR_deterministic_time,                      1},
     {"_NEXTNetR_nextnetR_empirical_contact_temporalnetwork",       (DL_FUNC) &_NEXTNetR_nextnetR_empirical_contact_temporalnetwork,       3},
     {"_NEXTNetR_nextnetR_empirical_network",                       (DL_FUNC) &_NEXTNetR_nextnetR_empirical_network,                       1},
     {"_NEXTNetR_nextnetR_erdos_renyi_network",                     (DL_FUNC) &_NEXTNetR_nextnetR_erdos_renyi_network,                     2},

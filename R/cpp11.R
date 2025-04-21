@@ -216,8 +216,8 @@ nextnetR_polynomial_rate_time <- function(coeffs) {
   .Call(`_NEXTNetR_nextnetR_polynomial_rate_time`, coeffs)
 }
 
-nextnetR_deterministic_time <- function(tau, pinf) {
-  .Call(`_NEXTNetR_nextnetR_deterministic_time`, tau, pinf)
+nextnetR_deterministic_time <- function(tau) {
+  .Call(`_NEXTNetR_nextnetR_deterministic_time`, tau)
 }
 
 nextnetR_userdefined_time <- function(survival, density, sample, quantile, survival_trinary, sample_trinary, quantile_trinary, p_infinity) {

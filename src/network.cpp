@@ -13,6 +13,7 @@
 #include "nextnet/temporal_network.h"
 #include "nextnet/weighted_network.h"
 #include "nextnet/brownian_proximity_network.h"
+#include "nextnet/pstream/pstream.h"
 
 using namespace nextnetR;
 
@@ -259,8 +260,32 @@ list nextnetR_reproduction_matrix(const network_R& nw) {
 }
 
 [[cpp11::register]]
-network_R nextnetR_empirical_network(r_string filename) {
-    return new empirical_network((std::string)filename);
+network_R nextnetR_empirical_network(strings path, bool undirected, bool simplify,
+                                     strings sep, bool gzip) {
+    if (path.size() != 1)
+        stop("expected a single path");
+    if (sep.size() != 1)
+        stop("expected a single sep");
+    
+    std::string path_ = (std::string)(path[0]);
+    std::string sep_ = (std::string)(sep[0]);
+    if (sep_.size() != 1)
+        stop("expected a single character for sep");
+
+    redi::ipstream gzfile;
+    std::ifstream plainfile;
+    std::istream& file = gzip ? (std::istream&)gzfile : (std::istream&)plainfile;
+    
+    if (gzip)
+        gzfile.open("gzcat",  std::vector<std::string> { "gzcat", path_ },
+                    redi::pstreambuf::pstdout);
+    else
+        plainfile.open(path_);
+    
+    network_R nw = new empirical_network(file, undirected, simplify, sep_[0]);
+    if (!file.eof())
+        stop(std::string("failed to read ") + path_);
+    return nw;
 }
 
 [[cpp11::register]]
@@ -465,8 +490,9 @@ network_R nextnetR_brownian_proximity_temporalnetwork(int size, double avg_degre
 }
 
 [[cpp11::register]]
-network_R nextnetR_empirical_contact_temporalnetwork(std::string file, bool finite_duration, double dt) {
+network_R nextnetR_empirical_contact_temporalnetwork(std::string path, bool finite_duration, double dt) {
     RNG_SCOPE_IF_NECESSARY;
+    std::ifstream file(path);
     if (finite_duration)
         return new empirical_contact_network(file, empirical_contact_network::finite_duration, dt);
     else

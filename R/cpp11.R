@@ -40,8 +40,8 @@ nextnetR_reproduction_matrix <- function(nw) {
   .Call(`_NEXTNetR_nextnetR_reproduction_matrix`, nw)
 }
 
-nextnetR_empirical_network <- function(filename) {
-  .Call(`_NEXTNetR_nextnetR_empirical_network`, filename)
+nextnetR_empirical_network <- function(path, undirected, simplify, sep, gzip) {
+  .Call(`_NEXTNetR_nextnetR_empirical_network`, path, undirected, simplify, sep, gzip)
 }
 
 nextnetR_erdos_renyi_network <- function(size, avg_degree) {
@@ -120,8 +120,8 @@ nextnetR_brownian_proximity_temporalnetwork <- function(size, avg_degree, radius
   .Call(`_NEXTNetR_nextnetR_brownian_proximity_temporalnetwork`, size, avg_degree, radius, D0, D1, gamma, dt)
 }
 
-nextnetR_empirical_contact_temporalnetwork <- function(file, finite_duration, dt) {
-  .Call(`_NEXTNetR_nextnetR_empirical_contact_temporalnetwork`, file, finite_duration, dt)
+nextnetR_empirical_contact_temporalnetwork <- function(path, finite_duration, dt) {
+  .Call(`_NEXTNetR_nextnetR_empirical_contact_temporalnetwork`, path, finite_duration, dt)
 }
 
 nextnetR_sirx_temporalnetwork <- function(nw, kappa0, kappa) {

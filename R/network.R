@@ -243,16 +243,37 @@ cubiclattice8d_network <- function(length) {
 #' @title Creates a network for an adjacency list stored in a file
 #' 
 #' @description
-#' The file must contain one line per node listing that node's neighbours
-#' separated by commas. Nodes are referred to by their line numbers which
-#' start with zero.
+#' The file must contain one line per node listing first a node and then
+#' that node's neighbours, separated by whitespace (by default; other
+#' separated can be specified). Node are identified by numbers starting
+#' with zero; the maximal number that appears in the file defines the size
+#' of the network. For undirected networks (i.e. if `undirected=TRUE`), for
+#' every link (u,v) listed in the file the reverse link (v,u) is added as well.
 #' 
-#' @param filename name of the file
+#' @param path name of the file
+#' @param name name of a packaged empirical network, see \code{\link{packaged_empirical_network}}
+#' @param group packaged empirical network group containing the network
+#' @param undirected if `TRUE` the network is assumed to be undirected
+#' @param simplify whether to remove self-edges and multi-edges
+#' @param sep separator, by default whitespace
+#' @param gzip whether the file is compressed
 #' @returns a network object
 #' 
 #' @export
-empirical_network <- function(filename) {
-  nextnetR_empirical_network(as.character(filename))
+empirical_network <- function(path, name=NULL, group="undirected",
+                              undirected=TRUE, simplify=FALSE, sep=' ',
+                              gzip=grepl('\\.gz$', path)) {
+  if (!is.null(name)) {
+      if (!missing(path) || !(sep == ' '))
+          stop("when loading packaged networks, neither path nor sep is supported")
+      path <- packaged_empirical_network(as.character(name), as.character(group))
+      sep <- ' '
+      if ((group == "undirected") && (!undirected))
+          warn("loading undirected network as directed")
+  }
+  nextnetR_empirical_network(path.expand(as.character(path)), as.logical(undirected),
+                             as.logical(simplify), as.character(sep),
+                             as.logical(gzip))
 }
 
 #' @title Create a network from an adjacency list
@@ -574,4 +595,38 @@ network_coordinates <- function(nw, nodes) {
 #' @export
 network_reproduction_matrix <- function(nw) {
   nextnetR_reproduction_matrix(nw)
+}
+
+#' Downloads a packages empirical network and returns the file path
+#'
+#' See [NEXTNetR-EmpiricalNetworks](https://github.com/oist/NEXTNet-EmpiricalNetworks)
+#' for a list of available networks.
+#'
+#' @param name name of the network
+#' @param type type of network
+#' @param format file format
+#' @returns path to the downloaded file
+#'
+#' Downloaded files are cached in the directory
+#' `rappdirs::user_cache_dir(appname="EmpiricalNetworks", appauthor="NEXTNetR"'
+#'
+#' @import rappdirs
+#' @export
+packaged_empirical_network <- function(name, group="undirected", format="gz") {
+    filename <- paste0(name, ".", format)
+    cache <- user_cache_dir(appname="NEXTNetR-EmpiricalNetworks", appauthor="NEXTNetR")
+    dir.create(file.path(cache, group), recursive=TRUE, showWarnings=FALSE)
+    path <- file.path(cache, group, filename)
+    if (file.exists(path))
+        return(path)
+    
+    prefix <- "https://github.com/oist/NEXTNet-EmpiricalNetworks/raw/refs/heads/master/"
+    url <- paste0(prefix, "/", group, "/", filename)
+    message("Downloading ", filename, " to ", file.path(cache, group))
+    if (download.file(url=url, destfile=path, quiet=FALSE) == 0)
+        return(path)
+    
+    if (file.exists(path))
+        file.remove(path)
+    stop("failed to download " + filename + " from " + url)
 }

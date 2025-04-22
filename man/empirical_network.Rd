@@ -4,16 +4,39 @@
 \alias{empirical_network}
 \title{Creates a network for an adjacency list stored in a file}
 \usage{
-empirical_network(filename)
+empirical_network(
+  path,
+  name = NULL,
+  group = "undirected",
+  undirected = TRUE,
+  simplify = FALSE,
+  sep = " ",
+  gzip = grepl("\\\\.gz$", path)
+)
 }
 \arguments{
-\item{filename}{name of the file}
+\item{path}{name of the file}
+
+\item{name}{name of a packaged empirical network, see \code{\link{packaged_empirical_network}}}
+
+\item{group}{packaged empirical network group containing the network}
+
+\item{undirected}{if \code{TRUE} the network is assumed to be undirected}
+
+\item{simplify}{whether to remove self-edges and multi-edges}
+
+\item{sep}{separator, by default whitespace}
+
+\item{gzip}{whether the file is compressed}
 }
 \value{
 a network object
 }
 \description{
-The file must contain one line per node listing that node's neighbours
-separated by commas. Nodes are referred to by their line numbers which
-start with zero.
+The file must contain one line per node listing first a node and then
+that node's neighbours, separated by whitespace (by default; other
+separated can be specified). Node are identified by numbers starting
+with zero; the maximal number that appears in the file defines the size
+of the network. For undirected networks (i.e. if \code{undirected=TRUE}), for
+every link (u,v) listed in the file the reverse link (v,u) is added as well.
 }

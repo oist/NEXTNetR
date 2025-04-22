@@ -605,6 +605,7 @@ network_reproduction_matrix <- function(nw) {
 #' @param name name of the network
 #' @param type type of network
 #' @param format file format
+#' @param timeout timeout for downloading
 #' @returns path to the downloaded file
 #'
 #' Downloaded files are cached in the directory
@@ -612,7 +613,8 @@ network_reproduction_matrix <- function(nw) {
 #'
 #' @import rappdirs
 #' @export
-packaged_empirical_network <- function(name, group="undirected", format="gz") {
+packaged_empirical_network <- function(name, group="undirected", format="gz",
+                                       timeout=3600) {
     filename <- paste0(name, ".", format)
     cache <- user_cache_dir(appname="NEXTNetR-EmpiricalNetworks", appauthor="NEXTNetR")
     dir.create(file.path(cache, group), recursive=TRUE, showWarnings=FALSE)
@@ -622,11 +624,16 @@ packaged_empirical_network <- function(name, group="undirected", format="gz") {
     
     prefix <- "https://github.com/oist/NEXTNet-EmpiricalNetworks/raw/refs/heads/master/"
     url <- paste0(prefix, "/", group, "/", filename)
+    path.inprogress <- paste0(path, ".in-progress")
+    if (file.exists(path.inprogress))
+        file.remove(path.inprogress)
     message("Downloading ", filename, " to ", file.path(cache, group))
-    if (download.file(url=url, destfile=path, quiet=FALSE) == 0)
+    if (download.file(url=url, destfile=path.inprogress, quiet=FALSE, timeout=timeout) == 0) {
+        file.rename(path.inprogress, path)
         return(path)
+    }
     
-    if (file.exists(path))
-        file.remove(path)
+    if (file.exists(path.inprogress))
+        file.remove(path.inprogress)
     stop("failed to download " + filename + " from " + url)
 }

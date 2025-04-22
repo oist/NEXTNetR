@@ -4,12 +4,19 @@
 \alias{packaged_empirical_network}
 \title{Downloads a packages empirical network and returns the file path}
 \usage{
-packaged_empirical_network(name, group = "undirected", format = "gz")
+packaged_empirical_network(
+  name,
+  group = "undirected",
+  format = "gz",
+  timeout = 3600
+)
 }
 \arguments{
 \item{name}{name of the network}
 
 \item{format}{file format}
+
+\item{timeout}{timeout for downloading}
 
 \item{type}{type of network}
 }

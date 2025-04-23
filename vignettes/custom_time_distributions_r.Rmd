@@ -67,7 +67,7 @@ samples <- time_sample(1e3, psi, t=10, m=2)
 
 and use `time_density` and `time_survivalprobability` to compare the distribution of our samples (in blue) to the theoretical distribution (in black) to check that everything works correctly
 
-```{r warning=FALSE}
+```{r plot_density_cdf, warning=FALSE}
 samples.ecdf <- ecdf(samples)
 ggarrange(
   ggplot() +
@@ -91,7 +91,7 @@ ggarrange(
 
 Our custom distribution in simulations in the same way as built-in distributions, see `vignette("NEXTNetR")` for a step by step explanation of this
 
-```{r}
+```{r plot_trajectory}
 nw <- erdos_renyi_network(1e3, 5)
 sim <- simulation(nw, psi)
 simulation_addinfections(sim, nodes=c(1), times=c(0.0))

@@ -48,7 +48,7 @@ network_neighbour(nw, 371, 1:degree)
 
 Most inspection functions are vectorized and can query multiple nodes at once. For example, to plot the degree distribution as a histogram and compare it with the theoretically predicted Poisson distribution (dashed blue line) we can simply do
 
-```{r}
+```{r plot_degrees}
 N <- network_size(nw)
 ggplot(data.frame(degree=network_outdegree(nw, 1:N))) +
   geom_histogram(aes(x=degree, y=after_stat(count)),
@@ -67,7 +67,7 @@ infection_time <- lognormal_time(mean=6, var=30, p_infinity = 0.1)
 
 While time distribution objects are mainly useful for epidemic simulations, they can also be used similed to R's built-in random distributions, see `help(time_functions)`. We can, for example, plot the distribution's density and survival function.
 
-```{r}
+```{r plot_density}
 ggarrange(
   ggplot() +
     lims(x=c(0, 25)) + labs(x='time', y='density') +
@@ -103,7 +103,7 @@ events <- simulation_run(sim, stop=list(time=100, total_infected=50e3))
 
 Running a simulation returns a `data.frame` listing all the events that occurred. We can use this to plot the size of the epidemic over time.
 
-```{r}
+```{r plot_trajectory_initial}
 ggplot(events) +
   geom_line(aes(x=time, y=infected))
 ```
@@ -116,7 +116,7 @@ events2 <- simulation_run(sim, stop=list(time=50))
 
 To plot the full trajectory, we must combine the events reported by the first call of `simulation_run` with the events reported by the second call,
 
-```{r}
+```{r plot_trajectory_full}
 ggplot(rbind(events, events2)) +
   geom_line(aes(x=time, y=infected))
 ```
@@ -125,7 +125,7 @@ ggplot(rbind(events, events2)) +
 
 In our previous simulation, nodes who were infected stayed infected indefinitely. We now add a recovery time so that nodes eventually return to their original state. Note that *recovery* here also implies that nodes become susceptible to reinfection; a better term may therefore be *reset*. For the recovery time distribution, we pick a weibull distribution
 
-```{r}
+```{r plot_density_recovery}
 recovery_time <- weibull_time(shape=5, scale=50)
 ggplot() +
   lims(x=c(0, 100)) + labs(x='time', y='density') +
@@ -135,7 +135,7 @@ ggplot() +
 
 To run the simulation, we again create a simulation object, this time specifying the recovery time through the `rho` parameter. The trajectory now shows a wave-like pattern
 
-```{r}
+```{r plot_trajectory_recovery}
 sim <- simulation(nw=nw, psi=infection_time, rho=recovery_time)
 simulation_addinfections(sim, nodes=c(1), times=c(0.0))
 events <- simulation_run(sim, stop=list(time=300, total_infected=300e3))

@@ -20,6 +20,8 @@ The following minimal example simulated an epidemic on an Erdős–Rényi networ
 	r <- simulation_run(sim, stop=list(total_infected=300e3))
 	plot(r$time, r$infected, type='l')
 
+See [Getting Started](articles/NEXTNetR.html) for stey-by-step instructions on how to use `{NEXTNetR}`.
+
 # Supported Features
 
 `{NEXTNetR}` offers a range of common types of artifical networks such as `erdos_renyi()`, see `help(network_types)` for a full list. `adjacencylist_network()` and `adjacencylist_weightednetwork()` allow arbitrary unweighted and weighted networks to be used for simulations. Transmission and recovery times can likewise be arbitrary probability distributions, see `help(time_distributions)`. 

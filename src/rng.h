@@ -10,11 +10,7 @@
 
 #include "nextnet/types.h"
 
-#if (RNG != RNG_CUSTOM)
-  #define RNG_SCOPE_IF_NECESSARY
-#else
-  #define RNG_SCOPE_IF_NECESSARY R_rng_scope rngscope
-#endif
+#define RNG_SCOPE_IF_NECESSARY R_rng_scope rngscope
 
 namespace nextnetR {
 

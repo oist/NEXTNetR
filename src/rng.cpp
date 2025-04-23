@@ -11,10 +11,22 @@ using namespace cpp11;
 namespace nextnetR {
 
 /******************************
+ * factory rng_engine()
+ ******************************/
+
+rng_t engine;
+
+rng_t& rng_engine() {
+  nextnetR::r_rng_state.ensure_scope_was_entered();
+  return engine;
+}
+
+/******************************
  * R_rng_state_tracker
  ******************************/
 
 void R_rng_state_tracker::exit_scope() {
+  /* Move RNG state to R if leaving the outermost scope */
   if (depth == 0)
     throw std::logic_error("RNG exit_scope() without preceeding enter_scope()");
   else if (depth == 1)
@@ -23,14 +35,23 @@ void R_rng_state_tracker::exit_scope() {
 }
 
 void R_rng_state_tracker::enter_scope() {
+  /* Move RNG state to C when entering the outermost scope or when re-entering after relinquish */
+  if (depth + 1 < depth)
+    throw std::logic_error("Too many RNG enter_scope() calls, maximal depth exceeded");
   if (depth == 0)
     GetRNGstate();
-  else if (depth + 1 < depth)
-    throw std::logic_error("Too many RNG enter_scope() calls, maximal depth exceeded");
   ++depth;
+#if (RNG != RNG_CUSTOM)
+  /* Initialize C++ rng when entering outermost scope but not when re-entering afer relinquish */
+  if ((depth == 1) && (stack.size() == 0)) {
+    std::seed_seq seed = R_rng_adapter().generate_seed<16>();
+    engine.seed(seed);
+  }
+#endif
 }
 
 void R_rng_state_tracker::push() {
+  /* Relinquish RNG to R, used before calling R functions from C++ code */
   if (depth > 0)
     PutRNGstate();
   stack.push(depth);
@@ -38,6 +59,7 @@ void R_rng_state_tracker::push() {
 }
 
 void R_rng_state_tracker::pop() {
+  /* Restore rng scope nesting depth and make sure the RNG state matches it */ 
   if (stack.empty())
     throw std::logic_error("RNG scope pop() without preceeding pop()");
   
@@ -51,6 +73,7 @@ void R_rng_state_tracker::pop() {
 }
 
 void R_rng_state_tracker::ensure_scope_was_entered() {
+  /* Make sure the RNG state was moved to C */
   if (depth == 0)
     throw std::logic_error("not within an RNG scope");
 }
@@ -64,31 +87,6 @@ R_rng_state_tracker r_rng_state;
 R_rng_adapter::result_type R_rng_adapter::operator()() {
   r_rng_state.ensure_scope_was_entered();
   return R_unif_index((double)max() + 1.0);
-}
-
-/******************************
- * factory rng_engine()
- ******************************/
-
-#if (RNG != RNG_CUSTOM)
-std::optional<rng_t> engine;
-#else
-rng_t engine;
-#endif
-
-rng_t& rng_engine() {
-#if (RNG != RNG_CUSTOM)
-  /* Use the R RNG to initialize the C++ RNG once */
-  if (!engine) {
-    R_rng_scope rngscope;
-    std::seed_seq seed = R_rng_adapter().generate_seed<16>();
-    engine = rng_t(seed);
-  }
-  return *engine;
-#else
-  /* Use R RNG adapter as the C++ RNG */
-  return engine;
-#endif
 }
 
 } /* namespace nextnetR */

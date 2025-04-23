@@ -1,5 +1,11 @@
-^LICENSE\.md$
+^index.md$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
 ^\.github$
+^\.gitignore$
+^\.gitmodules$
+^scripts$
+^archives$
+^vignettes/*.html$
+^vignettes/articles$

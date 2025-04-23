@@ -16,6 +16,17 @@ fi
 
 echo "Building full archive for version $ver (including submodules)" >&2
 mkdir -p archives
-rm -f archives/NEXTNetR-v$ver-full.tar
+rm -f  archives/NEXTNetR-v$ver-full.tar
+rm -f  archives/NEXTNetR-v$ver-full.tar.gz
 ./scripts/git-archive-all.sh --tree-ish v$ver --prefix NEXTNetR/ archives/NEXTNetR-v$ver-full.tar
 gzip --best archives/NEXTNetR-v$ver-full.tar
+
+echo "Extracting archive to .buildpkg/" >&2
+rm -rf .buildpkg
+mkdir .buildpkg
+(cd .buildpkg; tar xzf ../archives/NEXTNetR-v$ver-full.tar.gz)
+
+echo "Building proper R package archives/NEXTNetR-v$ver-pkg.tar.gz" >&2
+R CMD build .buildpkg/NEXTNetR
+mv NEXTNetR_$ver.tar.gz archives/NEXTNetR-v$ver-pkg.tar.gz
+rm -r .buildpkg

@@ -2,5 +2,7 @@ src/*.o
 src/*.so
 src/*.dylib
 inst/include
-docs
 inst/doc
+ext/nextnet/nextnet/*.o
+archives/
+docs/

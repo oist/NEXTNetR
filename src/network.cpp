@@ -198,7 +198,7 @@ list nextnetR_network_adjacencylist(const network_R& nw) {
 list nextnetR_weighted_network_adjacencylist(const network_R& nw) {
     if (!nw) throw std::runtime_error("network cannot be NULL"); 
 
-    weighted_network* const nw_weighted = dynamic_cast<weighted_network*>(nw.get());
+    weighted_network* const nw_weighted = as_weighted_network(nw.get());
     if (nw_weighted == nullptr)
         throw std::runtime_error("network is not weighted");
 

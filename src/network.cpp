@@ -51,6 +51,20 @@ bool nextnetR_network_is_simple(const network_R& nw) {
 }
 
 [[cpp11::register]]
+bool nextnetR_network_is_weighted(const network_R& nw) {
+  if (!nw) throw std::runtime_error("network cannot be NULL"); 
+  
+  return (as_weighted_network(nw.get()) != nullptr);
+}
+
+[[cpp11::register]]
+bool nextnetR_network_is_temporal(const network_R& nw) {
+  if (!nw) throw std::runtime_error("network cannot be NULL"); 
+  
+  return (dynamic_cast<temporal_network*>(nw.get()) != nullptr);
+}
+
+[[cpp11::register]]
 integers nextnetR_network_outdegree(const network_R& nw, integers nodes) {
     if (!nw) throw std::runtime_error("network cannot be NULL"); 
     

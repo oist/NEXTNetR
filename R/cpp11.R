@@ -12,6 +12,14 @@ nextnetR_network_is_simple <- function(nw) {
   .Call(`_NEXTNetR_nextnetR_network_is_simple`, nw)
 }
 
+nextnetR_network_is_weighted <- function(nw) {
+  .Call(`_NEXTNetR_nextnetR_network_is_weighted`, nw)
+}
+
+nextnetR_network_is_temporal <- function(nw) {
+  .Call(`_NEXTNetR_nextnetR_network_is_temporal`, nw)
+}
+
 nextnetR_network_outdegree <- function(nw, nodes) {
   .Call(`_NEXTNetR_nextnetR_network_outdegree`, nw, nodes)
 }

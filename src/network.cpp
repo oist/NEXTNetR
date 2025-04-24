@@ -260,17 +260,18 @@ list nextnetR_reproduction_matrix(const network_R& nw) {
 }
 
 [[cpp11::register]]
-network_R nextnetR_empirical_network(strings path, bool undirected, bool simplify,
-                                     strings sep, bool gzip) {
+network_R nextnetR_empirical_network(
+  strings path, bool undirected, bool simplify, node_t idxbase, strings sep, bool gzip
+) {
     if (path.size() != 1)
         stop("expected a single path");
     if (sep.size() != 1)
-        stop("expected a single sep");
+        stop("expected a single separator");
     
     std::string path_ = (std::string)(path[0]);
     std::string sep_ = (std::string)(sep[0]);
     if (sep_.size() != 1)
-        stop("expected a single character for sep");
+        stop("expected a single character as separator");
 
     redi::ipstream gzfile;
     std::ifstream plainfile;
@@ -282,7 +283,44 @@ network_R nextnetR_empirical_network(strings path, bool undirected, bool simplif
     else
         plainfile.open(path_);
     
-    network_R nw = new empirical_network(file, undirected, simplify, sep_[0]);
+    network_R nw = new empirical_network(file, undirected, simplify, idxbase, sep_[0]);
+    if (!file.eof())
+        stop(std::string("failed to read ") + path_);
+    return nw;
+}
+
+[[cpp11::register]]
+network_R nextnetR_empirical_weightednetwork(
+  strings path, bool undirected, bool simplify, node_t idxbase, strings csep, strings wsep,
+  bool gzip
+) {
+    if (path.size() != 1)
+        stop("expected a single path");
+    if (csep.size() != 1)
+        stop("expected a single column separator");
+    if (wsep.size() != 1)
+        stop("expected a single weight separator");
+    
+    std::string path_ = (std::string)(path[0]);
+    std::string csep_ = (std::string)(csep[0]);
+    if (csep_.size() != 1)
+        stop("expected a single character as column separator");
+    std::string wsep_ = (std::string)(wsep[0]);
+    if (wsep_.size() != 1)
+        stop("expected a single character as weight separator");
+
+    redi::ipstream gzfile;
+    std::ifstream plainfile;
+    std::istream& file = gzip ? (std::istream&)gzfile : (std::istream&)plainfile;
+    
+    if (gzip)
+        gzfile.open("gzcat",  std::vector<std::string> { "gzcat", path_ },
+                    redi::pstreambuf::pstdout);
+    else
+        plainfile.open(path_);
+    
+    network_R nw = new weighted_empirical_network(
+      file, undirected, simplify, idxbase, csep_[0], wsep_[0]);
     if (!file.eof())
         stop(std::string("failed to read ") + path_);
     return nw;

@@ -8,7 +8,7 @@ packaged_empirical_network(
   name,
   group = "undirected",
   format = "gz",
-  timeout = 3600
+  timeout = 300
 )
 }
 \arguments{

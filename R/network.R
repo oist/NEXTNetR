@@ -40,6 +40,7 @@
 #'
 #' the following static weighted networks
 #'
+#' * [empirical_weightednetwork]: Weighted network defined by an adjacency list read from a file
 #' * [adjacencylist_weightednetwork]: Network defined by an arbitrary adjacency list with weighted edges.
 #' * [erdos_renyi_weightednetwork]: Erdős–Rényi network with i.i.d edge weights.
 #'
@@ -246,34 +247,83 @@ cubiclattice8d_network <- function(length) {
 #' The file must contain one line per node listing first a node and then
 #' that node's neighbours, separated by whitespace (by default; other
 #' separated can be specified). Node are identified by numbers starting
-#' with zero; the maximal number that appears in the file defines the size
-#' of the network. For undirected networks (i.e. if `undirected=TRUE`), for
-#' every link (u,v) listed in the file the reverse link (v,u) is added as well.
+#' with `idxbase` (by default 1); the maximal node index that appears in
+#' the file defines the size of the network. For undirected networks (i.e.
+#' if `undirected=TRUE`), for every link (u,v) listed in the file the reverse
+#' link (v,u) is added as well.
+#'
+#' Lines starting with the comment chracter '#' and skipped. If the first
+#' non-comment line does not start with a numerical node index, it is
+#' assumed to be a header line and skipped as well.
 #' 
 #' @param path name of the file
 #' @param name name of a packaged empirical network, see \code{\link{packaged_empirical_network}}
 #' @param group packaged empirical network group containing the network
 #' @param undirected if `TRUE` the network is assumed to be undirected
 #' @param simplify whether to remove self-edges and multi-edges
+#' @param idxbase index of the first node (typically 1 or 0, default 1)
 #' @param sep separator, by default whitespace
 #' @param gzip whether the file is compressed
+#' @param download.timeout for packaged networks the download timeout
 #' @returns a network object
 #' 
 #' @export
-empirical_network <- function(path, name=NULL, group="undirected",
-                              undirected=TRUE, simplify=FALSE, sep=' ',
-                              gzip=grepl('\\.gz$', path)) {
+empirical_network <- function(
+  path, name=NULL, group="undirected", undirected=TRUE, simplify=FALSE,
+  idxbase=1, sep=' ', gzip=grepl('\\.gz$', path), download.timeout=300
+) {
   if (!is.null(name)) {
       if (!missing(path) || !(sep == ' '))
           stop("when loading packaged networks, neither path nor sep is supported")
-      path <- packaged_empirical_network(as.character(name), as.character(group))
+      path <- packaged_empirical_network(as.character(name), as.character(group),
+                                         timeout=download.timeout)
       sep <- ' '
+      gzip <- TRUE
       if ((group == "undirected") && (!undirected))
           warn("loading undirected network as directed")
   }
-  nextnetR_empirical_network(path.expand(as.character(path)), as.logical(undirected),
-                             as.logical(simplify), as.character(sep),
-                             as.logical(gzip))
+  nextnetR_empirical_network(
+    path.expand(as.character(path)), as.logical(undirected),
+    as.logical(simplify), as.integer(idxbase),
+    as.character(sep), as.logical(gzip))
+}
+
+#' @title Creates a weighted network for an adjacency list stored in a file
+#' 
+#' @description
+#' The file must contain one line per node listing first a node and then
+#' pairs of neighbours and their weights. Pairs are separated by whitespace,
+#' neighbours and weights by a colon (':'); other separators can be specifed.
+#' Nodes are identified by numbers starting with `idxbase` (by default 1);
+#' the maximal node index that appears in the file defines the size of the
+#' network. For undirected networks (i.e. if `undirected=TRUE`), for every
+#' link (u,v) listed in the file the reverse link (v,u) is added as well.
+#'
+#' Lines starting with the comment chracter '#' and skipped. If the first
+#' non-comment line does not start with a numerical node index, it is
+#' assumed to be a header line and skipped as well.
+#' 
+#' @param path name of the file
+#' @param name name of a packaged empirical network, see \code{\link{packaged_empirical_network}}
+#' @param group packaged empirical network group containing the network
+#' @param undirected if `TRUE` the network is assumed to be undirected
+#' @param simplify whether to remove self-edges and multi-edges
+#' @param idxbase index of the first node (typically 1 or 0, default 1)
+#' @param csep separator between neighbours/weight pairs, by default whitespace
+#' @param wsep separator between neighbour and its weight, by default ':' 
+#' @param gzip whether the file is compressed
+#' @param download.timeout for packaged networks the download timeout
+#' @returns a network object
+#' 
+#' @export
+empirical_weightednetwork <- function(
+  path, undirected=TRUE, simplify=FALSE, idxbase=1, csep=' ', wsep=':',
+  gzip=grepl('\\.gz$', path)
+) {
+  nextnetR_empirical_weightednetwork(
+    path.expand(as.character(path)), as.logical(undirected),
+    as.logical(simplify), as.integer(idxbase),
+    as.character(csep), as.character(wsep), as.logical(gzip))
 }
 
 #' @title Create a network from an adjacency list
@@ -613,27 +663,39 @@ network_reproduction_matrix <- function(nw) {
 #'
 #' @import rappdirs
 #' @export
-packaged_empirical_network <- function(name, group="undirected", format="gz",
-                                       timeout=3600) {
-    filename <- paste0(name, ".", format)
-    cache <- user_cache_dir(appname="NEXTNetR-EmpiricalNetworks", appauthor="NEXTNetR")
-    dir.create(file.path(cache, group), recursive=TRUE, showWarnings=FALSE)
-    path <- file.path(cache, group, filename)
-    if (file.exists(path))
-        return(path)
-    
-    prefix <- "https://github.com/oist/NEXTNet-EmpiricalNetworks/raw/refs/heads/master/"
-    url <- paste0(prefix, "/", group, "/", filename)
-    path.inprogress <- paste0(path, ".in-progress")
-    if (file.exists(path.inprogress))
-        file.remove(path.inprogress)
-    message("Downloading ", filename, " to ", file.path(cache, group))
-    if (download.file(url=url, destfile=path.inprogress, quiet=FALSE, timeout=timeout) == 0) {
-        file.rename(path.inprogress, path)
-        return(path)
-    }
-    
-    if (file.exists(path.inprogress))
-        file.remove(path.inprogress)
-    stop("failed to download " + filename + " from " + url)
+packaged_empirical_network <- function(
+  name, group="undirected", format="gz", timeout=300
+) {
+  # Return cached copy if available. Note that we currently don't check
+  # whether the copy is still current; presumably packaged networks should
+  # never change
+  filename <- paste0(name, ".", format)
+  cache <- user_cache_dir(appname="NEXTNetR-EmpiricalNetworks", appauthor="NEXTNetR")
+  dir.create(file.path(cache, group), recursive=TRUE, showWarnings=FALSE)
+  path <- file.path(cache, group, filename)
+  if (file.exists(path))
+    return(path)
+  
+  # Construct url and filenames
+  prefix <- "https://github.com/oist/NEXTNet-EmpiricalNetworks/raw/refs/heads/master/"
+  url <- paste0(prefix, "/", group, "/", filename)
+  path.inprogress <- paste0(path, ".in-progress")
+  if (file.exists(path.inprogress))
+    file.remove(path.inprogress)
+ 
+  # Make sure the timeout is set appropriately, reset afterwards
+  op <-options(timeout = max(timeout, getOption("timeout")))
+  on.exit(options(op))
+
+  # Download
+  message("Downloading ", filename, " to ", file.path(cache, group))
+  if (download.file(url=url, destfile=path.inprogress, quiet=FALSE) == 0) {
+    file.rename(path.inprogress, path)
+    return(path)
+  }
+  
+  # Handle error
+  if (file.exists(path.inprogress))
+    file.remove(path.inprogress)
+  stop("failed to download " + filename + " from " + url)
 }

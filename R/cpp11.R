@@ -40,8 +40,12 @@ nextnetR_reproduction_matrix <- function(nw) {
   .Call(`_NEXTNetR_nextnetR_reproduction_matrix`, nw)
 }
 
-nextnetR_empirical_network <- function(path, undirected, simplify, sep, gzip) {
-  .Call(`_NEXTNetR_nextnetR_empirical_network`, path, undirected, simplify, sep, gzip)
+nextnetR_empirical_network <- function(path, undirected, simplify, idxbase, sep, gzip) {
+  .Call(`_NEXTNetR_nextnetR_empirical_network`, path, undirected, simplify, idxbase, sep, gzip)
+}
+
+nextnetR_empirical_weightednetwork <- function(path, undirected, simplify, idxbase, csep, wsep, gzip) {
+  .Call(`_NEXTNetR_nextnetR_empirical_weightednetwork`, path, undirected, simplify, idxbase, csep, wsep, gzip)
 }
 
 nextnetR_erdos_renyi_network <- function(size, avg_degree) {

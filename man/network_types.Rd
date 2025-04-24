@@ -42,6 +42,7 @@ at which the link is present.
 
 the following static weighted networks
 \itemize{
+\item \link{empirical_weightednetwork}: Weighted network defined by an adjacency list read from a file
 \item \link{adjacencylist_weightednetwork}: Network defined by an arbitrary adjacency list with weighted edges.
 \item \link{erdos_renyi_weightednetwork}: Erdős–Rényi network with i.i.d edge weights.
 }

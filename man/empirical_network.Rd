@@ -10,8 +10,10 @@ empirical_network(
   group = "undirected",
   undirected = TRUE,
   simplify = FALSE,
+  idxbase = 1,
   sep = " ",
-  gzip = grepl("\\\\.gz$", path)
+  gzip = grepl("\\\\.gz$", path),
+  download.timeout = 300
 )
 }
 \arguments{
@@ -25,9 +27,13 @@ empirical_network(
 
 \item{simplify}{whether to remove self-edges and multi-edges}
 
+\item{idxbase}{index of the first node (typically 1 or 0, default 1)}
+
 \item{sep}{separator, by default whitespace}
 
 \item{gzip}{whether the file is compressed}
+
+\item{download.timeout}{for packaged networks the download timeout}
 }
 \value{
 a network object
@@ -36,7 +42,12 @@ a network object
 The file must contain one line per node listing first a node and then
 that node's neighbours, separated by whitespace (by default; other
 separated can be specified). Node are identified by numbers starting
-with zero; the maximal number that appears in the file defines the size
-of the network. For undirected networks (i.e. if \code{undirected=TRUE}), for
-every link (u,v) listed in the file the reverse link (v,u) is added as well.
+with \code{idxbase} (by default 1); the maximal node index that appears in
+the file defines the size of the network. For undirected networks (i.e.
+if \code{undirected=TRUE}), for every link (u,v) listed in the file the reverse
+link (v,u) is added as well.
+
+Lines starting with the comment chracter '#' and skipped. If the first
+non-comment line does not start with a numerical node index, it is
+assumed to be a header line and skipped as well.
 }

@@ -76,10 +76,17 @@ extern "C" SEXP _NEXTNetR_nextnetR_reproduction_matrix(SEXP nw) {
   END_CPP11
 }
 // network.cpp
-network_R nextnetR_empirical_network(strings path, bool undirected, bool simplify, strings sep, bool gzip);
-extern "C" SEXP _NEXTNetR_nextnetR_empirical_network(SEXP path, SEXP undirected, SEXP simplify, SEXP sep, SEXP gzip) {
+network_R nextnetR_empirical_network(strings path, bool undirected, bool simplify, node_t idxbase, strings sep, bool gzip);
+extern "C" SEXP _NEXTNetR_nextnetR_empirical_network(SEXP path, SEXP undirected, SEXP simplify, SEXP idxbase, SEXP sep, SEXP gzip) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_empirical_network(cpp11::as_cpp<cpp11::decay_t<strings>>(path), cpp11::as_cpp<cpp11::decay_t<bool>>(undirected), cpp11::as_cpp<cpp11::decay_t<bool>>(simplify), cpp11::as_cpp<cpp11::decay_t<strings>>(sep), cpp11::as_cpp<cpp11::decay_t<bool>>(gzip)));
+    return cpp11::as_sexp(nextnetR_empirical_network(cpp11::as_cpp<cpp11::decay_t<strings>>(path), cpp11::as_cpp<cpp11::decay_t<bool>>(undirected), cpp11::as_cpp<cpp11::decay_t<bool>>(simplify), cpp11::as_cpp<cpp11::decay_t<node_t>>(idxbase), cpp11::as_cpp<cpp11::decay_t<strings>>(sep), cpp11::as_cpp<cpp11::decay_t<bool>>(gzip)));
+  END_CPP11
+}
+// network.cpp
+network_R nextnetR_empirical_weightednetwork(strings path, bool undirected, bool simplify, node_t idxbase, strings csep, strings wsep, bool gzip);
+extern "C" SEXP _NEXTNetR_nextnetR_empirical_weightednetwork(SEXP path, SEXP undirected, SEXP simplify, SEXP idxbase, SEXP csep, SEXP wsep, SEXP gzip) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nextnetR_empirical_weightednetwork(cpp11::as_cpp<cpp11::decay_t<strings>>(path), cpp11::as_cpp<cpp11::decay_t<bool>>(undirected), cpp11::as_cpp<cpp11::decay_t<bool>>(simplify), cpp11::as_cpp<cpp11::decay_t<node_t>>(idxbase), cpp11::as_cpp<cpp11::decay_t<strings>>(csep), cpp11::as_cpp<cpp11::decay_t<strings>>(wsep), cpp11::as_cpp<cpp11::decay_t<bool>>(gzip)));
   END_CPP11
 }
 // network.cpp
@@ -420,7 +427,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_cubiclattice8d_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_cubiclattice8d_network,                  1},
     {"_NEXTNetR_nextnetR_deterministic_time",                      (DL_FUNC) &_NEXTNetR_nextnetR_deterministic_time,                      1},
     {"_NEXTNetR_nextnetR_empirical_contact_temporalnetwork",       (DL_FUNC) &_NEXTNetR_nextnetR_empirical_contact_temporalnetwork,       3},
-    {"_NEXTNetR_nextnetR_empirical_network",                       (DL_FUNC) &_NEXTNetR_nextnetR_empirical_network,                       5},
+    {"_NEXTNetR_nextnetR_empirical_network",                       (DL_FUNC) &_NEXTNetR_nextnetR_empirical_network,                       6},
+    {"_NEXTNetR_nextnetR_empirical_weightednetwork",               (DL_FUNC) &_NEXTNetR_nextnetR_empirical_weightednetwork,               7},
     {"_NEXTNetR_nextnetR_erdos_renyi_network",                     (DL_FUNC) &_NEXTNetR_nextnetR_erdos_renyi_network,                     2},
     {"_NEXTNetR_nextnetR_erdos_renyi_temporalnetwork",             (DL_FUNC) &_NEXTNetR_nextnetR_erdos_renyi_temporalnetwork,             3},
     {"_NEXTNetR_nextnetR_erdos_renyi_weightednetwork",             (DL_FUNC) &_NEXTNetR_nextnetR_erdos_renyi_weightednetwork,             4},

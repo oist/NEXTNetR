@@ -4,9 +4,12 @@
 \alias{network_properties}
 \alias{network_is_undirected}
 \alias{network_is_simple}
+\alias{network_is_weighted}
+\alias{network_is_temporal}
 \alias{network_size}
 \alias{network_outdegree}
 \alias{network_neighbour}
+\alias{network_neighbour_weight}
 \alias{network_adjacencylist}
 \alias{weighted_network_adjacencylist}
 \alias{network_bounds}
@@ -17,11 +20,17 @@ network_is_undirected(nw)
 
 network_is_simple(nw)
 
+network_is_weighted(nw)
+
+network_is_temporal(nw)
+
 network_size(nw)
 
 network_outdegree(nw, nodes)
 
 network_neighbour(nw, nodes, indices)
+
+network_neighbour_weight(nw, nodes, indices)
 
 network_adjacencylist(nw)
 
@@ -51,6 +60,11 @@ to \eqn{j} exactly if there is a link from node \eqn{j} to \eqn{i}. Note that
 similar to \code{network_is_simple}, a return value of \code{true} guarantees that the
 network is undirected, but \code{false} does not imply the existence of an edge
 without a reversed counterpart.
+\item \code{network_is_weighted(nw)}
+return true if the network is weighted, i.e. if links have associated weights
+\item \code{network_is_temporal(nw)}
+return true if the network is temporal, i.e. if links can appear and disappear
+during epidemic simulations
 \item \code{network_size(nw)}
 returns the number of nodes in the network
 \item \code{network_outdegree(nw, node)}
@@ -59,6 +73,10 @@ of outgoing links) of the nodes in \code{nodes}.
 \item \code{network_neighbour(nw, nodes, indices)}
 returns a vector of the same length as \code{nodes} and \code{indices} containing the neighbours
 with the given index of the given nodes.
+\item \code{network_neighbour_weight(nw, nodes, indices)}
+returns a named list containing vectors "n" and "w". "n" is a vector of the same
+length as \code{nodes} and \code{indices} and contains the neighbours with the given index of the
+given nodes. "w" is a vector of the same length and contains the corresponding weights.
 \item \code{network_adjacencylist(nw)}
 returns a named list which contains two entries, \emph{nodes} and \emph{neighbours}.
 \emph{nodes} contains the indices of all nodes in the network, i.e. \code{1:network_size(nw)}.

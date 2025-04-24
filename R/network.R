@@ -543,6 +543,13 @@ activity_driven_temporalnetwork <- function(activities, m, eta, b,
 #'   similar to `network_is_simple`, a return value of `true` guarantees that the
 #'   network is undirected, but `false` does not imply the existence of an edge
 #'   without a reversed counterpart.
+#'
+#' * `network_is_weighted(nw)`
+#'   return true if the network is weighted, i.e. if links have associated weights
+#'   
+#' * `network_is_temporal(nw)`
+#'   return true if the network is temporal, i.e. if links can appear and disappear
+#'   during epidemic simulations
 #'   
 #' * `network_size(nw)`
 #'   returns the number of nodes in the network
@@ -554,6 +561,11 @@ activity_driven_temporalnetwork <- function(activities, m, eta, b,
 #' * `network_neighbour(nw, nodes, indices)`
 #'   returns a vector of the same length as `nodes` and `indices` containing the neighbours
 #'   with the given index of the given nodes.
+#'   
+#' * `network_neighbour_weight(nw, nodes, indices)`
+#'   returns a named list containing vectors "n" and "w". "n" is a vector of the same
+#'   length as `nodes` and `indices` and contains the neighbours with the given index of the
+#'   given nodes. "w" is a vector of the same length and contains the corresponding weights.
 #'   
 #' * `network_adjacencylist(nw)`
 #'   returns a named list which contains two entries, *nodes* and *neighbours*.
@@ -592,6 +604,18 @@ network_is_simple <- function(nw) {
 
 #' @rdname network_properties
 #' @export
+network_is_weighted <- function(nw) {
+  nextnetR_network_is_weighted(nw)
+}
+
+#' @rdname network_properties
+#' @export
+network_is_temporal <- function(nw) {
+  nextnetR_network_is_temporal(nw)
+}
+
+#' @rdname network_properties
+#' @export
 network_size <- function(nw) {
   nextnetR_network_size(nw)
 }
@@ -614,6 +638,20 @@ network_neighbour <- function(nw, nodes, indices) {
   else if (length(nodes) != length(indices))
     stop("length of either nodes or indices must be one or both lengths must agree")
   nextnetR_network_neighbour(nw, nodes, indices)
+}
+
+#' @rdname network_properties
+#' @export
+network_neighbour_weight <- function(nw, nodes, indices) {
+  nodes <- as.integer(nodes)
+  indices <- as.integer(indices)
+  if (length(nodes) == 1)
+    nodes <- rep(nodes, length(indices))
+  else if (length(indices) == 1)
+    indices <- rep(indices, length(nodes))
+  else if (length(nodes) != length(indices))
+    stop("length of either nodes or indices must be one or both lengths must agree")
+  nextnetR_network_neighbour_weight(nw, nodes, indices)
 }
 
 #' @rdname network_properties

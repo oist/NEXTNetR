@@ -115,6 +115,49 @@ integers nextnetR_network_neighbour(const network_R& nw, integers nodes, integer
 }
 
 [[cpp11::register]]
+list nextnetR_network_neighbour_weight(const network_R& nw, integers nodes, integers indices) {
+    if (!nw) throw std::runtime_error("network cannot be NULL"); 
+
+    weighted_network* const wnw = as_weighted_network(nw.get());
+    if (wnw == nullptr)
+        throw std::runtime_error("network is not weighted");
+
+    /* Must enter RNG scope since networks may generate their topology on the fly */
+    RNG_SCOPE_IF_NECESSARY;
+    
+    if (nodes.size() != indices.size())
+        throw std::runtime_error("number of nodes and number of indices must agree");
+    
+    /* Create outputs */
+    const std::size_t l = nodes.size();
+    writable::integers ns;
+    writable::doubles ws;
+    ns.reserve(l);
+    ws.reserve(l);
+    
+    /* Fill */
+    const node_t N = wnw->nodes();
+    for(std::size_t j = 0; j < l; ++j) {
+        const node_t n = nodes[j];
+        if ((n < 1) || (n > (node_t)N)) {
+            ns.push_back(NA_INTEGER);
+            continue;
+        }
+        
+        const int i = indices[j];
+        double w = NA_REAL;
+        const int m = wnw->neighbour(n - 1, i - 1, &w);
+        ns.push_back((m >= 0) ? (m + 1) : NA_INTEGER);
+        ws.push_back((m >= 0) ? w : NA_REAL);
+    }
+
+    return writable::list({
+        "n"_nm = ns,
+        "w"_nm = ws
+    });
+}
+
+[[cpp11::register]]
 list nextnetR_network_adjacencylist(const network_R& nw) {
     if (!nw) throw std::runtime_error("network cannot be NULL"); 
 

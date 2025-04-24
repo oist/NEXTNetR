@@ -28,6 +28,10 @@ nextnetR_network_neighbour <- function(nw, nodes, indices) {
   .Call(`_NEXTNetR_nextnetR_network_neighbour`, nw, nodes, indices)
 }
 
+nextnetR_network_neighbour_weight <- function(nw, nodes, indices) {
+  .Call(`_NEXTNetR_nextnetR_network_neighbour_weight`, nw, nodes, indices)
+}
+
 nextnetR_network_adjacencylist <- function(nw) {
   .Call(`_NEXTNetR_nextnetR_network_adjacencylist`, nw)
 }

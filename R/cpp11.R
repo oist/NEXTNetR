@@ -32,12 +32,12 @@ nextnetR_network_neighbour_weight <- function(nw, nodes, indices) {
   .Call(`_NEXTNetR_nextnetR_network_neighbour_weight`, nw, nodes, indices)
 }
 
-nextnetR_network_adjacencylist <- function(nw) {
-  .Call(`_NEXTNetR_nextnetR_network_adjacencylist`, nw)
+nextnetR_network_adjacencylist <- function(nw, above_diagonal) {
+  .Call(`_NEXTNetR_nextnetR_network_adjacencylist`, nw, above_diagonal)
 }
 
-nextnetR_weighted_network_adjacencylist <- function(nw) {
-  .Call(`_NEXTNetR_nextnetR_weighted_network_adjacencylist`, nw)
+nextnetR_weighted_network_adjacencylist <- function(nw, above_diagonal) {
+  .Call(`_NEXTNetR_nextnetR_weighted_network_adjacencylist`, nw, above_diagonal)
 }
 
 nextnetR_network_bounds <- function(nw) {
@@ -124,8 +124,8 @@ nextnetR_cubiclattice8d_network <- function(edge_length) {
   .Call(`_NEXTNetR_nextnetR_cubiclattice8d_network`, edge_length)
 }
 
-nextnetR_adjacencylist_network <- function(input_al, is_undirected) {
-  .Call(`_NEXTNetR_nextnetR_adjacencylist_network`, input_al, is_undirected)
+nextnetR_adjacencylist_network <- function(input_al, is_undirected, above_diagonal) {
+  .Call(`_NEXTNetR_nextnetR_adjacencylist_network`, input_al, is_undirected, above_diagonal)
 }
 
 nextnetR_erdos_renyi_temporalnetwork <- function(size, avg_degree, timescale) {
@@ -152,8 +152,8 @@ nextnetR_erdos_renyi_weightednetwork <- function(size, avg_degree, weights, prob
   .Call(`_NEXTNetR_nextnetR_erdos_renyi_weightednetwork`, size, avg_degree, weights, probabilities)
 }
 
-nextnetR_adjacencylist_weightednetwork <- function(input_al, is_undirected) {
-  .Call(`_NEXTNetR_nextnetR_adjacencylist_weightednetwork`, input_al, is_undirected)
+nextnetR_adjacencylist_weightednetwork <- function(input_al, is_undirected, above_diagonal) {
+  .Call(`_NEXTNetR_nextnetR_adjacencylist_weightednetwork`, input_al, is_undirected, above_diagonal)
 }
 
 nextnetR_nextreaction_simulation <- function(nw, psi, rho_, opts) {

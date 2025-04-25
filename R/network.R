@@ -332,14 +332,15 @@ empirical_weightednetwork <- function(
 #' Create an network object from an adjacencylist
 #'
 #' @param adjacencylist a list of vectors containing the neighbours of each node. Same format as the second entry in the return value of \code{\link{network_adjacencylist}}.
-#' @param is_undirected true if the network is supposed to be undirected, i.e. contains a link from \eqn{i} to \eqn{j} exactly if it contains a link from \eqn{j} to \eqn{i}
+#' @param is_undirected `TRUE` if the network is supposed to be undirected, i.e. contains a link from \eqn{i} to \eqn{j} exactly if it contains a link from \eqn{j} to \eqn{i}.
+#' @param above_diagonal set to `TRUE` if the network is undirected and the adjacencylist only contains edges \eqn{i,j} with \eqn{i \leq j}, i.e. represent the upper triangular submatrix of the adjacency matrix. Defaults to `TRUE` for undirected networks.
 #' @returns a network object
 #' 
 #' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
-adjacencylist_network <- function(adjacencylist, is_undirected = FALSE) {
-  nextnetR_adjacencylist_network(lapply(adjacencylist, as.integer), as.logical(is_undirected))
+adjacencylist_network <- function(adjacencylist, is_undirected = TRUE, above_diagonal = is_undirected) {
+  nextnetR_adjacencylist_network(lapply(adjacencylist, as.integer), as.logical(is_undirected), as.logical(above_diagonal))
 }
 
 #' @title Create a network from an adjacency list
@@ -348,15 +349,16 @@ adjacencylist_network <- function(adjacencylist, is_undirected = FALSE) {
 #' Create an network object from an adjacency list
 #'
 #' @param adjacencylist a list of vectors containing the neighbours of each node. Same format as the second entry in the return value of \code{\link{weighted_network_adjacencylist}}.
-#' @param is_undirected true if the network is supposed to be undirected, i.e. contains a link from \eqn{i} to \eqn{j} exactly if it contains a link from \eqn{j} to \eqn{i}
+#' @param is_undirected `TRUE` if the network is supposed to be undirected, i.e. contains a link from \eqn{i} to \eqn{j} exactly if it contains a link from \eqn{j} to \eqn{i}.
+#' @param above_diagonal set to `TRUE` if the network is undirected and the adjacencylist only contains edges \eqn{i,j} with \eqn{i \leq j}, i.e. represent the upper triangular submatrix of the adjacency matrix. Defaults to `TRUE` for undirected networks.
 #' @returns a network object
 #' 
 #' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
-adjacencylist_weightednetwork <- function(adjacencylist, is_undirected = FALSE) {
+adjacencylist_weightednetwork <- function(adjacencylist, is_undirected = FALSE, above_diagonal = is_undirected) {
   nextnetR_adjacencylist_weightednetwork(lapply(adjacencylist, function(e) list(n=as.integer(e$n), w=as.numeric(e$w))),
-                                         as.logical(is_undirected))
+                                         as.logical(is_undirected), as.logical(above_diagonal))
 }
 
 #' @title Create a weighted Erdös-Rényi network
@@ -567,18 +569,24 @@ activity_driven_temporalnetwork <- function(activities, m, eta, b,
 #'   length as `nodes` and `indices` and contains the neighbours with the given index of the
 #'   given nodes. "w" is a vector of the same length and contains the corresponding weights.
 #'   
-#' * `network_adjacencylist(nw)`
+#' * `network_adjacencylist(nw, above_diagonal=network_is_undirected(nw))`
 #'   returns a named list which contains two entries, *nodes* and *neighbours*.
 #'   *nodes* contains the indices of all nodes in the network, i.e. `1:network_size(nw)`.
 #'   *neighbours* is a list of vectors, where *neighbours\[i\]* lists the neighbours of
-#'   node \eqn{i}.
+#'   node \eqn{i}. For undirected networks, of the edge pair \eqn{(i,j)} and \eqn{(j, i)}
+#'   only the edge \eqn{(i,j)} with \eqn{i \leq j} is output, i.e. only the upper triangular
+#'   submatrix of an symmetric adjacency matrix is considered. To include both edges,
+#'   set `above_diagonal=FALSE`.
 #'   
-#' * `weighted_network_adjacencylist(nw)`
+#' * `weighted_network_adjacencylist(nw, above_diagonal=network_is_undirected(nw))`
 #'   returns a named list which contains two entries, *nodes* and *neighbours*.
 #'   *nodes* contains the indices of all nodes in the network, i.e. `1:network_size(nw)`.
 #'   *neighbours* is a list of named two-element lists containing vectors "n" and "w". The vector "n"
 #'   in *neighbours\[i\]* contains the neighbours of node \eqn{i}, and the vector "w" contains the
-#'   corresponding weights.
+#'   corresponding weights. For undirected networks, of the edge pair \eqn{(i,j)} and \eqn{(j, i)}
+#'   only the edge \eqn{(i,j)} with \eqn{i \leq j} is output, i.e. only the upper triangular
+#'   submatrix of an symmetric adjacency matrix is considered. To include both edges,
+#'   set `above_diagonal=FALSE`.
 #'   
 #' * `network_bounds(nw)`
 #'   for networks embedded into \eqn{d}-dimensional space, this function returns a list containing
@@ -656,14 +664,14 @@ network_neighbour_weight <- function(nw, nodes, indices) {
 
 #' @rdname network_properties
 #' @export
-network_adjacencylist <- function(nw) {
-  nextnetR_network_adjacencylist(nw)
+network_adjacencylist <- function(nw, above_diagonal = network_is_undirected(nw)) {
+  nextnetR_network_adjacencylist(nw, as.logical(above_diagonal))
 }
 
 #' @rdname network_properties
 #' @export
-weighted_network_adjacencylist <- function(nw) {
-  nextnetR_weighted_network_adjacencylist(nw)
+weighted_network_adjacencylist <- function(nw, above_diagonal = network_is_undirected(nw)) {
+  nextnetR_weighted_network_adjacencylist(nw, as.logical(above_diagonal))
 }
 
 

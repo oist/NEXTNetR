@@ -62,17 +62,17 @@ extern "C" SEXP _NEXTNetR_nextnetR_network_neighbour_weight(SEXP nw, SEXP nodes,
   END_CPP11
 }
 // network.cpp
-list nextnetR_network_adjacencylist(const network_R& nw);
-extern "C" SEXP _NEXTNetR_nextnetR_network_adjacencylist(SEXP nw) {
+list nextnetR_network_adjacencylist(const network_R& nw, bool above_diagonal);
+extern "C" SEXP _NEXTNetR_nextnetR_network_adjacencylist(SEXP nw, SEXP above_diagonal) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_network_adjacencylist(cpp11::as_cpp<cpp11::decay_t<const network_R&>>(nw)));
+    return cpp11::as_sexp(nextnetR_network_adjacencylist(cpp11::as_cpp<cpp11::decay_t<const network_R&>>(nw), cpp11::as_cpp<cpp11::decay_t<bool>>(above_diagonal)));
   END_CPP11
 }
 // network.cpp
-list nextnetR_weighted_network_adjacencylist(const network_R& nw);
-extern "C" SEXP _NEXTNetR_nextnetR_weighted_network_adjacencylist(SEXP nw) {
+list nextnetR_weighted_network_adjacencylist(const network_R& nw, bool above_diagonal);
+extern "C" SEXP _NEXTNetR_nextnetR_weighted_network_adjacencylist(SEXP nw, SEXP above_diagonal) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_weighted_network_adjacencylist(cpp11::as_cpp<cpp11::decay_t<const network_R&>>(nw)));
+    return cpp11::as_sexp(nextnetR_weighted_network_adjacencylist(cpp11::as_cpp<cpp11::decay_t<const network_R&>>(nw), cpp11::as_cpp<cpp11::decay_t<bool>>(above_diagonal)));
   END_CPP11
 }
 // network.cpp
@@ -223,10 +223,10 @@ extern "C" SEXP _NEXTNetR_nextnetR_cubiclattice8d_network(SEXP edge_length) {
   END_CPP11
 }
 // network.cpp
-network_R nextnetR_adjacencylist_network(list input_al, bool is_undirected);
-extern "C" SEXP _NEXTNetR_nextnetR_adjacencylist_network(SEXP input_al, SEXP is_undirected) {
+network_R nextnetR_adjacencylist_network(list input_al, bool is_undirected, bool above_diagonal);
+extern "C" SEXP _NEXTNetR_nextnetR_adjacencylist_network(SEXP input_al, SEXP is_undirected, SEXP above_diagonal) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_adjacencylist_network(cpp11::as_cpp<cpp11::decay_t<list>>(input_al), cpp11::as_cpp<cpp11::decay_t<bool>>(is_undirected)));
+    return cpp11::as_sexp(nextnetR_adjacencylist_network(cpp11::as_cpp<cpp11::decay_t<list>>(input_al), cpp11::as_cpp<cpp11::decay_t<bool>>(is_undirected), cpp11::as_cpp<cpp11::decay_t<bool>>(above_diagonal)));
   END_CPP11
 }
 // network.cpp
@@ -272,10 +272,10 @@ extern "C" SEXP _NEXTNetR_nextnetR_erdos_renyi_weightednetwork(SEXP size, SEXP a
   END_CPP11
 }
 // network.cpp
-network_R nextnetR_adjacencylist_weightednetwork(list input_al, bool is_undirected);
-extern "C" SEXP _NEXTNetR_nextnetR_adjacencylist_weightednetwork(SEXP input_al, SEXP is_undirected) {
+network_R nextnetR_adjacencylist_weightednetwork(list input_al, bool is_undirected, bool above_diagonal);
+extern "C" SEXP _NEXTNetR_nextnetR_adjacencylist_weightednetwork(SEXP input_al, SEXP is_undirected, SEXP above_diagonal) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_adjacencylist_weightednetwork(cpp11::as_cpp<cpp11::decay_t<list>>(input_al), cpp11::as_cpp<cpp11::decay_t<bool>>(is_undirected)));
+    return cpp11::as_sexp(nextnetR_adjacencylist_weightednetwork(cpp11::as_cpp<cpp11::decay_t<list>>(input_al), cpp11::as_cpp<cpp11::decay_t<bool>>(is_undirected), cpp11::as_cpp<cpp11::decay_t<bool>>(above_diagonal)));
   END_CPP11
 }
 // simulation.cpp
@@ -431,8 +431,8 @@ extern "C" {
 static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_activity_driven_temporalnetwork",         (DL_FUNC) &_NEXTNetR_nextnetR_activity_driven_temporalnetwork,         6},
     {"_NEXTNetR_nextnetR_acyclic_network",                         (DL_FUNC) &_NEXTNetR_nextnetR_acyclic_network,                         3},
-    {"_NEXTNetR_nextnetR_adjacencylist_network",                   (DL_FUNC) &_NEXTNetR_nextnetR_adjacencylist_network,                   2},
-    {"_NEXTNetR_nextnetR_adjacencylist_weightednetwork",           (DL_FUNC) &_NEXTNetR_nextnetR_adjacencylist_weightednetwork,           2},
+    {"_NEXTNetR_nextnetR_adjacencylist_network",                   (DL_FUNC) &_NEXTNetR_nextnetR_adjacencylist_network,                   3},
+    {"_NEXTNetR_nextnetR_adjacencylist_weightednetwork",           (DL_FUNC) &_NEXTNetR_nextnetR_adjacencylist_weightednetwork,           3},
     {"_NEXTNetR_nextnetR_barabasialbert_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_barabasialbert_network,                  2},
     {"_NEXTNetR_nextnetR_brownian_proximity_temporalnetwork",      (DL_FUNC) &_NEXTNetR_nextnetR_brownian_proximity_temporalnetwork,      7},
     {"_NEXTNetR_nextnetR_configmodel_clustered_alpha_network",     (DL_FUNC) &_NEXTNetR_nextnetR_configmodel_clustered_alpha_network,     3},
@@ -457,7 +457,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_fully_connected_network",                 (DL_FUNC) &_NEXTNetR_nextnetR_fully_connected_network,                 1},
     {"_NEXTNetR_nextnetR_gamma_time",                              (DL_FUNC) &_NEXTNetR_nextnetR_gamma_time,                              3},
     {"_NEXTNetR_nextnetR_lognormal_time",                          (DL_FUNC) &_NEXTNetR_nextnetR_lognormal_time,                          3},
-    {"_NEXTNetR_nextnetR_network_adjacencylist",                   (DL_FUNC) &_NEXTNetR_nextnetR_network_adjacencylist,                   1},
+    {"_NEXTNetR_nextnetR_network_adjacencylist",                   (DL_FUNC) &_NEXTNetR_nextnetR_network_adjacencylist,                   2},
     {"_NEXTNetR_nextnetR_network_bounds",                          (DL_FUNC) &_NEXTNetR_nextnetR_network_bounds,                          1},
     {"_NEXTNetR_nextnetR_network_coordinates",                     (DL_FUNC) &_NEXTNetR_nextnetR_network_coordinates,                     2},
     {"_NEXTNetR_nextnetR_network_is_simple",                       (DL_FUNC) &_NEXTNetR_nextnetR_network_is_simple,                       1},
@@ -488,7 +488,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_userdefined_time",                        (DL_FUNC) &_NEXTNetR_nextnetR_userdefined_time,                        8},
     {"_NEXTNetR_nextnetR_watts_strogatz_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_watts_strogatz_network,                  3},
     {"_NEXTNetR_nextnetR_weibull_time",                            (DL_FUNC) &_NEXTNetR_nextnetR_weibull_time,                            3},
-    {"_NEXTNetR_nextnetR_weighted_network_adjacencylist",          (DL_FUNC) &_NEXTNetR_nextnetR_weighted_network_adjacencylist,          1},
+    {"_NEXTNetR_nextnetR_weighted_network_adjacencylist",          (DL_FUNC) &_NEXTNetR_nextnetR_weighted_network_adjacencylist,          2},
     {NULL, NULL, 0}
 };
 }

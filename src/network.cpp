@@ -430,11 +430,13 @@ network_R nextnetR_configmodel_clustered_triangles_network(integers degrees, int
 
 [[cpp11::register]]
 network_R nextnetR_watts_strogatz_network(int size, int k, double p) {
+    RNG_SCOPE_IF_NECESSARY;
     return new watts_strogatz(size, k, p, rng_engine());
 }
 
 [[cpp11::register]]
 network_R nextnetR_barabasialbert_network(int size, int m) {
+    RNG_SCOPE_IF_NECESSARY;
     return new barabasi_albert(size, rng_engine(), m);
 }
 

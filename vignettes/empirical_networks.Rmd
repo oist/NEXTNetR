@@ -122,7 +122,6 @@ To query the adjacencylist of weighted networks (no matter how they were created
 
 ```{r}
 print(weighted_network_adjacencylist(wnw))
-
 ```
 ## Loading networks from files
 
@@ -130,5 +129,6 @@ TODO
 
 ## Packaged empirical networks
 
-TODO
-
+```{r}
+pin_nw <- empirical_network(name='PIN')
+```

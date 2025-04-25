@@ -170,32 +170,26 @@ list nextnetR_network_adjacencylist(const network_R& nw, bool above_diagonal) {
 
     /* Allocate output, a vector of node labels and a list of neighbour vectors */
     const int l = nw->nodes();
-    writable::integers nodes;
-    writable::list neighbours;
-    nodes.reserve(l);
-    neighbours.reserve(l);
+    writable::list al;
+    al.reserve(l);
 
     /* Interate over nodes and generate output */
     for(int n = 0; n < l; ++n) {
         const int d = nw->outdegree(n);
-        writable::integers node_neighbours;
-        node_neighbours.reserve(d);
+        writable::integers node_al;
+        node_al.reserve(d);
         for(int i=0; i < d; ++i) {
             const int m = nw->neighbour(n, i);
             if (is_undirected && above_diagonal && (m <n))
               continue;
-            node_neighbours.push_back((m >= 0) ? (m + 1) : NA_INTEGER);
+            node_al.push_back((m >= 0) ? (m + 1) : NA_INTEGER);
         }
         
         /* Append to output */
-        nodes.push_back(n + 1);
-        neighbours.push_back(node_neighbours);
+        al.push_back(node_al);
     }
 
-    return writable::list({
-        "nodes"_nm = nodes,
-        "neighbours"_nm = neighbours
-    });
+    return al;
 }
 
 [[cpp11::register]]
@@ -213,42 +207,34 @@ list nextnetR_weighted_network_adjacencylist(const network_R& nw, bool above_dia
     /* Must enter RNG scope since networks may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
 
-    /* TODO: For instances of weighted_network_adjacencylist, this could be done more efficiently */
-
     /* Allocate output, a vector of node labels and a list of neighbour vectors */
     const int l = nw_weighted->nodes();
-    writable::integers nodes;
-    writable::list neighbours;
-    nodes.reserve(l);
-    neighbours.reserve(l);
+    writable::list al;
+    al.reserve(l);
 
     /* Iterate over nodes and generate output */
     for(int n = 0; n < l; ++n) {
         const int d = nw_weighted->outdegree(n);
-        writable::integers node_neighbours;
+        writable::integers node_al;
         writable::doubles node_weights;
-        node_neighbours.reserve(d);
+        node_al.reserve(d);
         for(int i=0; i < d; ++i) {
             double w = NAN;
             const int m = nw_weighted->neighbour(n, i, &w);
             if (is_undirected && above_diagonal && (m <n))
               continue;
-            node_neighbours.push_back((m >= 0) ? (m + 1) : NA_INTEGER);
+            node_al.push_back((m >= 0) ? (m + 1) : NA_INTEGER);
             node_weights.push_back((m >= 0) ? w : NA_INTEGER);
         }
         
         /* Append to output */
-        nodes.push_back(n + 1);
-        neighbours.push_back(writable::list {
-            "n"_nm = node_neighbours,
+        al.push_back(writable::list {
+            "n"_nm = node_al,
             "w"_nm = node_weights
         });
     }
 
-    return writable::list({
-        "nodes"_nm = nodes,
-        "neighbours"_nm = neighbours
-    });
+    return al;
 }
 
 

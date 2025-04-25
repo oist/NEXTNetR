@@ -4,12 +4,18 @@
 \alias{adjacencylist_network}
 \title{Create a network from an adjacency list}
 \usage{
-adjacencylist_network(adjacencylist, is_undirected = FALSE)
+adjacencylist_network(
+  adjacencylist,
+  is_undirected = TRUE,
+  above_diagonal = is_undirected
+)
 }
 \arguments{
-\item{adjacencylist}{a list of vectors containing the neighbours of each node. Same format as the second entry in the return value of \code{\link{network_adjacencylist}}.}
+\item{adjacencylist}{a list of vectors containing the neighbours of each node. Same format as return value of \code{\link{network_adjacencylist}}.}
 
-\item{is_undirected}{true if the network is supposed to be undirected, i.e. contains a link from \eqn{i} to \eqn{j} exactly if it contains a link from \eqn{j} to \eqn{i}}
+\item{is_undirected}{\code{TRUE} if the network is supposed to be undirected, i.e. contains a link from \eqn{i} to \eqn{j} exactly if it contains a link from \eqn{j} to \eqn{i}.}
+
+\item{above_diagonal}{set to \code{TRUE} if the network is undirected and the adjacencylist only contains edges \eqn{i,j} with \eqn{i \leq j}, i.e. represent the upper triangular submatrix of the adjacency matrix. Defaults to \code{TRUE} for undirected networks.}
 }
 \value{
 a network object

@@ -332,7 +332,7 @@ empirical_weightednetwork <- function(
 #' @description
 #' Create an network object from an adjacencylist
 #'
-#' @param adjacencylist a list of vectors containing the neighbours of each node. Same format as the second entry in the return value of \code{\link{network_adjacencylist}}.
+#' @param adjacencylist a list of vectors containing the neighbours of each node. Same format as return value of \code{\link{network_adjacencylist}}.
 #' @param is_undirected `TRUE` if the network is supposed to be undirected, i.e. contains a link from \eqn{i} to \eqn{j} exactly if it contains a link from \eqn{j} to \eqn{i}.
 #' @param above_diagonal set to `TRUE` if the network is undirected and the adjacencylist only contains edges \eqn{i,j} with \eqn{i \leq j}, i.e. represent the upper triangular submatrix of the adjacency matrix. Defaults to `TRUE` for undirected networks.
 #' @returns a network object
@@ -349,7 +349,7 @@ adjacencylist_network <- function(adjacencylist, is_undirected = TRUE, above_dia
 #' @description
 #' Create an network object from an adjacency list
 #'
-#' @param adjacencylist a list of vectors containing the neighbours of each node. Same format as the second entry in the return value of \code{\link{weighted_network_adjacencylist}}.
+#' @param adjacencylist a list of vectors containing the neighbours of each node. Same format as the return value of \code{\link{weighted_network_adjacencylist}}.
 #' @param is_undirected `TRUE` if the network is supposed to be undirected, i.e. contains a link from \eqn{i} to \eqn{j} exactly if it contains a link from \eqn{j} to \eqn{i}.
 #' @param above_diagonal set to `TRUE` if the network is undirected and the adjacencylist only contains edges \eqn{i,j} with \eqn{i \leq j}, i.e. represent the upper triangular submatrix of the adjacency matrix. Defaults to `TRUE` for undirected networks.
 #' @returns a network object
@@ -571,19 +571,15 @@ activity_driven_temporalnetwork <- function(activities, m, eta, b,
 #'   given nodes. "w" is a vector of the same length and contains the corresponding weights.
 #'   
 #' * `network_adjacencylist(nw, above_diagonal=network_is_undirected(nw))`
-#'   returns a named list which contains two entries, *nodes* and *neighbours*.
-#'   *nodes* contains the indices of all nodes in the network, i.e. `1:network_size(nw)`.
-#'   *neighbours* is a list of vectors, where *neighbours\[i\]* lists the neighbours of
+#'   returns a list of interger vectors where \eqn{i}-th vector contains the neighbours of
 #'   node \eqn{i}. For undirected networks, of the edge pair \eqn{(i,j)} and \eqn{(j, i)}
 #'   only the edge \eqn{(i,j)} with \eqn{i \leq j} is output, i.e. only the upper triangular
 #'   submatrix of an symmetric adjacency matrix is considered. To include both edges,
 #'   set `above_diagonal=FALSE`.
 #'   
 #' * `weighted_network_adjacencylist(nw, above_diagonal=network_is_undirected(nw))`
-#'   returns a named list which contains two entries, *nodes* and *neighbours*.
-#'   *nodes* contains the indices of all nodes in the network, i.e. `1:network_size(nw)`.
-#'   *neighbours* is a list of named two-element lists containing vectors "n" and "w". The vector "n"
-#'   in *neighbours\[i\]* contains the neighbours of node \eqn{i}, and the vector "w" contains the
+#'   returns a list of named lists containing vectors "n" and "w". The vector "n"
+#'   in the \eqn{i}-th list contains neighbours of node \eqn{i}, and the vector "w" contains the
 #'   corresponding weights. For undirected networks, of the edge pair \eqn{(i,j)} and \eqn{(j, i)}
 #'   only the edge \eqn{(i,j)} with \eqn{i \leq j} is output, i.e. only the upper triangular
 #'   submatrix of an symmetric adjacency matrix is considered. To include both edges,

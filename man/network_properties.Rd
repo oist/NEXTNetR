@@ -32,9 +32,9 @@ network_neighbour(nw, nodes, indices)
 
 network_neighbour_weight(nw, nodes, indices)
 
-network_adjacencylist(nw)
+network_adjacencylist(nw, above_diagonal = network_is_undirected(nw))
 
-weighted_network_adjacencylist(nw)
+weighted_network_adjacencylist(nw, above_diagonal = network_is_undirected(nw))
 
 network_bounds(nw)
 
@@ -77,17 +77,19 @@ with the given index of the given nodes.
 returns a named list containing vectors "n" and "w". "n" is a vector of the same
 length as \code{nodes} and \code{indices} and contains the neighbours with the given index of the
 given nodes. "w" is a vector of the same length and contains the corresponding weights.
-\item \code{network_adjacencylist(nw)}
-returns a named list which contains two entries, \emph{nodes} and \emph{neighbours}.
-\emph{nodes} contains the indices of all nodes in the network, i.e. \code{1:network_size(nw)}.
-\emph{neighbours} is a list of vectors, where \emph{neighbours[i]} lists the neighbours of
-node \eqn{i}.
-\item \code{weighted_network_adjacencylist(nw)}
-returns a named list which contains two entries, \emph{nodes} and \emph{neighbours}.
-\emph{nodes} contains the indices of all nodes in the network, i.e. \code{1:network_size(nw)}.
-\emph{neighbours} is a list of named two-element lists containing vectors "n" and "w". The vector "n"
-in \emph{neighbours[i]} contains the neighbours of node \eqn{i}, and the vector "w" contains the
-corresponding weights.
+\item \code{network_adjacencylist(nw, above_diagonal=network_is_undirected(nw))}
+returns a list of interger vectors where \eqn{i}-th vector contains the neighbours of
+node \eqn{i}. For undirected networks, of the edge pair \eqn{(i,j)} and \eqn{(j, i)}
+only the edge \eqn{(i,j)} with \eqn{i \leq j} is output, i.e. only the upper triangular
+submatrix of an symmetric adjacency matrix is considered. To include both edges,
+set \code{above_diagonal=FALSE}.
+\item \code{weighted_network_adjacencylist(nw, above_diagonal=network_is_undirected(nw))}
+returns a list of named lists containing vectors "n" and "w". The vector "n"
+in the \eqn{i}-th list contains neighbours of node \eqn{i}, and the vector "w" contains the
+corresponding weights. For undirected networks, of the edge pair \eqn{(i,j)} and \eqn{(j, i)}
+only the edge \eqn{(i,j)} with \eqn{i \leq j} is output, i.e. only the upper triangular
+submatrix of an symmetric adjacency matrix is considered. To include both edges,
+set \code{above_diagonal=FALSE}.
 \item \code{network_bounds(nw)}
 for networks embedded into \eqn{d}-dimensional space, this function returns a list containing
 two vectors of length \eqn{d}, \eqn{x} and \eqn{y}. \eqn{x} is a lower-bound and \eqn{y} the

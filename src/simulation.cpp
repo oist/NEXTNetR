@@ -29,8 +29,8 @@ namespace writable = cpp11::writable;
 simulation_R nextnetR_nextreaction_simulation(
     network_R nw, transmission_time_R psi, sexp rho_, list opts
 ) {
-    if (!nw) throw std::runtime_error("network cannot be NULL"); 
-    if (!psi) throw std::runtime_error("transmission time distribution cannot be NULL");
+    if (!nw) stop("network cannot be NULL"); 
+    if (!psi) stop("transmission time distribution cannot be NULL");
 
     // Reset time rho is optional, translate R_NilValue to nullptr
     transmission_time* rho = nullptr;
@@ -68,35 +68,35 @@ simulation_R nextnetR_nextreaction_simulation(
 
 [[cpp11::register]]
 transmission_time_R nextnetR_simulation_transmissiontime(const simulation_R& sim) {
-    if (!sim) throw std::runtime_error("simulation cannot be NULL");
+    if (!sim) stop("simulation cannot be NULL");
     
     return ((list)sim.protected_data())["psi"];
 }
 
 [[cpp11::register]]
 SEXP nextnetR_simulation_resettime(const simulation_R& sim) {
-    if (!sim) throw std::runtime_error("simulation cannot be NULL");
+    if (!sim) stop("simulation cannot be NULL");
     
     return ((list)sim.protected_data())["rho"];
 }
 
 [[cpp11::register]]
 network_R nextnetR_simulation_network(const simulation_R& sim) {
-    if (!sim) throw std::runtime_error("simulation cannot be NULL");
+    if (!sim) stop("simulation cannot be NULL");
     
     return ((list)sim.protected_data())["nw"];
 }
 
 [[cpp11::register]]
 list nextnetR_simulation_options(const simulation_R& sim) {
-    if (!sim) throw std::runtime_error("simulation cannot be NULL");
+    if (!sim) stop("simulation cannot be NULL");
     
     return ((list)sim.protected_data())["opts"];
 }
 
 [[cpp11::register]]
 list nextnetR_simulation_ninfected(const simulation_R& sim) {
-  if (!sim) throw std::runtime_error("simulation cannot be NULL");
+  if (!sim) stop("simulation cannot be NULL");
   
   const list sim_data = sim.protected_data();
   return writable::list({
@@ -108,7 +108,7 @@ list nextnetR_simulation_ninfected(const simulation_R& sim) {
 
 [[cpp11::register]]
 logicals nextnetR_simulation_isinfected(const simulation_R& sim, integers nodes) {
-    if (!sim) throw std::runtime_error("simulation cannot be NULL");
+    if (!sim) stop("simulation cannot be NULL");
     
     /* Create output */
     const std::size_t l = nodes.size();
@@ -124,10 +124,10 @@ logicals nextnetR_simulation_isinfected(const simulation_R& sim, integers nodes)
 
 [[cpp11::register]]
 void nextnetR_simulation_addinfections(const simulation_R& sim, integers nodes, doubles times) {
-    if (!sim) throw std::runtime_error("simulation cannot be NULL");
+    if (!sim) stop("simulation cannot be NULL");
 
     if (nodes.size() != times.size())
-        throw std::runtime_error("number of nodes and times must agree");
+        stop("number of nodes and times must agree");
     
     /* Convert to vector of pairs */
     const std::size_t l = nodes.size();
@@ -135,11 +135,11 @@ void nextnetR_simulation_addinfections(const simulation_R& sim, integers nodes, 
     for(std::size_t j = 0; j < l; ++j) {
         const node_t n = nodes[j];
         if ((n < 1) || (n == NA_INTEGER))
-            throw std::runtime_error("invalid node");
+            stop("invalid node");
         
         const double t = times[j];
         if (!std::isfinite(t))
-            throw std::runtime_error("infection times must be finite");
+            stop("infection times must be finite");
         
         v.push_back({n - 1, t});
     }
@@ -148,10 +148,10 @@ void nextnetR_simulation_addinfections(const simulation_R& sim, integers nodes, 
 }
 
 [[cpp11::register]]
-data_frame nextnetR_simulation_run(const simulation_R& sim_, list stop, list opts) {
+data_frame nextnetR_simulation_run(const simulation_R& sim_, list stopconds, list opts) {
     RNG_SCOPE_IF_NECESSARY;
 
-    if (!sim_) throw std::runtime_error("simulation cannot be NULL");
+    if (!sim_) stop("simulation cannot be NULL");
 
     // Decode stopping condition
     int stop_epidemic_steps = NA_INTEGER;
@@ -160,7 +160,7 @@ data_frame nextnetR_simulation_run(const simulation_R& sim_, list stop, list opt
     double stop_infected = R_PosInf;
     double stop_total_infected = R_PosInf;
     double stop_total_reset = R_PosInf;
-    process_options(stop,
+    process_options(stopconds,
         option("epidemic_steps", stop_epidemic_steps),
         option("network_steps", stop_network_steps),
         option("time", stop_time),

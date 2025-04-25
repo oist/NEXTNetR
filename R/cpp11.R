@@ -188,8 +188,8 @@ nextnetR_simulation_addinfections <- function(sim, nodes, times) {
   invisible(.Call(`_NEXTNetR_nextnetR_simulation_addinfections`, sim, nodes, times))
 }
 
-nextnetR_simulation_run <- function(sim_, stop, opts) {
-  .Call(`_NEXTNetR_nextnetR_simulation_run`, sim_, stop, opts)
+nextnetR_simulation_run <- function(sim_, stopconds, opts) {
+  .Call(`_NEXTNetR_nextnetR_simulation_run`, sim_, stopconds, opts)
 }
 
 nextnetR_time_sample <- function(n, ttr, t, m) {

@@ -22,7 +22,7 @@ namespace writable = cpp11::writable;
 
 [[cpp11::register]]
 int nextnetR_network_size(const network_R& nw) {
-    if (!nw) throw std::runtime_error("network cannot be NULL"); 
+    if (!nw) stop("network cannot be NULL"); 
     
     /* Must enter RNG scope since networks may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
@@ -32,7 +32,7 @@ int nextnetR_network_size(const network_R& nw) {
 
 [[cpp11::register]]
 bool nextnetR_network_is_undirected(const network_R& nw) {
-    if (!nw) throw std::runtime_error("network cannot be NULL"); 
+    if (!nw) stop("network cannot be NULL"); 
     
     /* Must enter RNG scope since networks may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
@@ -42,7 +42,7 @@ bool nextnetR_network_is_undirected(const network_R& nw) {
 
 [[cpp11::register]]
 bool nextnetR_network_is_simple(const network_R& nw) {
-  if (!nw) throw std::runtime_error("network cannot be NULL"); 
+  if (!nw) stop("network cannot be NULL"); 
   
   /* Must enter RNG scope since networks may generate their topology on the fly */
   RNG_SCOPE_IF_NECESSARY;
@@ -52,21 +52,21 @@ bool nextnetR_network_is_simple(const network_R& nw) {
 
 [[cpp11::register]]
 bool nextnetR_network_is_weighted(const network_R& nw) {
-  if (!nw) throw std::runtime_error("network cannot be NULL"); 
+  if (!nw) stop("network cannot be NULL"); 
   
   return (as_weighted_network(nw.get()) != nullptr);
 }
 
 [[cpp11::register]]
 bool nextnetR_network_is_temporal(const network_R& nw) {
-  if (!nw) throw std::runtime_error("network cannot be NULL"); 
+  if (!nw) stop("network cannot be NULL"); 
   
   return (dynamic_cast<temporal_network*>(nw.get()) != nullptr);
 }
 
 [[cpp11::register]]
 integers nextnetR_network_outdegree(const network_R& nw, integers nodes) {
-    if (!nw) throw std::runtime_error("network cannot be NULL"); 
+    if (!nw) stop("network cannot be NULL"); 
     
     /* Must enter RNG scope since networks may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
@@ -85,13 +85,13 @@ integers nextnetR_network_outdegree(const network_R& nw, integers nodes) {
 
 [[cpp11::register]]
 integers nextnetR_network_neighbour(const network_R& nw, integers nodes, integers indices) {
-    if (!nw) throw std::runtime_error("network cannot be NULL"); 
+    if (!nw) stop("network cannot be NULL"); 
 
     /* Must enter RNG scope since networks may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
     
     if (nodes.size() != indices.size())
-        throw std::runtime_error("number of nodes and number of indices must agree");
+        stop("number of nodes and number of indices must agree");
     
     /* Create output */
     const std::size_t l = nodes.size();
@@ -116,17 +116,17 @@ integers nextnetR_network_neighbour(const network_R& nw, integers nodes, integer
 
 [[cpp11::register]]
 list nextnetR_network_neighbour_weight(const network_R& nw, integers nodes, integers indices) {
-    if (!nw) throw std::runtime_error("network cannot be NULL"); 
+    if (!nw) stop("network cannot be NULL"); 
 
     weighted_network* const wnw = as_weighted_network(nw.get());
     if (wnw == nullptr)
-        throw std::runtime_error("network is not weighted");
+        stop("network is not weighted");
 
     /* Must enter RNG scope since networks may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
     
     if (nodes.size() != indices.size())
-        throw std::runtime_error("number of nodes and number of indices must agree");
+        stop("number of nodes and number of indices must agree");
     
     /* Create outputs */
     const std::size_t l = nodes.size();
@@ -159,11 +159,11 @@ list nextnetR_network_neighbour_weight(const network_R& nw, integers nodes, inte
 
 [[cpp11::register]]
 list nextnetR_network_adjacencylist(const network_R& nw, bool above_diagonal) {
-    if (!nw) throw std::runtime_error("network cannot be NULL"); 
+    if (!nw) stop("network cannot be NULL"); 
 
     const bool is_undirected = nw->is_undirected();
     if (!is_undirected && above_diagonal)
-      throw std::runtime_error("above_diagonal=TRUE is invalid for directed networks");
+      stop("above_diagonal=TRUE is invalid for directed networks");
     
     /* Must enter RNG scope since networks may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
@@ -200,15 +200,15 @@ list nextnetR_network_adjacencylist(const network_R& nw, bool above_diagonal) {
 
 [[cpp11::register]]
 list nextnetR_weighted_network_adjacencylist(const network_R& nw, bool above_diagonal) {
-    if (!nw) throw std::runtime_error("network cannot be NULL"); 
+    if (!nw) stop("network cannot be NULL"); 
 
     weighted_network* const nw_weighted = as_weighted_network(nw.get());
     if (nw_weighted == nullptr)
-        throw std::runtime_error("network is not weighted");
+        stop("network is not weighted");
 
     const bool is_undirected = nw->is_undirected();
     if (!is_undirected && above_diagonal)
-      throw std::runtime_error("above_diagonal=TRUE is invalid for directed networks");
+      stop("above_diagonal=TRUE is invalid for directed networks");
     
     /* Must enter RNG scope since networks may generate their topology on the fly */
     RNG_SCOPE_IF_NECESSARY;
@@ -254,13 +254,13 @@ list nextnetR_weighted_network_adjacencylist(const network_R& nw, bool above_dia
 
 [[cpp11::register]]
 list nextnetR_network_bounds(const network_R& nw) {
-    if (!nw) throw std::runtime_error("network cannot be NULL"); 
+    if (!nw) stop("network cannot be NULL"); 
 
     RNG_SCOPE_IF_NECESSARY;
     
     network_embedding* const ebd = dynamic_cast<network_embedding*>(nw.get());
     if (ebd == nullptr)
-        throw std::runtime_error("network is not embedded into R^d");
+        stop("network is not embedded into R^d");
     
     std::vector<double> a, b;
     ebd->bounds(a, b);
@@ -273,13 +273,13 @@ list nextnetR_network_bounds(const network_R& nw) {
 
 [[cpp11::register]]
 doubles_matrix<> nextnetR_network_coordinates(const network_R& nw, integers nodes) {
-    if (!nw) throw std::runtime_error("network cannot be NULL"); 
+    if (!nw) stop("network cannot be NULL"); 
 
     RNG_SCOPE_IF_NECESSARY;
     
     network_embedding* const ebd = dynamic_cast<network_embedding*>(nw.get());
     if (ebd == nullptr)
-        throw std::runtime_error("network is not embedded into R^d");
+        stop("network is not embedded into R^d");
     
     const std::size_t d = ebd->dimensionality();
     writable::doubles_matrix<> results(nodes.size(), d);
@@ -295,7 +295,7 @@ doubles_matrix<> nextnetR_network_coordinates(const network_R& nw, integers node
 
 [[cpp11::register]]
 list nextnetR_reproduction_matrix(const network_R& nw) {
-    if (!nw) throw std::runtime_error("network cannot be NULL"); 
+    if (!nw) stop("network cannot be NULL"); 
 
     RNG_SCOPE_IF_NECESSARY;
 
@@ -352,7 +352,7 @@ network_R nextnetR_empirical_network(
     
     network_R nw = new empirical_network(file, undirected, simplify, idxbase, sep_[0]);
     if (!file.eof())
-        stop(std::string("failed to read ") + path_);
+        stop("failed to read %s", path_.c_str());
     return nw;
 }
 
@@ -389,7 +389,7 @@ network_R nextnetR_empirical_weightednetwork(
     network_R nw = new weighted_empirical_network(
       file, undirected, simplify, idxbase, csep_[0], wsep_[0]);
     if (!file.eof())
-        stop(std::string("failed to read ") + path_);
+        stop("failed to read %s", path_.c_str());
     return nw;
 }
 
@@ -494,11 +494,11 @@ network_R nextnetR_cubiclattice8d_network(int edge_length) {
 [[cpp11::register]]
 network_R nextnetR_adjacencylist_network(list input_al, bool is_undirected, bool above_diagonal) {
     if (!is_undirected && above_diagonal)
-        throw std::runtime_error("above_diagonal=TRUE only supported for undirected networks");
+        stop("above_diagonal=TRUE only supported for undirected networks");
 
     const std::size_t n = input_al.size();
     if (n > std::numeric_limits<node_t>::max())
-        throw std::runtime_error("too many nodes");
+        stop("too many nodes");
 
     /* directed edges whose counterpart hasn't been observed */
     std::unordered_map<edge_t, std::ptrdiff_t, pair_hash> directed_edges = {};
@@ -521,7 +521,7 @@ network_R nextnetR_adjacencylist_network(list input_al, bool is_undirected, bool
 
             /* Check validity and change index base of node indices to zero */
             if ((v < 1) || (v > (node_t)n))
-                throw std::runtime_error("nodes must be labelled consecutively from 1 to n");
+                stop("nodes must be labelled consecutively from 1 to n");
             v -= 1;
 
             /* Track whether the network is simple */
@@ -545,9 +545,7 @@ network_R nextnetR_adjacencylist_network(list input_al, bool is_undirected, bool
 
             /* If undirected and asked to add reversed edges only edges u <= v should exist */
             if (is_undirected && above_diagonal && (u > v)) 
-                throw std::runtime_error("unexpected edge (u=" +
-                    std::to_string(u+1) + " -> v=" + std::to_string(v+1) +
-                    " but expected u <= v)");
+                stop("unexpected edge (%d -> %d), %d > %d", u+1, v+1, u+1, v+1);
 
             /* Add edge (and possibly reverse edge) */  
             u_adj.push_back(v);
@@ -558,8 +556,8 @@ network_R nextnetR_adjacencylist_network(list input_al, bool is_undirected, bool
 
     /* Check that the network was indeed undirected */
     if (is_undirected && !directed_edges.empty())
-    throw std::runtime_error(std::to_string(directed_edges.size()) + " edges "
-        "with unequal number of forward and reverse edges in network claimed to be undirected");
+        stop("%d edges have non-matching forward and reverse edges but is_undirected=TRUE",
+             directed_edges.size());
 
     return new adjacencylist_network(std::move(adjacencylist),
                                is_undirected, is_simple);
@@ -600,7 +598,7 @@ network_R nextnetR_empirical_contact_temporalnetwork(std::string path, bool fini
 
 [[cpp11::register]]
 network_R nextnetR_sirx_temporalnetwork(const network_R& nw, double kappa0, double kappa) {
-    if (!nw) throw std::runtime_error("underlying network cannot be null"); 
+    if (!nw) stop("underlying network cannot be null"); 
 
     RNG_SCOPE_IF_NECESSARY;
     
@@ -645,11 +643,11 @@ network_R nextnetR_erdos_renyi_weightednetwork(int size, double avg_degree, doub
 [[cpp11::register]]
 network_R nextnetR_adjacencylist_weightednetwork(list input_al, bool is_undirected, bool above_diagonal) {
     if (!is_undirected && above_diagonal)
-        throw std::runtime_error("above_diagonal=TRUE only supported for undirected networks");
+        stop("above_diagonal=TRUE only supported for undirected networks");
     
     const std::size_t n = input_al.size();
     if (n > std::numeric_limits<node_t>::max())
-        throw std::runtime_error("too many nodes");
+        stop("too many nodes");
 
     /* directed edges whose counterpart hasn't been observed */
     std::unordered_map<edge_t, double, pair_hash> directed_edges = {};
@@ -665,7 +663,7 @@ network_R nextnetR_adjacencylist_weightednetwork(list input_al, bool is_undirect
         const integers input_u_adj = ((list)input_al[u])["n"];
         const doubles input_u_weights = ((list)input_al[u])["w"];
         if (input_u_adj.size() != input_u_weights.size())
-            throw std::runtime_error("sizes of m (neighbours) and w (weights) vectors must agree");
+            stop("sizes of m (neighbours) and w (weights) vectors must agree");
         const std::size_t k = input_u_adj.size();
         u_adj.reserve(k);
         seen.clear();
@@ -676,12 +674,12 @@ network_R nextnetR_adjacencylist_weightednetwork(list input_al, bool is_undirect
             
             /* Check validity and change index base of node indices to zero */
             if ((v < 1) || (v > (node_t)n))
-              throw std::runtime_error("nodes must be labelled consecutively from 1 to n");
+              stop("nodes must be labelled consecutively from 1 to n");
             v -= 1;
             
             /* Multi-edges are not allowed for weighted networks */
             if (seen.find(v) != seen.end())
-                throw std::runtime_error("multi-edges are not supported (" +
+                stop("multi-edges are not supported (" +
                                          std::to_string(u+1) + " -> " + std::to_string(v+1) +
                                          "already seen)");
             seen.insert(v);
@@ -707,9 +705,7 @@ network_R nextnetR_adjacencylist_weightednetwork(list input_al, bool is_undirect
             
             /* If undirected and asked to add reversed edges only edges u <= v should exist */
             if (is_undirected && above_diagonal && (u > v)) 
-                throw std::runtime_error("unexpected edge (u=" +
-                    std::to_string(u+1) + " -> v=" + std::to_string(v+1) +
-                    " but expected u <= v)");
+                stop("unexpected edge %d -> %d, %d > %v", u+1, v+1, u+1, v+1);
               
             /* Add edge */
             u_adj.emplace_back(v, w);
@@ -719,9 +715,10 @@ network_R nextnetR_adjacencylist_weightednetwork(list input_al, bool is_undirect
     }
     
     /* Check that the network was indeed undirected */
+    /* Check that the network was indeed undirected */
     if (is_undirected && !directed_edges.empty())
-    throw std::runtime_error(std::to_string(directed_edges.size()) + " edges "
-        "with unequal number of forward and reverse edges in network claimed to be undirected");
+        stop("%d edges have non-matching forward and reverse edges but is_undirected=TRUE",
+             directed_edges.size());
     
     return new weighted_adjacencylist_network(std::move(adjacencylist),
                                               is_undirected, is_simple);

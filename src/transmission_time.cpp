@@ -19,7 +19,7 @@ namespace writable = cpp11::writable;
 
 [[cpp11::register]]
 doubles nextnetR_time_sample(int n, const transmission_time_R& ttr, double t, double m) {
-    if (!ttr) throw std::runtime_error("time distribution cannot be NULL"); 
+    if (!ttr) stop("time distribution cannot be NULL"); 
 
     RNG_SCOPE_IF_NECESSARY;
     transmission_time& tt = *(ttr.get());
@@ -33,9 +33,9 @@ doubles nextnetR_time_sample(int n, const transmission_time_R& ttr, double t, do
 [[cpp11::register]]
 doubles nextnetR_time_density(const transmission_time_R& ttr, doubles taus, doubles ts, doubles ms) {
     if (!ttr)
-      throw std::runtime_error("time distribution cannot be NULL");
+      stop("time distribution cannot be NULL");
     if ((taus.size() != ts.size()) || (taus.size() != ms.size()))
-      throw std::runtime_error("taus, ts and ms vectors must have the same length");
+      stop("taus, ts and ms vectors must have the same length");
     
     transmission_time& tt = *(ttr.get());
     const std::size_t n = taus.size();
@@ -52,7 +52,7 @@ doubles nextnetR_time_density(const transmission_time_R& ttr, doubles taus, doub
 
 [[cpp11::register]]
 doubles nextnetR_time_hazardrate(const transmission_time_R& ttr, doubles taus) {
-    if (!ttr) throw std::runtime_error("time distribution cannot be NULL"); 
+    if (!ttr) stop("time distribution cannot be NULL"); 
 
     transmission_time& tt = *(ttr.get());
     const std::size_t n = taus.size();
@@ -66,9 +66,9 @@ doubles nextnetR_time_hazardrate(const transmission_time_R& ttr, doubles taus) {
 [[cpp11::register]]
 doubles nextnetR_time_survivalprobability(const transmission_time_R& ttr, doubles taus, doubles ts, doubles ms) {
     if (!ttr)
-      throw std::runtime_error("time distribution cannot be NULL"); 
+      stop("time distribution cannot be NULL"); 
     if ((taus.size() != ts.size()) || (taus.size() != ms.size()))
-      throw std::runtime_error("taus, ts and ms vectors must have the same length");
+      stop("taus, ts and ms vectors must have the same length");
 
     transmission_time& tt = *(ttr.get());
     const std::size_t n = taus.size();
@@ -89,9 +89,9 @@ doubles nextnetR_time_survivalprobability(const transmission_time_R& ttr, double
 [[cpp11::register]]
 doubles nextnetR_time_survivalquantile(const transmission_time_R& ttr, doubles ps, doubles ts, doubles ms) {
   if (!ttr)
-    throw std::runtime_error("time distribution cannot be NULL"); 
+    stop("time distribution cannot be NULL"); 
   if ((ps.size() != ts.size()) || (ps.size() != ms.size()))
-    throw std::runtime_error("taus, ts and ms vectors must have the same length");
+    stop("taus, ts and ms vectors must have the same length");
   
   transmission_time& tt = *(ttr.get());
   const std::size_t n = ps.size();

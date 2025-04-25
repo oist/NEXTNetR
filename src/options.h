@@ -45,7 +45,7 @@ struct option_handler {
                 dst = as_cpp<T>(v);
             }
             catch (const std::exception &e) {
-                throw std::runtime_error("invalid value for option "s + name + ": " + e.what());
+                stop("invalid value for option %s: %s", name.c_str(), e.what());
             }
         }
 
@@ -91,7 +91,7 @@ template<typename ...Handlers>
 list process_options(const list& opts, Handlers... handlers)
 {
     if (!opts.empty() && !opts.named())
-        throw std::runtime_error("options must be named");
+        stop("options must be named");
 
     // Convert list of option values to map
     options_collection_type opts_unprocessed;
@@ -114,7 +114,7 @@ list process_options(const list& opts, Handlers... handlers)
 
     // Warn about unprocessed options
     for(const auto& i: opts_unprocessed)
-        warning("ignoring unknown option "s + i.first);
+        warning("ignoring unknown option %s", i.first.c_str());
 
     return opts_out_list;
 }

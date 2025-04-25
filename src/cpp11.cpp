@@ -336,10 +336,10 @@ extern "C" SEXP _NEXTNetR_nextnetR_simulation_addinfections(SEXP sim, SEXP nodes
   END_CPP11
 }
 // simulation.cpp
-data_frame nextnetR_simulation_run(const simulation_R& sim_, list stop, list opts);
-extern "C" SEXP _NEXTNetR_nextnetR_simulation_run(SEXP sim_, SEXP stop, SEXP opts) {
+data_frame nextnetR_simulation_run(const simulation_R& sim_, list stopconds, list opts);
+extern "C" SEXP _NEXTNetR_nextnetR_simulation_run(SEXP sim_, SEXP stopconds, SEXP opts) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_simulation_run(cpp11::as_cpp<cpp11::decay_t<const simulation_R&>>(sim_), cpp11::as_cpp<cpp11::decay_t<list>>(stop), cpp11::as_cpp<cpp11::decay_t<list>>(opts)));
+    return cpp11::as_sexp(nextnetR_simulation_run(cpp11::as_cpp<cpp11::decay_t<const simulation_R&>>(sim_), cpp11::as_cpp<cpp11::decay_t<list>>(stopconds), cpp11::as_cpp<cpp11::decay_t<list>>(opts)));
   END_CPP11
 }
 // transmission_time.cpp

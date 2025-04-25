@@ -1,0 +1,136 @@
+---
+title: "Empirical Networks"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Empirical Networks}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Loading the NEXTNetR package
+
+We start with loading the `{NEXTNetR}` package. If the package is not already installed, see the [website](https://oist.github.io/NEXTNetR/) for installation instructions. We also load the `{ggplot2}` and `{ggpubr}` packages for plotting and set a nice theme.
+
+```{r setup}
+library(NEXTNetR)
+library(ggplot2)
+library(ggpubr)
+theme_set(theme_pubr())
+```
+
+## Defining arbitrary networks
+
+To create arbitrary, user-defined networks defined by adjacency lists, `{NEXTNetR}` provides `adjacencylist_network()` and `adjacencylist_weightednetwork()`. We first use  `adjacencylist_network()` to create an undirected network in which nodes 1, 2, 3, 4 form a clique (i.e. each node is linked to all others) but node 5 is linked only to nodes 1 and 2 and node 6 only to nodes 3 and 4.
+
+```{r}
+nw <- adjacencylist_network(list(
+  c(2, 3, 4, 5), # neighbours of node 1
+  c(1, 3, 4, 5), # neighbours of node 2
+  c(1, 2, 4, 6), # neighbours of node 3
+  c(1, 2, 3, 6), # neighbours of node 4
+  c(1, 2),       # neighbours of node 5
+  c(3, 4)        # neighbours of node 6
+), is_undirected=TRUE, above_diagonal=FALSE)
+```
+
+Note that since our network is undirected, the adjacency list we specified is redundant -- since the network is undirected, a link from node $i$ to $j$ necessarily entails a link from $j$ back to $i$. Setting `above_diagonal=FALSE` signalled to `adjacencylist_network()` that we explicitly list these redundant links. The same network can be define more succintly by only explicitly listing links from node $i$ to $j$ if $i \leq j$, and leaving it to `adjacencylist_network()` to add the reverse links, linke so:
+
+```{r}
+nw2 <- adjacencylist_network(list(
+  c(2, 3, 4, 5), 
+  c(3, 4, 5),
+  c(4, 6),
+  c(6), 
+  c(),
+  c()     
+), is_undirected=TRUE)
+```
+
+To confirm that the implicitly defined links were indeed added, we check the neighbours of node 4
+
+```{r}
+print(network_neighbour(nw, 4, 1:network_outdegree(nw, 4)))
+print(network_neighbour(nw2, 4, 1:network_outdegree(nw2, 4)))
+```
+
+and see that both networks list nodes 1, 2, 3 and 6 as expected as neighbours of node 4. We can also query the full adjacency lists of these networks with `network_adjacencylist()`
+
+```{r}
+print(network_adjacencylist(nw))
+```
+
+Note that `network_adjacencylist()` by default also omit redundant links in the case of undirected networks, i.e. skips links from node $i$ to $j$ if $i > j$. To include all neighbours for all nodes, set `above_diagonal=FALSE`.
+
+`network_adjacencylist()` works for all networks, no matter how they were originally defined. We can thus use this function to query the adjacency list of synthetic networks, for example for an Erdős–Rényi network
+
+```{r}
+print(network_adjacencylist(erdos_renyi_network(5, 2.5), above_diagonal=FALSE))
+```
+
+This makes it possible to modify synthetic networks. For example, we can merge an Erdős–Rényi with a Barabási–Albert network
+
+```{r}
+N <- 100
+k <- 10
+m <- 5
+al_er <- network_adjacencylist(erdos_renyi_network(N, k))
+al_ba <- network_adjacencylist(barabasialbert_network(N, m))
+al_merged <- mapply(FUN=function(x, y) unique(c(x,y)), al_er, al_ba)
+nw_merged <- adjacencylist_network(al_merged)
+```
+
+The resulting degree distribution is neither that of an Erdős–Rényi network (blue) nor that of a Barabási–Albert (green)
+
+```{r plot_degrees}
+ggplot(data.frame(degree=network_outdegree(nw_merged, 1:N))) +
+  geom_histogram(aes(x=degree, y=after_stat(count)),
+                 binwidth=5, fill='darkgrey', color=NA) +
+  geom_function(fun=function(n) 5 * N * dpois(round(n), k),
+                n=1000, color='blue', linetype="dashed", linewidth=0.5) +
+  geom_function(fun=function(n) 5 * N * 2*m*(m+1)/(n*(n+1)*(n+2)),
+                n=1000, color='green', linetype="dashed", linewidth=0.5) 
+```
+
+## Defining weighted networks
+
+To define a weighted network, the adjacency list must contain a list of weights for every list of neighbours. Instead of a list of vectors, we therefore now pass a list of lists to `adjacencylist_weightednetwork()`, which each contain two vectors names `n` for the neighbours and `w` for the weights.
+
+```{r}
+wnw <- adjacencylist_weightednetwork(list(
+  list(n=c(2, 3, 4, 5), w=c(1.5, 2,  2.5, 3)), 
+  list(n=c(3, 4, 5),    w=c(2.5, 3,  3.5)),
+  list(n=c(4, 6),       w=c(3.5, 4.5)),
+  list(n=c(6),          w=c(5)), 
+  list(n=c(), w=c()),
+  list(n=c(), w=c())     
+), is_undirected=TRUE)
+```
+
+We can now query not only the neighbours of node 4, but also the weights of the corresponding links
+
+```{r}
+print(network_neighbour_weight(wnw, 4, 1:network_outdegree(wnw, 4)))
+```
+To query the adjacencylist of weighted networks (no matter how they were created), we can use `weighted_network_adjacencylist()`
+
+```{r}
+print(weighted_network_adjacencylist(wnw))
+
+```
+## Loading networks from files
+
+TODO
+
+## Packaged empirical networks
+
+```{r}
+pin_nw <- empirical_network(name='PIN')
+```
+

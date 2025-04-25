@@ -17,7 +17,8 @@ Alternatively, the latest release can be downloaded [here](https://github.com/oi
 
 The following minimal example simulated an epidemic on an Erdős–Rényi network with lognormally distributed transmission time
 
-	sim <- simulation(
+	library(NEXTNetR)
+ 	sim <- simulation(
 		erdos_renyi_network(1e5, 5),
 		lognormal_time(6, 30, 0.1))
 	simulation_addinfections(sim, 1, 0.0)

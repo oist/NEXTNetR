@@ -85,7 +85,7 @@ inline void option_handlers_run(options_collection_type& opts_unprocessed, optio
 /**
  * @brief Process list of options with the specified list of handlers
  * 
- * Handlers should be values retured by `option(name, destination)`.
+ * Handlers should be values returned by `option(name, destination)`.
  */
 template<typename ...Handlers>
 list process_options(const list& opts, Handlers... handlers)

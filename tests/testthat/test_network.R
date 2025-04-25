@@ -17,7 +17,7 @@ test_that("fully_connected", {
     # Check adjacencylist generation
     a <- network_adjacencylist(g)
     for(i in 1:N)
-        expect_equal(sort(a$neighbours[[i]]), if (i < N) ((i+1):N) else integer())
+        expect_equal(sort(a[[i]]), if (i < N) ((i+1):N) else integer())
 })
 
 test_that("adjacencylist", {
@@ -31,5 +31,5 @@ test_that("adjacencylist", {
     expect_equal(network_outdegree(g, 1:4), c(3,2,3,2))
     expect_equal(network_neighbour(g, rep(1:4, each=4), rep(1:4, times=4)),
                  c(2,3,4,NA, 1,3,NA,NA, 1,2,4,NA, 1,3,NA,NA))
-    expect_equal(network_adjacencylist(g)$neighbours, al)
+    expect_equal(network_adjacencylist(g), al)
 })

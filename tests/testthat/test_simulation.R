@@ -1,42 +1,39 @@
 test_that("type checking", {
-    g <- episimR_fully_connected_graph(1)
+    g <- fully_connected_network(1)
 
-    expect_error(episimR_nextreaction_simulation(g, g, g));
+    expect_error(simulation(g, g, g));
 })
 
 test_that("options", {
-  g <- fully_connected_graph(1)
+  g <- fully_connected_network(1)
   psi <- gamma_time(1, 2, 0.0);
   
   # Implicitly set default value
-  s <- nextreaction_simulation(g, psi, NULL)
+  s <- simulation(g, psi, NULL)
   expect_equal(simulation_options(s)$shuffle_neighbours, TRUE)
   
   # Explicitly set default value
-  s <- nextreaction_simulation(g, psi, NULL,
-                               list(shuffle_neighbours=TRUE))
+  s <- simulation(g, psi, NULL, list(shuffle_neighbours=TRUE))
   expect_equal(simulation_options(s)$shuffle_neighbours, TRUE)
   
   # Explicitly set non-default value
-  s <- nextreaction_simulation(g, psi, NULL,
-                               list(shuffle_neighbours=FALSE))
+  s <- simulation(g, psi, NULL, list(shuffle_neighbours=FALSE))
   expect_equal(simulation_options(s)$shuffle_neighbours, FALSE)
   
   # Warn on unexpected options
-  expect_warning(nextreaction_simulation(g, psi, NULL,
-                                         list(no_such_option=NULL)))
+  expect_warning(simulation(g, psi, NULL, list(no_such_option=NULL)))
 })
 
-test_that("next_reaction basic check", {
+test_that("basic simulation", {
     # Create network
     N <- 10
-    g <- fully_connected_graph(N)
+    g <- fully_connected_network(N)
 
     # Create transmission time
     psi <- gamma_time(1, 2, 0.0);
     
     # Create simulator
-    s <- nextreaction_simulation(g, psi, NULL);
+    s <- simulation(g, psi, NULL);
     
     # No node should be infected
     expect_equal(simulation_isinfected(s, 1:N), rep(FALSE, N))
@@ -46,19 +43,19 @@ test_that("next_reaction basic check", {
     
     # Run first step
     expect_equal(simulation_isinfected(s, 1:N), rep(FALSE, N))
-    r1 <- simulation_step(s, 1);
+    r1 <- simulation_run(s, stop=list(epidemic_steps=1));
     expect_equal(simulation_ninfected(s)$infected, 1)
     expect_equal(simulation_ninfected(s)$total_infected, 1)
     expect_equal(simulation_ninfected(s)$total_reset, 0)
     expect_equal(simulation_isinfected(s, 1:N), c(TRUE, rep(FALSE, N-1)))
     expect_equal(nrow(r1), 1);
-    expect_equal(ncol(r1), 6);
+    expect_equal(ncol(r1), 9);
     expect_equal(r1$infected, 1);
     expect_equal(r1$total_infected, 1);
     expect_equal(r1$total_reset, 0);
     
     # Run further steps
-    r2 <- simulation_step(s, N - 1);
+    r2 <-simulation_run(s, stop=list(epidemic_steps=N));
     expect_equal(simulation_ninfected(s)$infected, N)
     expect_equal(simulation_ninfected(s)$total_infected, N)
     expect_equal(simulation_ninfected(s)$total_reset, 0)
@@ -67,18 +64,18 @@ test_that("next_reaction basic check", {
 
     # Rudimentary check result
     expect_equal(nrow(r), N);
-    expect_equal(ncol(r), 6);
+    expect_equal(ncol(r), 9);
     expect_equal(r$infected, 1:N);
     expect_equal(r$total_infected, 1:N);
     expect_equal(r$total_reset, rep(0, N));
 
     # Further runs should exit immediately since all nodes are infected
-    r3 <- simulation_step(s, 1);
+    r3 <- simulation_run(s, stop=list(epidemic_steps=1));
     expect_equal(simulation_ninfected(s)$infected, N)
     expect_equal(simulation_ninfected(s)$total_infected, N)
     expect_equal(simulation_ninfected(s)$total_reset, 0)
     expect_equal(simulation_isinfected(s, 1:N), rep(TRUE, N))
     expect_equal(nrow(r3), 0);
-    expect_equal(ncol(r3), 6);        
+    expect_equal(ncol(r3), 9);        
     expect_equal(r3$infected, r3$total_infected - r3$total_reset)
 })

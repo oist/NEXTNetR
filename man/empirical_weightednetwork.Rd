@@ -28,12 +28,6 @@ empirical_weightednetwork(
 \item{wsep}{separator between neighbour and its weight, by default ':'}
 
 \item{gzip}{whether the file is compressed}
-
-\item{name}{name of a packaged empirical network, see \code{\link{packaged_empirical_network}}}
-
-\item{group}{packaged empirical network group containing the network}
-
-\item{download.timeout}{for packaged networks the download timeout}
 }
 \value{
 a network object

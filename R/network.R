@@ -305,15 +305,12 @@ empirical_network <- function(
 #' assumed to be a header line and skipped as well.
 #' 
 #' @param path name of the file
-#' @param name name of a packaged empirical network, see \code{\link{packaged_empirical_network}}
-#' @param group packaged empirical network group containing the network
 #' @param undirected if `TRUE` the network is assumed to be undirected
 #' @param simplify whether to remove self-edges and multi-edges
 #' @param idxbase index of the first node (typically 1 or 0, default 1)
 #' @param csep separator between neighbours/weight pairs, by default whitespace
 #' @param wsep separator between neighbour and its weight, by default ':' 
 #' @param gzip whether the file is compressed
-#' @param download.timeout for packaged networks the download timeout
 #' @returns a network object
 #' 
 #' @export

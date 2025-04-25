@@ -277,6 +277,7 @@ empirical_network <- function(
           stop("when loading packaged networks, neither path nor sep is supported")
       path <- packaged_empirical_network(as.character(name), as.character(group),
                                          timeout=download.timeout)
+      idxbase <- 1
       sep <- ' '
       gzip <- TRUE
       if ((group == "undirected") && (!undirected))

@@ -331,7 +331,7 @@ network_R nextnetR_empirical_network(
     std::istream& file = gzip ? (std::istream&)gzfile : (std::istream&)plainfile;
     
     if (gzip)
-        gzfile.open("gzcat",  std::vector<std::string> { "gzcat", path_ },
+        gzfile.open("gzip",  std::vector<std::string> { "gzip", "-cd", path_ },
                     redi::pstreambuf::pstdout);
     else
         plainfile.open(path_);

@@ -114,7 +114,7 @@ list process_options(const list& opts, Handlers... handlers)
 
     // Warn about unprocessed options
     for(const auto& i: opts_unprocessed)
-        warning("ignoring unknown option %s", i.first.c_str());
+        safe[Rf_warning]("ignoring unknown option %s", i.first.c_str());
 
     return opts_out_list;
 }

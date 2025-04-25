@@ -130,7 +130,5 @@ TODO
 
 ## Packaged empirical networks
 
-```{r}
-pin_nw <- empirical_network(name='PIN')
-```
+TODO
 

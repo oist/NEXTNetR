@@ -1,0 +1,17 @@
+# network.nw
+# Files may contains comment lines beginning with '#',
+# and an optional header line beginning with non-numeric text
+node neighbours ....
+# After the optional header, each line starts with a node and lists its
+# neighbours, separated by whitespace. The following line thus adds
+# links 1 -> 2, 1 -> 3, 1 -> 4, 1-> 5. For undirected networks,
+# the reversed edges are added as well.
+1 2 3 4 5
+# The neighbours of a single node can be split over multiple, possibly
+# non-consecutive lines. Here, we add 2 -> 4 and 2 -> 3, 2 -> 5.
+2 4
+2 3 5
+3 4 5
+4 6
+# Nodes may be skipped, the largest node index defines the network size
+6

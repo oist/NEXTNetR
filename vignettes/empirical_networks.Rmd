@@ -25,7 +25,7 @@ library(ggpubr)
 theme_set(theme_pubr())
 ```
 
-## Defining arbitrary networks
+## Defining networks
 
 To create arbitrary, user-defined networks defined by adjacency lists, `{NEXTNetR}` provides `adjacencylist_network()` and `adjacencylist_weightednetwork()`. We first use  `adjacencylist_network()` to create an undirected network in which nodes 1, 2, 3, 4 form a clique (i.e. each node is linked to all others) but node 5 is linked only to nodes 1 and 2 and node 6 only to nodes 3 and 4.
 
@@ -98,7 +98,7 @@ ggplot(data.frame(degree=network_outdegree(nw_merged, 1:N))) +
                 n=1000, color='green', linetype="dashed", linewidth=0.5) 
 ```
 
-## Defining weighted networks
+### Weighted networks
 
 To define a weighted network, the adjacency list must contain a list of weights for every list of neighbours. Instead of a list of vectors, we therefore now pass a list of lists to `adjacencylist_weightednetwork()`, which each contain two vectors names `n` for the neighbours and `w` for the weights.
 
@@ -123,12 +123,55 @@ To query the adjacencylist of weighted networks (no matter how they were created
 ```{r}
 print(weighted_network_adjacencylist(wnw))
 ```
-## Loading networks from files
 
-TODO
+### Loading networks from files
+
+The functions `empirical_network()` and `empirical_weightednetwork()` allow networks to be read from files. For unweighted networks, file have the following format
+
+```{text, file="network.nw"}
+```
+
+and are read with
+
+```{r}
+nw3 <- empirical_network(path="network.nw")
+```
+
+This yields the same network as `nw` and `nw2` defined above. The separator is whitespace by default but can be changed to something else, see `help(empirical_network)`. If `gzip` is installed, gzip-compressed files with extension `.gz` are supported and piped through `gzip` to read them. 
+
+Weighted networks are supported by `empirical_weightednetwork`, and have the format
+
+```{text, file="weighted_network.nw"}
+```
+
+To read this file, which defines the same weighted network as `wnw` above, we do
+
+```{r}
+wnw3 <- empirical_weightednetwork(path="weighted_network.nw")
+```
+
+Again, gzip-compressed files are supported if `gzip` is installed, and the separators between neighbour-weight pairs and between neighbours and weights can be specified, see `help(empirical_weightednetwork)`. Note that in the example above, link $(4,6)$ now weight $5$ since the weights of the two occurrences of that link are summed
+
+```{r}
+network_neighbour_weight(wnw3, 4, 4)
+```
 
 ## Packaged empirical networks
 
+`empirical_network()` can download packaged networks directly from the  [NEXTNet-EmpiricalNetworks](https://github.com/oist/NEXTNet-EmpiricalNetworks) repository, which contains a selection of empirical networks from the SNAP (Leskovec and Krevl, [2014](http://snap.stanford.edu/data)), ICON (Clauset *et al.*, [2016](https://icon.colorado.edu/)) and KONECT (Kunegis, [2013](https://doi.org/10.1145/2487788.2488173)) databases.
+
+We can download and import the "gowalla" network found in the SNAP database with
+
 ```{r}
-pin_nw <- empirical_network(name='PIN')
+gowalla_nw <- empirical_network(name='gowalla')
 ```
+
+and plot its degree distribution in a double-logarithmic plot
+
+```{r plot_degrees_pin}
+ggplot(data.frame(degree=network_outdegree(gowalla_nw, 1:network_size(gowalla_nw)))) +
+  geom_density(aes(x=degree, y=after_stat(count)), bw=0.15) +
+  scale_x_log10() +
+  scale_y_log10()
+```
+

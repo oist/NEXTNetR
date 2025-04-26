@@ -90,7 +90,7 @@ userdefined_time <- function(survival, density, sample=NULL, quantile=NULL,
     else length(formals(survival))
   sample_nargs <- 
     if (!missing(sample_nargs)) as.integer(sample_nargs)
-    else if (is.null(sample)) 1L
+    else if (is.null(sample)) 0L
     else length(formals(sample))
   quantile_nargs <- 
     if (!missing(quantile_nargs)) as.integer(quantile_nargs)
@@ -103,14 +103,14 @@ userdefined_time <- function(survival, density, sample=NULL, quantile=NULL,
   
   if (!(survival_nargs %in% c(1,3)))
     stop("survival_nargs must be 1 or 3")
-  if (!(sample_nargs %in% c(1,3)))
-    stop("sample_nargs must be 1 or 3")
+  if (!(sample_nargs %in% c(0,2)))
+    stop("sample_nargs must be 0 or 2")
   if (!(quantile_nargs %in% c(1,3)))
     stop("quantile_nargs must be 1 or 3")
   
   nextnetR_userdefined_time(
     survival, density, sample, quantile,
-    survival_nargs == 3, sample_nargs == 3, quantile_nargs == 3,
+    survival_nargs == 3, sample_nargs == 2, quantile_nargs == 3,
     p_infinity)
 }
 

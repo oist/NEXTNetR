@@ -145,10 +145,10 @@ struct rfunction_transmission_time : public transmission_time {
     {}
 
     virtual interval_t sample(rng_t& e, interval_t t, double m) const {
-        if (sample_rf && (sample_is_trinary || ((t == 0.0) && (m == 1.0)))) {
+        if (sample_rf && (sample_accept_t_m || ((t == 0.0) && (m == 1.0)))) {
             // Since the sample() R code will likely use the RNG relinquish before calling
             R_rng_relinquish rngrel;
-            return as_cpp<double>(sample_is_trinary ? (*sample_rf)(t, m) : (*sample_rf)());
+            return as_cpp<double>(sample_accept_t_m ? (*sample_rf)(t, m) : (*sample_rf)());
         }
         else {
             return transmission_time::sample(e, t, m);
@@ -160,61 +160,61 @@ struct rfunction_transmission_time : public transmission_time {
     }
     
     virtual double survivalprobability(interval_t tau) const {
-        if (survival_is_trinary)
+        if (survival_accept_t_m)
             return as_cpp<double>(survival_rf(tau, 0.0, 1.0));
         else
             return as_cpp<double>(survival_rf(tau));
     }
     
     virtual double survivalprobability(interval_t tau, interval_t t, double m) const {
-        if (survival_is_trinary)
+        if (survival_accept_t_m)
             return as_cpp<double>(survival_rf(tau, t, m));
         else
             return transmission_time::survivalprobability(tau, t, m);
     }
     
     virtual double survivalquantile(double u) const {
-        if (survivalquantile_rf && quantile_is_trinary)
+        if (survivalquantile_rf && quantile_accept_t_m)
             return as_cpp<double>((*survivalquantile_rf)(u, 0.0, 1.0));
-        else if (survivalquantile_rf && !quantile_is_trinary)
+        else if (survivalquantile_rf && !quantile_accept_t_m)
             return as_cpp<double>((*survivalquantile_rf)(u));
         else
             return transmission_time::survivalquantile(u);
     }
     
     virtual double survivalquantile(double u, interval_t t, double m) const {
-        if (survivalquantile_rf && quantile_is_trinary)
+        if (survivalquantile_rf && quantile_accept_t_m)
             return as_cpp<double>((*survivalquantile_rf)(u, t, m));
         else
             return transmission_time::survivalquantile(u, t, m);
     }
 
     std::optional<function> sample_rf;
-    bool sample_is_trinary = false;
+    bool sample_accept_t_m = false;
     function density_rf = R_NilValue;
     function survival_rf = R_NilValue;
-    bool survival_is_trinary = false;
+    bool survival_accept_t_m = false;
     std::optional<function> survivalquantile_rf;
-    bool quantile_is_trinary = false;
+    bool quantile_accept_t_m = false;
 };
 
 [[cpp11::register]]
 transmission_time_R nextnetR_userdefined_time(
     SEXP survival, SEXP density, SEXP sample, SEXP quantile,
-    bool survival_trinary, bool sample_trinary, bool quantile_trinary,
+    bool survival_accept_t_m, bool sample_accept_t_m, bool quantile_accept_t_m,
     double p_infinity)
 {
     std::unique_ptr<rfunction_transmission_time> r(new rfunction_transmission_time(p_infinity));
     
     r->survival_rf = survival;
-    r->survival_is_trinary = survival_trinary;
+    r->survival_accept_t_m = survival_accept_t_m;
     r->density_rf = density;
     if (sample != R_NilValue)
       r->sample_rf = sample;
-    r->sample_is_trinary = sample_trinary;
+    r->sample_accept_t_m = sample_accept_t_m;
     if (quantile != R_NilValue)
       r->survivalquantile_rf = quantile;
-    r->quantile_is_trinary = quantile_trinary;
+    r->quantile_accept_t_m = quantile_accept_t_m;
         
     return r.release();
 }

@@ -43,7 +43,7 @@ mixture_time <- function(times, weights) {
       sum(sapply(times, time_survivalprobability, tau) * weights),
     density=function(tau)
       sum(sapply(times, time_density, tau) * weights),
-    sample=function(tau) {
+    sample=function() {
       i <- sample.int(n=length(weights), prob = weights, size=1)
       return(time_sample(1, times[[i]]))
     },

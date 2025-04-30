@@ -42,11 +42,15 @@ doubles nextnetR_time_density(const transmission_time_R& ttr, doubles taus, doub
     writable::doubles r;
     r.reserve(n);
     for(std::size_t i=0; i < n; ++i) {
-        r.push_back(taus[i] >= 0
-                      ? tt.density(ts[i] + taus[i], ms[i]) /
-                        tt.survivalprobability(ts[i], 0.0, ms[i])
-                      : 0);
+      const double tau = taus[i];
+      const double t = ts[i];
+      const double m = ms[i];
+      if ((t == 0.0) && (m == 1))
+        r.push_back(tt.density(tau));
+      else
+        r.push_back(tt.density(tau, t, m));
     }
+    
     return r;
 }
 

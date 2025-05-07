@@ -2,10 +2,36 @@
 % Please edit documentation in R/network.R
 \name{network_reproduction_matrix}
 \alias{network_reproduction_matrix}
-\title{Computes the reproduction matrix \eqn{M_kk}}
+\title{Computes the reproduction matrix \eqn{M}, reproduction number \eqn{R},
+and other statistics related to these quantites.}
 \usage{
 network_reproduction_matrix(nw)
 }
+\value{
+a named list containing entries \emph{M}, \emph{r}, \emph{c}, \emph{k1}, \emph{k2}, \emph{k3},
+\emph{m_bar}, \emph{R0}, \emph{R_r}, \emph{R_pert}. See \emph{Details} for a description of
+these quantites
+}
 \description{
-Computes the reproduction matrix \eqn{M_kk}
+Computes the reproduction matrix \eqn{M}, reproduction number \eqn{R},
+and other statistics related to these quantites.
+}
+\details{
+Computes the following quantities
+\itemize{
+\item \emph{M}: Reproduction matrix, \eqn{M_{kk'}} is the number of susceptible individuals of degree \eqn{k} connected to a node of degree \eqn{k'}.
+\item \emph{r}: Degree correlation (assortativity)
+\item \emph{c}: clustering coefficients, \emph{c_k} is the probability that two neighbours of a node of degree \emph{k} are neighbours.
+\item \emph{k1}: first raw moment of the degree distribution.
+\item \emph{k2}: second raw moment of the degree distribution.
+\item \emph{k3}: third raw moment of the degree distribution.
+\item \emph{m1}: average number of triangles a link is part of.
+\item \emph{m2}: second moment related to \eqn{m_1}.
+\item \emph{R0}: basic reproduction number \eqn{R_0 = (k_2 - k_1) / k_1}
+\item \emph{R_r}: reproduction number taking assortativity but not clustering into accounts, like \eqn{R_{pert}} but with \eqn{m_1}, \eqn{m_2} set to zero.
+\item \emph{R_pert}: reproduction number estimated from \eqn{R_0}, \eqn{r}, \eqn{m_1}, \eqn{m_2} and \eqn{k_1}, \eqn{k_2}, \eqn{k_3}.
+}
+
+See Cure, Pflug & Pigolotti, Exponential rate of epidemic spreading on complex networks, \emph{Physical Review E}, \strong{111}, 044311 for a detailed discussion
+of these quantities
 }

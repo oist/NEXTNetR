@@ -681,7 +681,29 @@ network_coordinates <- function(nw, nodes) {
   nextnetR_network_coordinates(nw, as.integer(nodes))
 }
 
-#' Computes the reproduction matrix \eqn{M_kk}
+#' Computes the reproduction matrix \eqn{M}, reproduction number \eqn{R},
+#' and other statistics related to these quantites.
+#'
+#' @returns a named list containing entries *M*, *r*, *c*, *k1*, *k2*, *k3*,
+#'          *m_bar*, *R0*, *R_r*, *R_pert*. See *Details* for a description of
+#'          these quantites
+#'
+#' @details Computes the following quantities
+#' * *M*: Reproduction matrix, \eqn{M_{kk'}} is the number of susceptible individuals of degree \eqn{k} connected to a node of degree \eqn{k'}.
+#' * *r*: Degree correlation (assortativity)
+#' * *c*: clustering coefficients, \emph{c_k} is the probability that two neighbours of a node of degree \emph{k} are neighbours.
+#' * *k1*: first raw moment of the degree distribution.
+#' * *k2*: second raw moment of the degree distribution.
+#' * *k3*: third raw moment of the degree distribution.
+#' * *m1*: average number of triangles a link is part of.
+#' * *m2*: second moment related to \eqn{m_1}.
+#' * *R0*: basic reproduction number \eqn{R_0 = (k_2 - k_1) / k_1}
+#' * *R_r*: reproduction number taking assortativity but not clustering into accounts, like \eqn{R_{pert}} but with \eqn{m_1}, \eqn{m_2} set to zero.
+#' * *R_pert*: reproduction number estimated from \eqn{R_0}, \eqn{r}, \eqn{m_1}, \eqn{m_2} and \eqn{k_1}, \eqn{k_2}, \eqn{k_3}.
+#'
+#' See Cure, Pflug & Pigolotti, Exponential rate of epidemic spreading on complex networks, *Physical Review E*, **111**, 044311 for a detailed discussion
+#' of these quantities
+#'
 #' @export
 network_reproduction_matrix <- function(nw) {
   nextnetR_reproduction_matrix(nw)

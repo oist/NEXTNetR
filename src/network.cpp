@@ -282,13 +282,14 @@ doubles_matrix<> nextnetR_network_coordinates(const network_R& nw, integers node
 [[cpp11::register]]
 list nextnetR_reproduction_matrix(const network_R& nw) {
     if (!nw) stop("network cannot be NULL"); 
+    if (!nw->is_undirected()) stop("directed networks are not supported"); 
 
     RNG_SCOPE_IF_NECESSARY;
 
 
-    double r = NAN, c = NAN, k1 = NAN, k2 = NAN, k3 = NAN, m_bar = NAN, R0 = NAN, R_r = NAN, R_pert = NAN;
+    double r = NAN, c = NAN, k1 = NAN, k2 = NAN, k3 = NAN, m1 = NAN, m2 = NAN, R0 = NAN, R_r = NAN, R_pert = NAN;
     std::vector<std::vector<double>> Mkk = reproduction_matrix(*nw.get(), 3, &r, &c, &k1, &k2, &k3,
-                                                               &m_bar, &R0, &R_r, &R_pert);
+                                                               &m1, &m2, &R0, &R_r, &R_pert);
 
     // copy result into an R matrix
     writable::doubles_matrix<> M(Mkk.size(), Mkk.size());
@@ -297,7 +298,6 @@ list nextnetR_reproduction_matrix(const network_R& nw) {
             M(i, j) = Mkk[i][j];
     }
 
-
     return writable::list({
         "M"_nm = M,
         "r"_nm = r,
@@ -305,7 +305,8 @@ list nextnetR_reproduction_matrix(const network_R& nw) {
         "k1"_nm = k1,
         "k2"_nm = k2,
         "k3"_nm = k3,
-        "m_bar"_nm = m_bar,
+        "m1"_nm = m1,
+        "m2"_nm = m2,
         "R0"_nm = R0,
         "R_r"_nm = R_r,
         "R_pert"_nm = R_pert

@@ -285,11 +285,10 @@ list nextnetR_reproduction_matrix(const network_R& nw) {
     if (!nw->is_undirected()) stop("directed networks are not supported"); 
 
     RNG_SCOPE_IF_NECESSARY;
-
-
-    double r = NAN, c = NAN, k1 = NAN, k2 = NAN, k3 = NAN, m1 = NAN, m2 = NAN, R0 = NAN, R_r = NAN, R_pert = NAN;
-    std::vector<std::vector<double>> Mkk = reproduction_matrix(*nw.get(), 3, &r, &c, &k1, &k2, &k3,
-                                                               &m1, &m2, &R0, &R_r, &R_pert);
+    
+    double r = NAN, k1 = NAN, k2 = NAN, k3 = NAN, m1 = NAN, m2 = NAN, R0 = NAN, R_r = NAN, R_pert = NAN;
+    std::vector<std::vector<double>> Mkk = reproduction_matrix(
+        *nw.get(), &r, nullptr, &k1, &k2, &k3, &m1, &m2, &R0, &R_r, &R_pert);
 
     // copy result into an R matrix
     writable::doubles_matrix<> M(Mkk.size(), Mkk.size());
@@ -301,7 +300,6 @@ list nextnetR_reproduction_matrix(const network_R& nw) {
     return writable::list({
         "M"_nm = M,
         "r"_nm = r,
-        "c"_nm = c,
         "k1"_nm = k1,
         "k2"_nm = k2,
         "k3"_nm = k3,

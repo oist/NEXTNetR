@@ -8,7 +8,7 @@ and other statistics related to these quantites.}
 network_reproduction_matrix(nw)
 }
 \value{
-a named list containing entries \emph{M}, \emph{r}, \emph{c}, \emph{k1}, \emph{k2}, \emph{k3},
+a named list containing entries \emph{M}, \emph{r}, \emph{k1}, \emph{k2}, \emph{k3},
 \emph{m_bar}, \emph{R0}, \emph{R_r}, \emph{R_pert}. See \emph{Details} for a description of
 these quantites
 }
@@ -19,9 +19,8 @@ and other statistics related to these quantites.
 \details{
 Computes the following quantities
 \itemize{
-\item \emph{M}: Reproduction matrix, \eqn{M_{kk'}} is the number of susceptible individuals of degree \eqn{k} connected to a node of degree \eqn{k'}.
+\item \emph{M}: Reproduction matrix, \eqn{M_{ij}} is the number of susceptible individuals of \eqn{i}-th smallest degree connected to a node of \eqn{j}-th smallest degree.
 \item \emph{r}: Degree correlation (assortativity)
-\item \emph{c}: clustering coefficients, \emph{c_k} is the probability that two neighbours of a node of degree \emph{k} are neighbours.
 \item \emph{k1}: first raw moment of the degree distribution.
 \item \emph{k2}: second raw moment of the degree distribution.
 \item \emph{k3}: third raw moment of the degree distribution.

@@ -684,14 +684,13 @@ network_coordinates <- function(nw, nodes) {
 #' Computes the reproduction matrix \eqn{M}, reproduction number \eqn{R},
 #' and other statistics related to these quantites.
 #'
-#' @returns a named list containing entries *M*, *r*, *c*, *k1*, *k2*, *k3*,
+#' @returns a named list containing entries *M*, *r*, *k1*, *k2*, *k3*,
 #'          *m_bar*, *R0*, *R_r*, *R_pert*. See *Details* for a description of
 #'          these quantites
 #'
 #' @details Computes the following quantities
-#' * *M*: Reproduction matrix, \eqn{M_{kk'}} is the number of susceptible individuals of degree \eqn{k} connected to a node of degree \eqn{k'}.
+#' * *M*: Reproduction matrix, \eqn{M_{ij}} is the number of susceptible individuals of \eqn{i}-th smallest degree connected to a node of \eqn{j}-th smallest degree.
 #' * *r*: Degree correlation (assortativity)
-#' * *c*: clustering coefficients, \emph{c_k} is the probability that two neighbours of a node of degree \emph{k} are neighbours.
 #' * *k1*: first raw moment of the degree distribution.
 #' * *k2*: second raw moment of the degree distribution.
 #' * *k3*: third raw moment of the degree distribution.

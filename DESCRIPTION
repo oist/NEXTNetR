@@ -14,6 +14,8 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 URL: https://oist.github.io/NEXTNetR/, https://github.com/oist/NEXTNetR
 BugReports: https://github.com/oist/NEXTNetR/issues
+Imports:
+    rappdirs
 Suggests: 
     knitr,
     rmarkdown

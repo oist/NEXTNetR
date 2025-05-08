@@ -722,7 +722,6 @@ network_reproduction_matrix <- function(nw) {
 #' Downloaded files are cached in the directory
 #' `rappdirs::user_cache_dir(appname="EmpiricalNetworks", appauthor="NEXTNetR"'
 #'
-#' @import rappdirs
 #' @export
 packaged_empirical_network <- function(
   name, group="undirected", format="gz", timeout=300
@@ -731,7 +730,7 @@ packaged_empirical_network <- function(
   # whether the copy is still current; presumably packaged networks should
   # never change
   filename <- paste0(name, ".", format)
-  cache <- user_cache_dir(appname="NEXTNetR-EmpiricalNetworks", appauthor="NEXTNetR")
+  cache <- rappdirs::user_cache_dir(appname="NEXTNetR-EmpiricalNetworks", appauthor="NEXTNetR")
   dir.create(file.path(cache, group), recursive=TRUE, showWarnings=FALSE)
   path <- file.path(cache, group, filename)
   if (file.exists(path))

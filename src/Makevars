@@ -1,6 +1,6 @@
 # These are the compiler flags and source files for the R package
 CXX_STD = CXX17
-PKG_CXXFLAGS = -Wno-c++20-extensions -Wno-macro-redefined \
+PKG_CXXFLAGS = -Wno-c++20-extensions \
 	-DRNG=RNG_STDMT19937 -DNEXTNET_BOOST_NO_CXX17_HDR_EXECUTION \
 	-DNEXTNET_BOOST_NO_CXX98_FUNCTION_BASE \
 	-I../ext/nextnet -I../ext/nextnet/ext -I../ext/nextnet/ext/dyndist

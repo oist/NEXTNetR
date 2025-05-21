@@ -242,6 +242,6 @@ time_survivalquantile <- function(timedistribution, p, t=0.0, m=1.0) {
     t <- rep(t, length(p))
   if (length(m) == 1)
     m <- rep(m, length(p))
-  nextnetR_time_survivalquantile(timedistribution, p, m, t)
+  nextnetR_time_survivalquantile(timedistribution, p, t, m)
 }
 

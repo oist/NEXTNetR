@@ -7,6 +7,7 @@
 \alias{gamma_time}
 \alias{weibull_time}
 \alias{polynomial_rate_time}
+\alias{infectiousness_time}
 \alias{deterministic_time}
 \title{Creating time distributions}
 \usage{
@@ -19,6 +20,8 @@ gamma_time(mean, var, p_infinity = 0)
 weibull_time(shape, scale, p_infinity = 0)
 
 polynomial_rate_time(coeffs)
+
+infectiousness_time(tau, lambda)
 
 deterministic_time(tau)
 }

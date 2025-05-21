@@ -139,6 +139,13 @@ transmission_time_R nextnetR_polynomial_rate_time(doubles coeffs) {
 }
 
 [[cpp11::register]]
+transmission_time_R nextnetR_infectiousness_time(doubles taus, doubles lambdas) {
+  std::vector taus_(taus.begin(), taus.end());
+  std::vector lambdas_(lambdas.begin(), lambdas.end());
+  return new transmission_time_infectiousness(taus_, lambdas_);
+}
+
+[[cpp11::register]]
 transmission_time_R nextnetR_deterministic_time(double tau) {
   return new transmission_time_deterministic(tau);
 }

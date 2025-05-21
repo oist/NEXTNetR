@@ -28,6 +28,11 @@
 #' * `polynomial_rate_time(coeffs)`. Distribution with survival function
 #'   \eqn{\Psi(\tau) = e^{-p(\tau)}} for a polynomial hazard rate
 #'   \eqn{p = c[1] + c[2] x + c[3] x^2 + \ldots} with non-negative coefficients.
+#  * `infectiousness_time(tau, lambda)`. Distribution defined in term of the infectiousness
+#    function \eqn{lambda(\tau)} specified for discrete points \eqn{\tau_i, \lambda_i} through
+#    vectors `tau` and `lambda`. The vectors must have the same length and be non-empty. In
+#    between the specified points, \eqn{\lambda(\tau)} is interpolated linearly. After the largest
+#    specified \eqn{\tau_i}, the \eqn{\lambda(\tau)} is assumed to be constant. 
 #' * `deterministic_time(tau)`. Deterministic time with fixed value `tau`
 #' 
 #' @seealso \code{\link{time_functions}}
@@ -62,6 +67,12 @@ weibull_time <- function(shape, scale, p_infinity = 0.0) {
 #' @export
 polynomial_rate_time <- function(coeffs) {
   nextnetR_polynomial_rate_time(as.double(coeffs))
+}
+
+#' @rdname time_distributions
+#' @export
+infectiousness_time <- function(tau, lambda) {
+  nextnetR_infectiousness_time(as.double(tau), as.double(lambda))
 }
 
 #' @rdname time_distributions

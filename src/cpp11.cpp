@@ -413,6 +413,13 @@ extern "C" SEXP _NEXTNetR_nextnetR_polynomial_rate_time(SEXP coeffs) {
   END_CPP11
 }
 // transmission_time.cpp
+transmission_time_R nextnetR_infectiousness_time(doubles taus, doubles lambdas);
+extern "C" SEXP _NEXTNetR_nextnetR_infectiousness_time(SEXP taus, SEXP lambdas) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nextnetR_infectiousness_time(cpp11::as_cpp<cpp11::decay_t<doubles>>(taus), cpp11::as_cpp<cpp11::decay_t<doubles>>(lambdas)));
+  END_CPP11
+}
+// transmission_time.cpp
 transmission_time_R nextnetR_deterministic_time(double tau);
 extern "C" SEXP _NEXTNetR_nextnetR_deterministic_time(SEXP tau) {
   BEGIN_CPP11
@@ -456,6 +463,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_exponential_time",                        (DL_FUNC) &_NEXTNetR_nextnetR_exponential_time,                        2},
     {"_NEXTNetR_nextnetR_fully_connected_network",                 (DL_FUNC) &_NEXTNetR_nextnetR_fully_connected_network,                 1},
     {"_NEXTNetR_nextnetR_gamma_time",                              (DL_FUNC) &_NEXTNetR_nextnetR_gamma_time,                              3},
+    {"_NEXTNetR_nextnetR_infectiousness_time",                     (DL_FUNC) &_NEXTNetR_nextnetR_infectiousness_time,                     2},
     {"_NEXTNetR_nextnetR_lognormal_time",                          (DL_FUNC) &_NEXTNetR_nextnetR_lognormal_time,                          3},
     {"_NEXTNetR_nextnetR_network_adjacencylist",                   (DL_FUNC) &_NEXTNetR_nextnetR_network_adjacencylist,                   2},
     {"_NEXTNetR_nextnetR_network_bounds",                          (DL_FUNC) &_NEXTNetR_nextnetR_network_bounds,                          1},

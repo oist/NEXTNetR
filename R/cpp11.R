@@ -232,6 +232,10 @@ nextnetR_polynomial_rate_time <- function(coeffs) {
   .Call(`_NEXTNetR_nextnetR_polynomial_rate_time`, coeffs)
 }
 
+nextnetR_infectiousness_time <- function(taus, lambdas) {
+  .Call(`_NEXTNetR_nextnetR_infectiousness_time`, taus, lambdas)
+}
+
 nextnetR_deterministic_time <- function(tau) {
   .Call(`_NEXTNetR_nextnetR_deterministic_time`, tau)
 }

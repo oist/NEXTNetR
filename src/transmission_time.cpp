@@ -95,7 +95,7 @@ doubles nextnetR_time_survivalquantile(const transmission_time_R& ttr, doubles p
   if (!ttr)
     stop("time distribution cannot be NULL"); 
   if ((ps.size() != ts.size()) || (ps.size() != ms.size()))
-    stop("taus, ts and ms vectors must have the same length");
+    stop("ps, ts and ms vectors must have the same length");
   
   transmission_time& tt = *(ttr.get());
   const std::size_t n = ps.size();

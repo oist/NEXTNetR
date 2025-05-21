@@ -145,11 +145,11 @@ configmodel_network <- function(degrees) {
 #' @export
 configmodel_clustered_network <- function(degrees, beta, alpha=NULL, ck=NULL, triangles=NULL) {
   if (!is.null(alpha))
-    nextnetR_configmodel_clustered_alpha_network(as.integers(degrees), as.numeric(alpha), as.numeric(beta))
+    nextnetR_configmodel_clustered_alpha_network(as.integer(degrees), as.numeric(alpha), as.numeric(beta))
   else if (!is.null(ck))
-    nextnetR_configmodel_clustered_ck_network(as.integers(degrees), as.function(ck), as.numeric(beta))
+    nextnetR_configmodel_clustered_ck_network(as.integer(degrees), as.function(ck), as.numeric(beta))
   else if (!is.null(triangles))
-    nextnetR_configmodel_clustered_triangles_network(as.integers(degrees), as.integers(triangles), as.numeric(beta))
+    nextnetR_configmodel_clustered_triangles_network(as.integer(degrees), as.integer(triangles), as.numeric(beta))
   else
     stop("either alpha, ck or triangles must be specified")
 }

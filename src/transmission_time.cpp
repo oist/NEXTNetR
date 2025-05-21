@@ -105,7 +105,7 @@ doubles nextnetR_time_survivalquantile(const transmission_time_R& ttr, doubles p
     const double p = ps[i];
     const double t = ts[i];
     const double m = ms[i];
-    if ((t == 0.0) && (m == 1))
+    if ((t == 0.0) && (m == 1.0))
       r.push_back(tt.survivalquantile(p));
     else
       r.push_back(tt.survivalquantile(p, t, m));

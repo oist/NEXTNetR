@@ -36,9 +36,9 @@ time_survivalquantile(timedistribution, p, t = 0, m = 1)
 distribution \eqn{\Psi_{t,m}}.
 \item \code{time_density(timedistribution, tau, t, m)}. Evaluates the density at points
 \code{tau} of distribution \eqn{\Psi_{t,m}}.
-\item \code{time_hazardrate(timedistribution, tau)}. Evaluates the hazardrate
+\item \code{time_hazardrate(timedistribution, tau)}. Evaluates the hazardrate (infectiousness)
 \eqn{\lambda(\tau)} of the \emph{base} distribution \eqn{\Psi}. The hazard
-rate of \eqn{\Psi_{t,m}} is simply \eqn{m\lambda(\tau)}, see Details.
+rate of \eqn{\Psi_{t,m}} is simply \eqn{m\lambda(t+\tau)}, see Details.
 \item \code{time_survivalprobability(timedistribution, tau, t, m)}. Evaluates the
 survivalfunction \eqn{\Psi_{t,m}} at points \code{tau}.
 \item \code{time_survivalquantile(timedistribution, p, t, m)}. Computes the
@@ -63,7 +63,7 @@ terms of a base distribution with some survival function
 Note that assuming this form of the survival function does not restrict the choice
 of base distributions; any distribution on \eqn{[0,\infty]} takes this form
 for \eqn{\lambda(\tau) := -\Psi'(\tau) / \Psi(\tau)}. \eqn{\lambda(\tau)} is
-called the \emph{hazard rate} at time \eqn{\tau}.
+called the \emph{hazard rate} or \emph{infectiousness} at time \eqn{\tau}.
 
 In terms of hazard rate \eqn{\lambda(\tau)}, the distribution \eqn{\Psi(\tau)}
 is naturally interpreted as the time until the first event fired by an

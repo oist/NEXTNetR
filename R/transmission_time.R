@@ -4,7 +4,17 @@
 #' @description
 #' NEXTNetR supports a series of pre-defined distributions for transmission and
 #' recover/reset time, and also allows custom distributions to be defined
-#' with [userdefined_time].
+#' with [userdefined_time]. For `exponential_time`, `lognormal_time`, `gamma_time`,
+#' and `weibull_time` the names reflect the shape of the transmission time density.
+#' Except for `exponential_time`, all these distributions have two parameters, and
+#' are parametrized by their mean and variance. The additional parameter \eqn{p_\infty}
+#' adds infinite times as a possible outcome with the specified probability, i.e
+#' scales the density by \eqn{1-p_\infty} so that it is no longer normalized.
+#' Instead of by their transmission time density, time distributions can alternatively
+#' be thought of as being defined by their infectiousness function \eqn{\lambda(\tau)},
+#' this is the case for `polynomial_rate_time` and `infectiousness_time`. In this case,
+#' \eqn{p_\infty} is implicity defined by \eqn{\lambda(\tau)}. See the discussion in
+#' [time_functions] for how the two represenations are related.
 #' 
 #' Each `time_distribution` object actually represents a two-parameer family
 #' of distributions, see [time_functions] for a full discussion and for functions
@@ -13,7 +23,8 @@
 #' @returns
 #' * `exponential_time(lambda, p_infinity)`. Returns a time distribution representing
 #'   an exponential distribution with rate `lambda` which in addition to finite
-#'   values produces the value infinity with probability `p_infinity`.
+#'   values produces the value infinity with probability `p_infinity`. This represents
+#'   the case of constant infectiousness \eqn{\lambda(\tau)=\lambda}.
 #' * `lognormal_time(mean, var, p_infinity)`. Returns a time distribution representing
 #'   a Log-normal distribution with the given `mean` and `variance`, which in addition
 #'   to finite  values produces the value infinity with probability `p_infinity`.
@@ -26,13 +37,13 @@
 #'   The distribution has mean \eqn{b \Gamma(1 + 1/a)} and variance 
 #'   \eqn{b^2(\Gamma(1 + 2/a) - \Gamma^2(1 + 1/a))}for shape \eqn{a} and scale \eqn{b}.
 #' * `polynomial_rate_time(coeffs)`. Distribution with survival function
-#'   \eqn{\Psi(\tau) = e^{-p(\tau)}} for a polynomial hazard rate
+#'   \eqn{\Psi(\tau) = e^{-p(\tau)}} for a polynomial infectiousness (hazard rate)
 #'   \eqn{p = c[1] + c[2] x + c[3] x^2 + \ldots} with non-negative coefficients.
-#  * `infectiousness_time(tau, lambda)`. Distribution defined in term of the infectiousness
-#    function \eqn{lambda(\tau)} specified for discrete points \eqn{\tau_i, \lambda_i} through
-#    vectors `tau` and `lambda`. The vectors must have the same length and be non-empty. In
-#    between the specified points, \eqn{\lambda(\tau)} is interpolated linearly. After the largest
-#    specified \eqn{\tau_i}, the \eqn{\lambda(\tau)} is assumed to be constant. 
+#' * `infectiousness_time(tau, lambda)`. Distribution defined in term of the infectiousness
+#'   function \eqn{\lambda(\tau)} specified for discrete points \eqn{\tau_i, \lambda_i=\lambda(\tau_i)}
+#'   through vectors `tau` and `lambda`. The vectors must have the same length and be non-empty. In
+#'   between the specified points, \eqn{\lambda(\tau)} is interpolated linearly. After the largest
+#'   specified \eqn{\tau_i}, the infectiousness \eqn{\lambda(\tau)} is assumed to be constant. 
 #' * `deterministic_time(tau)`. Deterministic time with fixed value `tau`
 #' 
 #' @seealso \code{\link{time_functions}}
@@ -146,7 +157,7 @@ userdefined_time <- function(survival, density, sample=NULL, quantile=NULL,
 #' Note that assuming this form of the survival function does not restrict the choice
 #' of base distributions; any distribution on \eqn{[0,\infty]} takes this form
 #' for \eqn{\lambda(\tau) := -\Psi'(\tau) / \Psi(\tau)}. \eqn{\lambda(\tau)} is
-#' called the *hazard rate* at time \eqn{\tau}.
+#' called the *hazard rate* or *infectiousness* at time \eqn{\tau}.
 #' 
 #' In terms of hazard rate \eqn{\lambda(\tau)}, the distribution \eqn{\Psi(\tau)}
 #' is naturally interpreted as the time until the first event fired by an
@@ -183,9 +194,9 @@ userdefined_time <- function(survival, density, sample=NULL, quantile=NULL,
 #' * `time_density(timedistribution, tau, t, m)`. Evaluates the density at points
 #'    `tau` of distribution \eqn{\Psi_{t,m}}.
 #'   
-#' * `time_hazardrate(timedistribution, tau)`. Evaluates the hazardrate
+#' * `time_hazardrate(timedistribution, tau)`. Evaluates the hazardrate (infectiousness)
 #'    \eqn{\lambda(\tau)} of the *base* distribution \eqn{\Psi}. The hazard
-#'    rate of \eqn{\Psi_{t,m}} is simply \eqn{m\lambda(\tau)}, see Details.
+#'    rate of \eqn{\Psi_{t,m}} is simply \eqn{m\lambda(t+\tau)}, see Details.
 #'   
 #' * `time_survivalprobability(timedistribution, tau, t, m)`. Evaluates the
 #'    survivalfunction \eqn{\Psi_{t,m}} at points `tau`.

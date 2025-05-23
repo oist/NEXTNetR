@@ -244,6 +244,10 @@ cubiclattice8d_network <- function(length) {
 #' @title Creates a network for an adjacency list stored in a file
 #' 
 #' @description
+#'
+#' Can read networks from a file, or download networks packages for
+#' NEXT-Net directly from the NEXTNet-EmpiricalNetworks repository.
+#'
 #' The file must contain one line per node listing first a node and then
 #' that node's neighbours, separated by whitespace (by default; other
 #' separated can be specified). Node are identified by numbers starting
@@ -470,23 +474,40 @@ sirx_temporalnetwork <- function(network, kappa0, kappa) {
 #' @title Empirical temporal network comprising short contacts between nodes
 #' 
 #' @description
+#' Can read networks from a file, or download networks packages for
+#' NEXT-Net directly from the NEXTNet-EmpiricalNetworks repository.
+#'
 #' Each line of the file must list a single contact in the form
 #' "<src> <dst> <time>" where <src> and <dst> are integers specifying the nodes
 #' and <time> is a floating-point value. The highest node index appearing within
 #' <src> and <dst> defines the size of the network. Finite-duration contacts
 #' extend by dt/2 around the time specified in the file.
 #' 
-#' @param file to read network from
+#' @param path name of the file
+#' @param name name of a packaged empirical network, see \code{\link{packaged_empirical_network}}
+#' @param group packaged empirical network group containing the network
 #' @param finite_duration whether to treat contacts as having finite duration `dt`
 #'                        or to be instantaneous with weight `dt`
 #' @param dt duration or weight of contact
+#' @param gzip whether the file is compressed
+#' @param download.timeout for packaged networks the download timeout
 #' 
 #' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
-empirical_contact_temporalnetwork <- function(file, finite_duration, dt) {
+empirical_contact_temporalnetwork <- function(path, dt, finite_duration=FALSE,
+                                              name=NULL, group="contact",
+                                              gzip=grepl('\\.gz$', path), download.timeout=300)
+{
+  if (!is.null(name)) {
+      if (!missing(path))
+          stop("when loading packaged networks path is not supported")
+      path <- packaged_empirical_network(as.character(name), as.character(group),
+                                         timeout=download.timeout)
+      gzip <- TRUE
+  }
   nextnetR_empirical_contact_temporalnetwork(
-    as.character(file), as.logical(finite_duration), as.double(dt))
+    path.expand(as.character(path)), as.logical(finite_duration), as.double(dt), as.logical(gzip))
 }
 
 #' @title Activity-driven network model of Cai, Nie & Holme (2024).

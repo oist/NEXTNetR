@@ -4,17 +4,36 @@
 \alias{empirical_contact_temporalnetwork}
 \title{Empirical temporal network comprising short contacts between nodes}
 \usage{
-empirical_contact_temporalnetwork(file, finite_duration, dt)
+empirical_contact_temporalnetwork(
+  path,
+  finite_duration,
+  dt,
+  name = NULL,
+  group = "undirected",
+  gzip = grepl("\\\\.gz$", path),
+  download.timeout = 300
+)
 }
 \arguments{
-\item{file}{to read network from}
+\item{path}{name of the file}
 
 \item{finite_duration}{whether to treat contacts as having finite duration \code{dt}
 or to be instantaneous with weight \code{dt}}
 
 \item{dt}{duration or weight of contact}
+
+\item{name}{name of a packaged empirical network, see \code{\link{packaged_empirical_network}}}
+
+\item{group}{packaged empirical network group containing the network}
+
+\item{gzip}{whether the file is compressed}
+
+\item{download.timeout}{for packaged networks the download timeout}
 }
 \description{
+Can read networks from a file, or download networks packages for
+NEXT-Net directly from the NEXTNet-EmpiricalNetworks repository.
+
 Each line of the file must list a single contact in the form
 "\if{html}{\out{<src>}} \if{html}{\out{<dst>}} \if{html}{\out{<time>}}" where \if{html}{\out{<src>}} and \if{html}{\out{<dst>}} are integers specifying the nodes
 and \if{html}{\out{<time>}} is a floating-point value. The highest node index appearing within

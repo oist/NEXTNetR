@@ -20,6 +20,29 @@ using namespace nextnetR;
 using namespace cpp11;
 namespace writable = cpp11::writable;
 
+namespace {
+
+std::unique_ptr<std::istream> open_file(strings path, bool gzip, std::string& path_out)
+{
+    if (path.size() != 1)
+        stop("expected a single path");
+    path_out = (std::string)(path[0]);
+
+    if (gzip) {
+        auto gzfile = std::make_unique<redi::ipstream>();
+        gzfile->open("gzip",  std::vector<std::string> { "gzip", "-cd", path_out },
+                     redi::pstreambuf::pstdout);
+        return gzfile;
+    }
+    else {
+        auto plainfile = std::make_unique<std::fstream>();
+        plainfile->open(path_out);
+        return plainfile;
+    }
+}
+
+} /* namespace */
+
 [[cpp11::register]]
 int nextnetR_network_size(const network_R& nw) {
     if (!nw) stop("network cannot be NULL"); 
@@ -315,28 +338,16 @@ list nextnetR_reproduction_matrix(const network_R& nw) {
 network_R nextnetR_empirical_network(
   strings path, bool undirected, bool simplify, node_t idxbase, strings sep, bool gzip
 ) {
-    if (path.size() != 1)
-        stop("expected a single path");
     if (sep.size() != 1)
         stop("expected a single separator");
-    
-    std::string path_ = (std::string)(path[0]);
     std::string sep_ = (std::string)(sep[0]);
     if (sep_.size() != 1)
         stop("expected a single character as separator");
 
-    redi::ipstream gzfile;
-    std::ifstream plainfile;
-    std::istream& file = gzip ? (std::istream&)gzfile : (std::istream&)plainfile;
-    
-    if (gzip)
-        gzfile.open("gzip",  std::vector<std::string> { "gzip", "-cd", path_ },
-                    redi::pstreambuf::pstdout);
-    else
-        plainfile.open(path_);
-    
-    network_R nw = new empirical_network(file, undirected, simplify, idxbase, sep_[0]);
-    if (!file.eof())
+    std::string path_;
+    auto file = open_file(path, gzip, path_);
+    network_R nw = new empirical_network(*file, undirected, simplify, idxbase, sep_[0]);
+    if (!file->eof())
         stop("failed to read %s", path_.c_str());
     return nw;
 }
@@ -346,14 +357,11 @@ network_R nextnetR_empirical_weightednetwork(
   strings path, bool undirected, bool simplify, node_t idxbase, strings csep, strings wsep,
   bool gzip
 ) {
-    if (path.size() != 1)
-        stop("expected a single path");
     if (csep.size() != 1)
         stop("expected a single column separator");
     if (wsep.size() != 1)
         stop("expected a single weight separator");
     
-    std::string path_ = (std::string)(path[0]);
     std::string csep_ = (std::string)(csep[0]);
     if (csep_.size() != 1)
         stop("expected a single character as column separator");
@@ -361,19 +369,11 @@ network_R nextnetR_empirical_weightednetwork(
     if (wsep_.size() != 1)
         stop("expected a single character as weight separator");
 
-    redi::ipstream gzfile;
-    std::ifstream plainfile;
-    std::istream& file = gzip ? (std::istream&)gzfile : (std::istream&)plainfile;
-    
-    if (gzip)
-        gzfile.open("gzcat",  std::vector<std::string> { "gzcat", path_ },
-                    redi::pstreambuf::pstdout);
-    else
-        plainfile.open(path_);
-    
+    std::string path_;
+    auto file = open_file(path, gzip, path_);
     network_R nw = new weighted_empirical_network(
-      file, undirected, simplify, idxbase, csep_[0], wsep_[0]);
-    if (!file.eof())
+      *file, undirected, simplify, idxbase, csep_[0], wsep_[0]);
+    if (!file->eof())
         stop("failed to read %s", path_.c_str());
     return nw;
 }
@@ -574,13 +574,18 @@ network_R nextnetR_brownian_proximity_temporalnetwork(int size, double avg_degre
 }
 
 [[cpp11::register]]
-network_R nextnetR_empirical_contact_temporalnetwork(std::string path, bool finite_duration, double dt) {
+network_R nextnetR_empirical_contact_temporalnetwork(strings path, bool finite_duration, double dt, bool gzip) {
     RNG_SCOPE_IF_NECESSARY;
-    std::ifstream file(path);
+    std::string path_;
+    auto file = open_file(path, gzip, path_);
+    network_R nw;
     if (finite_duration)
-        return new empirical_contact_network(file, empirical_contact_network::finite_duration, dt);
+        nw = new empirical_contact_network(*file, empirical_contact_network::finite_duration, dt);
     else
-        return new empirical_contact_network(file, empirical_contact_network::infitesimal_duration, dt);
+        nw = new empirical_contact_network(*file, empirical_contact_network::infitesimal_duration, dt);
+    if (!file->eof())
+        stop("failed to read %s", path_.c_str());
+    return nw;
 }
 
 [[cpp11::register]]

@@ -39,6 +39,9 @@ empirical_network(
 a network object
 }
 \description{
+Can read networks from a file, or download networks packages for
+NEXT-Net directly from the NEXTNet-EmpiricalNetworks repository.
+
 The file must contain one line per node listing first a node and then
 that node's neighbours, separated by whitespace (by default; other
 separated can be specified). Node are identified by numbers starting

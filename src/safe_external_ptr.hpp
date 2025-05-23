@@ -118,10 +118,12 @@ class safe_external_pointer {
 
   safe_external_pointer& operator=(safe_external_pointer& rhs) noexcept {
     data_ = rhs.data_;
+    return *this;
   }
 
   safe_external_pointer& operator=(safe_external_pointer&& rhs) noexcept {
     data_ = std::move(rhs.data_);
+    return *this;
   }
 
   safe_external_pointer& operator=(std::nullptr_t) noexcept {

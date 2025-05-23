@@ -6,10 +6,10 @@
 \usage{
 empirical_contact_temporalnetwork(
   path,
-  finite_duration,
   dt,
+  finite_duration = FALSE,
   name = NULL,
-  group = "undirected",
+  group = "contact",
   gzip = grepl("\\\\.gz$", path),
   download.timeout = 300
 )
@@ -17,10 +17,10 @@ empirical_contact_temporalnetwork(
 \arguments{
 \item{path}{name of the file}
 
+\item{dt}{duration or weight of contact}
+
 \item{finite_duration}{whether to treat contacts as having finite duration \code{dt}
 or to be instantaneous with weight \code{dt}}
-
-\item{dt}{duration or weight of contact}
 
 \item{name}{name of a packaged empirical network, see \code{\link{packaged_empirical_network}}}
 

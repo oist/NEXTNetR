@@ -4,10 +4,10 @@
 
 # Installation
 
-The latest development version of *NEXTNetR* can be installed directly from Github by executing the following in R:
+The latest released version of *NEXTNetR* can be installed directly from Github by executing the following in R:
 
     install.packages("remotes")
-    remotes::install_github("oist/NEXTNetR")
+    remotes::install_github("oist/NEXTNetR", ref="latest-release")
 
 Alternatively, the latest release can be downloaded [here](https://github.com/oist/NEXTNetR/releases) and installed with `R CMD INSTALL NEXTNetR-v<version>-pkg.tar.gz`.
 

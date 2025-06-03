@@ -11,7 +11,7 @@ The latest released version of *NEXTNetR* can be installed directly from Github 
     install.packages("pak")
     pak::pkg_install("oist/NEXTNetR@latest-release")
 
-Alternatively, the latest release can be downloaded [here](https://github.com/oist/NEXTNetR/releases) and installed with `R CMD INSTALL NEXTNetR-v<version>-pkg.tar.gz`. Since *NEXT-Net* is implemented in C++, a C++ compiler is required to install *NEXTNetR*. On Windows, the [RTools](https://cran.rstudio.com/bin/windows/Rtools/) package provides a suitable compiler and all necessary tools. 
+Alternatively, the latest release can be downloaded [here](https://github.com/oist/NEXTNetR/releases) and installed with `R CMD INSTALL NEXTNetR-v<version>-pkg.tar.gz`. Since *NEXT-Net* is implemented in C++, a C++ compiler is required to install *NEXTNetR*. On Linux a compiler should typically be already available, on Mac OS R uses the compiler provided by [XCode](https://developer.apple.com/xcode/) which must be installed, and on Windows make sure to install [RTools](https://cran.rstudio.com/bin/windows/Rtools/). 
 
 # Synopsis
 

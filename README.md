@@ -6,12 +6,12 @@ See the [*NEXTNetR* website](https://oist.github.io/NEXTNetR/) for a reference a
 
 # Installation
 
-If [Git](https://git-scm.com/downloads) is available, the latest released version of *NEXTNetR* can be installed directly from Github by executing the following in R:
+If [Git](https://git-scm.com/downloads) is available, the [latest released](https://github.com/oist/NEXTNetR/releases) version of *NEXTNetR* can be installed directly from Github by executing the following in R:
 
     install.packages("remotes")
     remotes::install_github("oist/NEXTNetR", ref="latest-release")
 
-Alternatively, download the [latest released](https://github.com/oist/NEXTNetR/releases) version of *NEXTNetR-v\<version\>-pkg.tar.gz* and installed with
+Alternatively, download the [latest released](https://github.com/oist/NEXTNetR/releases) version of *NEXTNetR-v\<version\>-pkg.tar.gz* and install on the command line (*not* within R) with
 
     R CMD INSTALL NEXTNetR-v<version>-pkg.tar.gz
    

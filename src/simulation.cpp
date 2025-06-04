@@ -205,6 +205,7 @@ data_frame nextnetR_simulation_run(const simulation_R& sim_, list stopconds, lis
     writable::integers network_steps;
     writable::integers nodes;
     writable::integers neighbours;
+    writable::integers weights;
     writable::doubles total_infected;
     writable::doubles total_reset;
     writable::doubles infected;
@@ -252,6 +253,7 @@ data_frame nextnetR_simulation_run(const simulation_R& sim_, list stopconds, lis
         int kind;
         int node;
         int neighbour = NA_INTEGER;
+        double weight = NA_REAL;
 
         if (std::holds_alternative<epidemic_event_t>(any_ev)) {
             // Epidemic event
@@ -294,6 +296,7 @@ data_frame nextnetR_simulation_run(const simulation_R& sim_, list stopconds, lis
             kind = name(ev.kind) ? (int)(ev.kind) + network_event_offset + 1 : NA_INTEGER;
             node = ev.source_node + 1;
             neighbour = ev.target_node + 1;
+            weight = ev.weight;
         }
         else throw std::logic_error("unknown event type");
 
@@ -303,6 +306,7 @@ data_frame nextnetR_simulation_run(const simulation_R& sim_, list stopconds, lis
         network_steps.push_back(network_step_);
         kinds.push_back(kind);
         nodes.push_back(node);
+        weights.push_back(weight);
         neighbours.push_back(neighbour);
         total_infected.push_back(total_infected_);
         total_reset.push_back(total_reset_);
@@ -321,6 +325,7 @@ data_frame nextnetR_simulation_run(const simulation_R& sim_, list stopconds, lis
         "kind"_nm = kinds,
         "node"_nm = nodes,
         "neighbour"_nm = neighbours,
+        "weight"_nm = weights,
         "total_infected"_nm = total_infected,
         "total_reset"_nm = total_reset,
         "infected"_nm = infected

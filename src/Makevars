@@ -18,7 +18,6 @@ SOURCES = \
 	../ext/nextnet/nextnet/NextReaction.cpp \
 	../ext/nextnet/nextnet/algorithm.cpp \
 	../ext/nextnet/nextnet/random.cpp \
-	../ext/nextnet/nextnet/utility.cpp \
-	../ext/nextnet/nextnet/pstream/pstream.cpp \
+	../ext/nextnet/nextnet/utility.cpp
 	
 OBJECTS = $(SOURCES:.cpp=.o)

@@ -13,7 +13,10 @@
 #include "nextnet/temporal_network.h"
 #include "nextnet/weighted_network.h"
 #include "nextnet/brownian_proximity_network.h"
+#if !defined(__MINGW32__) && !defined(__MINGW64__) && !defined(_WIN32) && !defined(_WIN64)
+#define HAVE_PSTREAM
 #include "nextnet/pstream/pstream.h"
+#endif
 
 using namespace nextnetR;
 
@@ -29,10 +32,14 @@ std::unique_ptr<std::istream> open_file(strings path, bool gzip, std::string& pa
     path_out = (std::string)(path[0]);
 
     if (gzip) {
+#ifdef HAVE_PSTREAM
         auto gzfile = std::make_unique<redi::ipstream>();
         gzfile->open("gzip",  std::vector<std::string> { "gzip", "-cd", path_out },
                      redi::pstreambuf::pstdout);
         return gzfile;
+#else
+		stop("gzipped files are currently not supported on this platform");
+#endif
     }
     else {
         auto plainfile = std::make_unique<std::fstream>();
@@ -715,3 +722,7 @@ network_R nextnetR_adjacencylist_weightednetwork(list input_al, bool is_undirect
     return new weighted_adjacencylist_network(std::move(adjacencylist),
                                               is_undirected, is_simple);
 }
+
+#ifdef HAVE_PSTREAM
+#include "nextnet/pstream/pstream.cpp"
+#endif

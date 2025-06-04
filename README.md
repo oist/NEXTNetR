@@ -8,8 +8,8 @@ See the [*NEXTNetR* website](https://oist.github.io/NEXTNetR/) for a reference a
 
 The latest released version of *NEXTNetR* can be installed directly from Github by executing the following in R:
 
-    install.packages("pak")
-    pak::pkg_install("oist/NEXTNetR@latest-release")
+    install.packages("remotes")
+    remotes::install_github("oist/NEXTNetR", ref="latest-release")
 
 Alternatively, the latest release can be downloaded [here](https://github.com/oist/NEXTNetR/releases) and installed with `R CMD INSTALL NEXTNetR-v<version>-pkg.tar.gz`. Since *NEXT-Net* is implemented in C++, a C++ compiler is required to install *NEXTNetR*. On Linux a compiler should typically be already available, on Mac OS R a suitable compiler is provided by [XCode](https://developer.apple.com/xcode/) or the [XCode Command Line Tools](https://mac.install.guide/commandlinetools/), and on Windows by [RTools](https://cran.rstudio.com/bin/windows/Rtools/).
 

@@ -487,15 +487,16 @@ sirx_temporalnetwork <- function(network, kappa0, kappa) {
 #' @param name name of a packaged empirical network, see \code{\link{packaged_empirical_network}}
 #' @param group packaged empirical network group containing the network
 #' @param finite_duration whether to treat contacts as having finite duration `dt`
-#'                        or to be instantaneous with weight `dt`
-#' @param dt duration or weight of contact
+#'        or to be instantaneous with effective weight `weight` * `dt`
+#' @param dt duration of contacts
+#' @param weight weight of contacts, instantaneous contacts have effective weight `weight` * `dt`.
 #' @param gzip whether the file is compressed
 #' @param download.timeout for packaged networks the download timeout
 #' 
 #' @seealso \code{\link{network_properties}}, \code{\link{network_types}}
 #' 
 #' @export
-empirical_contact_temporalnetwork <- function(path, dt, finite_duration=FALSE,
+empirical_contact_temporalnetwork <- function(path, dt, weight, finite_duration=FALSE,
                                               name=NULL, group="contact",
                                               gzip=grepl('\\.gz$', path), download.timeout=300)
 {
@@ -507,7 +508,8 @@ empirical_contact_temporalnetwork <- function(path, dt, finite_duration=FALSE,
       gzip <- TRUE
   }
   nextnetR_empirical_contact_temporalnetwork(
-    path.expand(as.character(path)), as.logical(finite_duration), as.double(dt), as.logical(gzip))
+    path.expand(as.character(path)), as.logical(finite_duration),
+                as.double(dt), as.double(weight), as.logical(gzip))
 }
 
 #' @title Activity-driven network model of Cai, Nie & Holme (2024).

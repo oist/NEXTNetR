@@ -7,6 +7,7 @@
 empirical_contact_temporalnetwork(
   path,
   dt,
+  weight,
   finite_duration = FALSE,
   name = NULL,
   group = "contact",
@@ -17,10 +18,12 @@ empirical_contact_temporalnetwork(
 \arguments{
 \item{path}{name of the file}
 
-\item{dt}{duration or weight of contact}
+\item{dt}{duration of contacts}
+
+\item{weight}{weight of contacts, instantaneous contacts have effective weight \code{weight} * \code{dt}.}
 
 \item{finite_duration}{whether to treat contacts as having finite duration \code{dt}
-or to be instantaneous with weight \code{dt}}
+or to be instantaneous with effective weight \code{weight} * \code{dt}}
 
 \item{name}{name of a packaged empirical network, see \code{\link{packaged_empirical_network}}}
 

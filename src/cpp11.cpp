@@ -244,10 +244,10 @@ extern "C" SEXP _NEXTNetR_nextnetR_brownian_proximity_temporalnetwork(SEXP size,
   END_CPP11
 }
 // network.cpp
-network_R nextnetR_empirical_contact_temporalnetwork(strings path, bool finite_duration, double dt, bool gzip);
-extern "C" SEXP _NEXTNetR_nextnetR_empirical_contact_temporalnetwork(SEXP path, SEXP finite_duration, SEXP dt, SEXP gzip) {
+network_R nextnetR_empirical_contact_temporalnetwork(strings path, bool finite_duration, double dt, bool weight, bool gzip);
+extern "C" SEXP _NEXTNetR_nextnetR_empirical_contact_temporalnetwork(SEXP path, SEXP finite_duration, SEXP dt, SEXP weight, SEXP gzip) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_empirical_contact_temporalnetwork(cpp11::as_cpp<cpp11::decay_t<strings>>(path), cpp11::as_cpp<cpp11::decay_t<bool>>(finite_duration), cpp11::as_cpp<cpp11::decay_t<double>>(dt), cpp11::as_cpp<cpp11::decay_t<bool>>(gzip)));
+    return cpp11::as_sexp(nextnetR_empirical_contact_temporalnetwork(cpp11::as_cpp<cpp11::decay_t<strings>>(path), cpp11::as_cpp<cpp11::decay_t<bool>>(finite_duration), cpp11::as_cpp<cpp11::decay_t<double>>(dt), cpp11::as_cpp<cpp11::decay_t<bool>>(weight), cpp11::as_cpp<cpp11::decay_t<bool>>(gzip)));
   END_CPP11
 }
 // network.cpp
@@ -454,7 +454,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NEXTNetR_nextnetR_cubiclattice7d_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_cubiclattice7d_network,                  1},
     {"_NEXTNetR_nextnetR_cubiclattice8d_network",                  (DL_FUNC) &_NEXTNetR_nextnetR_cubiclattice8d_network,                  1},
     {"_NEXTNetR_nextnetR_deterministic_time",                      (DL_FUNC) &_NEXTNetR_nextnetR_deterministic_time,                      1},
-    {"_NEXTNetR_nextnetR_empirical_contact_temporalnetwork",       (DL_FUNC) &_NEXTNetR_nextnetR_empirical_contact_temporalnetwork,       4},
+    {"_NEXTNetR_nextnetR_empirical_contact_temporalnetwork",       (DL_FUNC) &_NEXTNetR_nextnetR_empirical_contact_temporalnetwork,       5},
     {"_NEXTNetR_nextnetR_empirical_network",                       (DL_FUNC) &_NEXTNetR_nextnetR_empirical_network,                       6},
     {"_NEXTNetR_nextnetR_empirical_weightednetwork",               (DL_FUNC) &_NEXTNetR_nextnetR_empirical_weightednetwork,               7},
     {"_NEXTNetR_nextnetR_erdos_renyi_network",                     (DL_FUNC) &_NEXTNetR_nextnetR_erdos_renyi_network,                     2},

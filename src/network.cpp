@@ -581,7 +581,7 @@ network_R nextnetR_brownian_proximity_temporalnetwork(int size, double avg_degre
 }
 
 [[cpp11::register]]
-network_R nextnetR_empirical_contact_temporalnetwork(strings path, bool finite_duration, double dt, bool weight, bool gzip) {
+network_R nextnetR_empirical_contact_temporalnetwork(strings path, bool finite_duration, double dt, double weight, bool gzip) {
     RNG_SCOPE_IF_NECESSARY;
     std::string path_;
     auto file = open_file(path, gzip, path_);

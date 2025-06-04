@@ -244,10 +244,10 @@ extern "C" SEXP _NEXTNetR_nextnetR_brownian_proximity_temporalnetwork(SEXP size,
   END_CPP11
 }
 // network.cpp
-network_R nextnetR_empirical_contact_temporalnetwork(strings path, bool finite_duration, double dt, bool weight, bool gzip);
+network_R nextnetR_empirical_contact_temporalnetwork(strings path, bool finite_duration, double dt, double weight, bool gzip);
 extern "C" SEXP _NEXTNetR_nextnetR_empirical_contact_temporalnetwork(SEXP path, SEXP finite_duration, SEXP dt, SEXP weight, SEXP gzip) {
   BEGIN_CPP11
-    return cpp11::as_sexp(nextnetR_empirical_contact_temporalnetwork(cpp11::as_cpp<cpp11::decay_t<strings>>(path), cpp11::as_cpp<cpp11::decay_t<bool>>(finite_duration), cpp11::as_cpp<cpp11::decay_t<double>>(dt), cpp11::as_cpp<cpp11::decay_t<bool>>(weight), cpp11::as_cpp<cpp11::decay_t<bool>>(gzip)));
+    return cpp11::as_sexp(nextnetR_empirical_contact_temporalnetwork(cpp11::as_cpp<cpp11::decay_t<strings>>(path), cpp11::as_cpp<cpp11::decay_t<bool>>(finite_duration), cpp11::as_cpp<cpp11::decay_t<double>>(dt), cpp11::as_cpp<cpp11::decay_t<double>>(weight), cpp11::as_cpp<cpp11::decay_t<bool>>(gzip)));
   END_CPP11
 }
 // network.cpp

@@ -1,4 +1,4 @@
 library(testthat)
-library(SANsimulatoR)
+library(NEXTNetR)
 
-test_check("SANsimulatoR")
+test_check("NEXTNetR")

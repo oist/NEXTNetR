@@ -49,7 +49,7 @@ test_that("basic simulation", {
     expect_equal(simulation_ninfected(s)$total_reset, 0)
     expect_equal(simulation_isinfected(s, 1:N), c(TRUE, rep(FALSE, N-1)))
     expect_equal(nrow(r1), 1);
-    expect_equal(ncol(r1), 9);
+    expect_equal(ncol(r1), 10);
     expect_equal(r1$infected, 1);
     expect_equal(r1$total_infected, 1);
     expect_equal(r1$total_reset, 0);
@@ -64,7 +64,7 @@ test_that("basic simulation", {
 
     # Rudimentary check result
     expect_equal(nrow(r), N);
-    expect_equal(ncol(r), 9);
+    expect_equal(ncol(r), 10);
     expect_equal(r$infected, 1:N);
     expect_equal(r$total_infected, 1:N);
     expect_equal(r$total_reset, rep(0, N));
@@ -76,6 +76,6 @@ test_that("basic simulation", {
     expect_equal(simulation_ninfected(s)$total_reset, 0)
     expect_equal(simulation_isinfected(s, 1:N), rep(TRUE, N))
     expect_equal(nrow(r3), 0);
-    expect_equal(ncol(r3), 9);        
+    expect_equal(ncol(r3), 10);
     expect_equal(r3$infected, r3$total_infected - r3$total_reset)
 })

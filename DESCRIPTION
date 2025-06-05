@@ -1,6 +1,6 @@
 Package: NEXTNetR
 Title: Efficient simulation of epidemics on complex networks using the NEXTNet library
-Version: 0.9.5-1
+Version: 1.0
 Authors@R: 
     c(person("Florian", "Pflug", , "florian.pflug@oist.jp", role = c("aut", "cre"),
              comment = c(ORCID = "0000-0002-5344-5359")),

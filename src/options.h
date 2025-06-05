@@ -16,9 +16,10 @@
 #include "nextnet/NextReaction.h"
 
 using namespace std::literals;
+
 using namespace nextnetR;
+
 using namespace cpp11;
-namespace writable = cpp11::writable;
 
 namespace nextnetR {
 

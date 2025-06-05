@@ -15,7 +15,6 @@
 using namespace nextnetR;
 
 using namespace cpp11;
-namespace writable = cpp11::writable;
 
 [[cpp11::register]]
 doubles nextnetR_time_sample(int n, const transmission_time_R& ttr, double t, double m) {

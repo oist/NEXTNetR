@@ -21,9 +21,10 @@ WARNINGS_ENABLE
 #include "nextnet/NextReaction.h"
 
 using namespace std::literals;
+
 using namespace nextnetR;
+
 using namespace cpp11;
-namespace writable = cpp11::writable;
 
 [[cpp11::register]]
 simulation_R nextnetR_nextreaction_simulation(

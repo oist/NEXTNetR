@@ -7,5 +7,7 @@
 ^\.gitmodules$
 ^scripts$
 ^archives$
-^vignettes/*.html$
+^vignettes/.*\.html$
 ^vignettes/articles$
+^src/.*\.o$
+^ext/nextnet/nextnet/.*\.o$

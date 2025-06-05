@@ -11,7 +11,7 @@ If [Git](https://git-scm.com/downloads) is available, the [latest released](http
     install.packages("remotes")
     remotes::install_github("oist/NEXTNetR", ref="latest-release")
 
-Alternatively, download the [latest released](https://github.com/oist/NEXTNetR/releases) version of *NEXTNetR-v\<version\>-pkg.tar.gz* and install on the command line (*not* within R) with
+Alternatively, download the [latest released](https://github.com/oist/NEXTNetR/releases) version of *NEXTNetR-v\<version\>-pkg.tar.gz*. Then make sure all required dependencies are installed with `install.packages(c("BH", "cpp11", "rappdirs"))` and install *NEXTNetR* on the command line (*not* within R) with
 
     R CMD INSTALL NEXTNetR-v<version>-pkg.tar.gz
    

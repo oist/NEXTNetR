@@ -9,6 +9,7 @@ if [ "$ver" == "" ]; then
 fi
 
 nextnet_ver=$(cat ext/nextnet/.version)
+echo "NEXTNet version is $nextnet_ver"
 case $ver in
 	$nextnet_ver-*) ;;
 	$nextnet_ver) ;;

@@ -19,7 +19,8 @@ Since *NEXT-Net* is implemented in C++, a C++ compiler is required to install *N
 
 The following minimal example simulated an epidemic on an Erdős–Rényi network with lognormally distributed transmission time
 
-	sim <- simulation(
+	library(NEXTNetR)
+        sim <- simulation(
 		erdos_renyi_network(1e5, 5),
 		lognormal_time(6, 30, 0.1))
 	simulation_addinfections(sim, 1, 0.0)

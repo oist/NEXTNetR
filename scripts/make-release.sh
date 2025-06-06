@@ -54,7 +54,7 @@ rm -rf .buildpkg
 mkdir .buildpkg
 cd .buildpkg
 tar xzf ../archives/NEXTNetR-v$ver-src.tar.gz
-R CMD BUILD NEXTNetR
+R CMD build NEXTNetR
 mv NEXTNetR_$ver.tar.gz ../archives/NEXTNetR-v$ver-pkg.tar.gz
 cd ../
 rm -r .buildpkg

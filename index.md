@@ -1,6 +1,6 @@
 # Introduction
 
-`{NEXTNetR}` (**N**ext-reaction-based **E**pidemics e**X**tended to **T**emporal **Net**works) is an R package for the efficient simulation of epidemics on complex networks (including weighted and temporal networks) with arbitrary transmission and recovery time distributions. *NEXTNetR* is an R wrapper around the C++ library [NEXTNet](https://github.com/oist/NEXTNet).
+`{NEXTNetR}` (**N**ext-reaction-based **E**pidemics e**X**tended to **T**emporal **Net**works) is an R package for the efficient simulation of epidemics on complex networks (including weighted and temporal networks) with arbitrary transmission and recovery time distributions. *NEXTNetR* is an R wrapper around the C++ library [NEXTNet](https://github.com/oist/NEXTNet). For those who prefer to user Python, [NEXTNetPy](https://oist.github.io/NEXTNetPy/) offers a similar wrapper for Python.
 
 # Installation
 

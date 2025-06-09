@@ -1,0 +1,13 @@
+pandoc: 3.1.11
+pkgdown: 2.1.3
+pkgdown_sha: ~
+articles:
+  articles/custom_time_distributions_cpp: custom_time_distributions_cpp.html
+  articles/custom_time_distributions_r: custom_time_distributions_r.html
+  empirical_networks: empirical_networks.html
+  NEXTNetR: NEXTNetR.html
+  articles/spatial_temporal_networks: spatial_temporal_networks.html
+last_built: 2025-06-09T11:23Z
+urls:
+  reference: https://oist.github.io/NEXTNetR/reference
+  article: https://oist.github.io/NEXTNetR/articles
